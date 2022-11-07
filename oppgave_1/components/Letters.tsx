@@ -5,12 +5,14 @@ const letterList = Array.from('ABCDEFGHIJKLMNOPQRSTUVWXYZÆØÅ')
 type LettersProps = {
   getMessage: () => string
   guesses: string[]
-  handleGuess: (letter: number) => void
+  handleGuess: (letter: string) => void // endret inputtype fra number til string
 }
 
 type LetterProps = Pick<LettersProps, 'handleGuess' | 'guesses'> & {
   letter: string
 }
+
+
 
 export default function Letters({
   handleGuess,
@@ -21,7 +23,7 @@ export default function Letters({
     <>
       <p className="message">{getMessage()}</p>
       <ul className="letters">
-        {letterList.forEach((letter) => (
+        {letterList.map((letter) => ( // Changed from forEach to map
           <Letter
             handleGuess={handleGuess}
             guesses={guesses}

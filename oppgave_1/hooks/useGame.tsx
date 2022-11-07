@@ -1,5 +1,6 @@
 // TODO: Her er det bugs
 
+import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { Strike } from '../components/Strikes'
 
@@ -18,6 +19,7 @@ export const useGame = () => {
   const [guesses, setGuesses] = useState<string[]>([])
   const [strikes, setStrikes] = useState<Strike[]>(initialStrikes)
   const [country, setCountry] = useState<Country>(null)
+  const router = useRouter()
 
   const isSolved = (country: Country, guesses: string[]) => {
     if (!country) return false
@@ -28,7 +30,7 @@ export const useGame = () => {
     )
   }
 
-  const isGameOver = strikes.every((strike: any) => strike.guess) ? true : false
+  const isGameOver = strikes.every((strike: Strike) => strike.guess) ? true : false // Byttet strike: any til strike: Strike
 
   const getMessage = () => {
     if (isSolved(country, guesses) && !isGameOver) return 'Du klarte det'
@@ -37,7 +39,7 @@ export const useGame = () => {
   }
 
   const isMatch = (letter: string) => {
-    if (guesses.find((guess: any) => guess === letter.toLowerCase())) {
+    if (guesses.find((guess: string) => guess === letter.toLowerCase())) {  // Endret guess: any til guess: string
       return letter
     }
     return '_'
@@ -50,9 +52,11 @@ export const useGame = () => {
   }
 
   const handleGuess = (letter: string) => {
+    if(isGameOver) return // La til denne for å stoppe spillet når alle strikes er brukt opp
     if (!country?.name?.toLowerCase().includes(letter.toLowerCase())) {
       const strikeCopy = [...strikes]
       strikeCopy.pop()
+      setStrikes([{ icon: '🚫', guess: letter }, ...strikeCopy]) // La til setStrikes([{ icon: '🚫', guess: letter }, ...strikeCopy]) for å endre ikonet ved feil gjett
     }
     setGuesses((prev: string[]) => [...prev, letter.toLowerCase()])
   }
