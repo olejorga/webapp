@@ -1,13 +1,13 @@
 import type { NextPage } from 'next'
+import { type } from 'os'
 import { useEffect, useRef, useState } from 'react'
-import StudentTable from '../components/SudentTable'
-import { Student } from '../types'
-
+import StudentTable from '../components/StudentTable'
+import { Student, Students } from '../types'
 
 
 const Home: NextPage = () => {
   const isFirstRender = useRef(true)
-  const [students, setStudents] = useState<Student[]>([]) 
+  const [students, setStudents] = useState<Student[] | undefined>(undefined) 
 
   useEffect(() => {
     if(!isFirstRender.current) return
@@ -25,31 +25,21 @@ const Home: NextPage = () => {
           if (response.ok) return response.json()
           throw new Error(`HTTP ERROR! Status: ${response.status}`)
         })
-        setStudents([...data])
-        console.log(...data) // Bør fjernes før levering
+        setStudents(data as Student[])
+        // console.log(data) // Bør fjernes før levering
       } catch (error) {
         console.log('ERROR')
         console.log(error)
       }
+      
     }
     handler()
   }, [students])
 
-  if(!students) return
   return (
     <main>
       <h1>Student gruppering</h1>
-      <article className="studentTable">
-            {students.map(({id, name, gender, age, group}) => (
-                <div key={id}>
-                <span id="id">{id}</span>
-                <span id="name">{name}</span>
-                <span id="gender">{gender}</span>
-                <span id="age">{age}</span>
-                <span id="group">{group}</span>
-            </div>
-            ))}
-        </article>
+      <StudentTable {...students}/>
     </main>
   )
 }

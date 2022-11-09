@@ -14,5 +14,5 @@ export type Student = {
 
 export type Students = {
     students: Student[]
-    group: string
+    studyGroup: string
 }

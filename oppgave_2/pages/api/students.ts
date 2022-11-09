@@ -1,11 +1,17 @@
 import { PrismaClient } from '@prisma/client'
 import type { NextApiRequest, NextApiResponse } from 'next'
+import { Student, Students } from '../../types'
 
 const prisma = new PrismaClient()
 
+type Response = {
+  success: boolean,
+  data: Student[] | null
+}
+
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<any>
+  res: NextApiResponse<Response>
 ) {
   const students = await prisma.student.findMany()
   if (req.method === 'GET') {
