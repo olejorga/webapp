@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client'
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { Student, Students } from '../../types'
+import { Student } from '../../../types'
+
 
 const prisma = new PrismaClient()
 

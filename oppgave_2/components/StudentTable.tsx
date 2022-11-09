@@ -1,16 +1,13 @@
 import { Students, Student } from "../types";
 
-const classes = [{id: 1, subject: "informasjonssystemer"}, {id: 2, subject: "Informatikk"}, {id: 3, subject: "Digitale medier og design"}]
 
-const StudentTable = (students: Student[])  => {
-    const studentList = Object.values(students)
+const StudentTable = (props: {students: Student[], filterMethod: string | undefined})  => {
     return (
-        <>
-        {classes.map(({id, subject}) => (
-            <div key={id}>
-            <h1 >{subject}</h1>
-            <ul className="studentTable">
-            {studentList.map(({id, name, gender, age, group}: Student) => (
+        <ul>
+            {props.students.filter(({group}) => { 
+                if(!props.filterMethod) return true
+                return group == props.filterMethod
+                }).map(({id, name, gender, age, group}: Student) => (
                 <li key={id}>
                     <span id="id">{id}</span>
                     <span id="name">{name}</span>
@@ -20,9 +17,6 @@ const StudentTable = (students: Student[])  => {
                 </li>
             ))}
         </ul>
-        </div>
-       ))}
-        </>
     )
 }
 
