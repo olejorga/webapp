@@ -1,15 +1,20 @@
 import { Students, Student } from '../types'
 
-const StudentTable = (props: {
+type StudentTableProps = {
   students: Student[]
   filterMethod: string | undefined
-}) => {
+}
+
+const StudentTable = ({
+  students,
+  filterMethod
+}: StudentTableProps) => {
   return (
     <ul>
-      {props.students
-        .filter(({ group }) => {
-          if (!props.filterMethod) return true
-          return group == props.filterMethod
+      {students
+        .filter(({age, gender, group}) => {
+          if (!filterMethod) return true
+          return age.toString() == filterMethod || gender == filterMethod || group == filterMethod
         })
         .map(({ id, name, gender, age, group }: Student) => (
           <li key={id}>

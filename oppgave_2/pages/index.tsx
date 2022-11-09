@@ -15,10 +15,8 @@ const Home: NextPage = () => {
   } = useFilter()
 
   useEffect(() => {
-    console.log('USE EFFECT')
     if (!isFirstRender.current) return
     isFirstRender.current = false
-    console.log('en')
     const url = filterMethod ? 'api/' + filterMethod : 'api/students'
     console.log(url)
     const handler = async () => {
