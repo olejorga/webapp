@@ -15,12 +15,11 @@ type TableBuilderProps = {
 
 const TableBuilder = ({ students, filterMethod }: TableBuilderProps) => {
   console.log(students)
-  const { sortStudents, generateFilter} = useFilter()
+  const { generateFilter} = useFilter()
 
 
   if (students == undefined) return null
-  const sortedList = sortStudents(students)
-  let currentFilter = generateFilter(filterMethod, sortedList)
+  let currentFilter = generateFilter(filterMethod, students)
 
 
   return (

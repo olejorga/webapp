@@ -17,10 +17,12 @@ const Home: NextPage = () => {
   useEffect(() => {
     if (!isFirstRender.current) return
     isFirstRender.current = false
+    const url = filterMethod ? 'api/students/' + filterMethod : 'api/students'
+    console.log(url)
     const handler = async () => {
       try {
         // Påfølgende kode lånt fra https://developer.mozilla.org/en-US/docs/Web/API/fetch
-        const { data } = await fetch('api/students', {
+        const { data } = await fetch(url, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
