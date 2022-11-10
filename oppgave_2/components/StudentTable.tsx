@@ -5,26 +5,35 @@ type StudentTableProps = {
   filterMethod: string | undefined
 }
 
-const StudentTable = ({
-  students,
-  filterMethod
-}: StudentTableProps) => {
+const StudentTable = ({ students, filterMethod }: StudentTableProps) => {
+  let filteredStudents: Student[] = students.filter(
+    ({ age, gender, group }) => {
+      if (!filterMethod) return true
+      return (
+        age.toString() == filterMethod ||
+        gender == filterMethod ||
+        group == filterMethod
+      )
+    }
+  )
+
   return (
-    <ul>
-      {students
-        .filter(({age, gender, group}) => {
-          if (!filterMethod) return true
-          return age.toString() == filterMethod || gender == filterMethod || group == filterMethod
-        })
-        .map(({ id, name, gender, age, group }: Student) => (
-          <li key={id}>
-            <span id="id">{id}</span>
-            <span id="name">{name}</span>
-            <span id="gender">{gender}</span>
-            <span id="age">{age}</span>
-            <span id="group">{group}</span>
-          </li>
-        ))}
+    <ul className="ul-students">
+      {filteredStudents.map(({ id, name, gender, age, group }: Student) => (
+        <li key={id}>
+          <span id="id">{id}</span>
+          <span id="name">{name}</span>
+          <span id="gender">{gender}</span>
+          <span id="age">{age}</span>
+          <span id="group">{group}</span>
+        </li>
+      ))}
+      <p
+        className="paragraph-studentCount"
+        hidden={filteredStudents.length == 0}
+      >
+        Antall: {filteredStudents.length}
+      </p>
     </ul>
   )
 }

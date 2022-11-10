@@ -67,3 +67,15 @@ li {
   font-size: 1.2rem;
   margin-bottom: 5rem;
 }
+
+.ul-students {
+  position: relative;
+}
+
+.paragraph-studentCount {
+  font-size: small;
+  font-weight: bold;
+  position: absolute;
+  bottom: -20px;
+  right: 0;
+}

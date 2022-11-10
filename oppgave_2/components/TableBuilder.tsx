@@ -15,18 +15,18 @@ type TableBuilderProps = {
 
 const TableBuilder = ({ students, filterMethod }: TableBuilderProps) => {
   console.log(students)
-  const { generateFilter} = useFilter()
-
+  const { generateFilter } = useFilter()
 
   if (students == undefined) return null
   let currentFilter = generateFilter(filterMethod, students)
-
 
   return (
     <>
       {currentFilter.map((value, index) => (
         <div key={index}>
-          <h1 hidden={index == 0}>Gruppering etter {currentFilter[0]}: {value}</h1>
+          <h1 hidden={index == 0}>
+            Gruppering etter {currentFilter[0]}: {value}
+          </h1>
           <ul className="studentTable">
             <StudentTable students={students} filterMethod={value} />
           </ul>
