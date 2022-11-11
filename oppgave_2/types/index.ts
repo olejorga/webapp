@@ -3,23 +3,22 @@ export type Error = { status: false; error: string }
 
 export type Result = Data | Error
 
-
 export type Student = {
-    id: string,
-    name: string,
-    gender: string,
-    age: number,
-    group: string
+  id: string
+  name: string
+  gender: string
+  age: number
+  group: string
 }
 
 export type Students = {
-    students: Student[]
-    studyGroup: string
+  students: Student[]
+  studyGroup: string
 }
 
 export type Category = {
-    count: {
-      _all: number
-    },
-    value: string
+  count: {
+    _all: number
   }
+  value: string
+}

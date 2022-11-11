@@ -28,12 +28,6 @@ const StudentTable = ({ students, filterMethod }: StudentTableProps) => {
           <span id="group">{group}</span>
         </li>
       ))}
-      <p
-        className="paragraph-studentCount"
-        hidden={filteredStudents.length == 0}
-      >
-        Antall: {filteredStudents.length}
-      </p>
     </ul>
   )
 }

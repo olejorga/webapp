@@ -13,7 +13,7 @@ const Home: NextPage = () => {
     filterMethod,
     setFilterMethod,
     setCategory,
-    category
+    category,
   } = useFilter()
 
   useEffect(() => {
@@ -37,7 +37,7 @@ const Home: NextPage = () => {
         console.log('ERROR')
         console.log(error)
       }
-      if(filterMethod){
+      if (filterMethod) {
         try {
           // Påfølgende kode lånt fra https://developer.mozilla.org/en-US/docs/Web/API/fetch
           const { data } = await fetch(url + '/category', {
@@ -49,15 +49,24 @@ const Home: NextPage = () => {
             if (response.ok) return response.json()
             throw new Error(`HTTP ERROR! Status: ${response.status}`)
           })
-        setCategory(data as Category[])
-      } catch (error) {
-        console.log('ERROR')
-        console.log(error)
+          setCategory(data as Category[])
+        } catch (error) {
+          console.log('ERROR')
+          console.log(error)
+        }
+      } else {
+        setCategory(undefined)
       }
     }
-  }
     handler()
-  }, [students, setStudents, filterMethod, isFirstRender, setFilterMethod, setCategory])
+  }, [
+    students,
+    setStudents,
+    filterMethod,
+    isFirstRender,
+    setFilterMethod,
+    setCategory,
+  ])
 
   console.log(category)
   return (
@@ -68,7 +77,11 @@ const Home: NextPage = () => {
         filterMethod={filterMethod}
         isFirstRender={isFirstRender}
       />
-      <TableBuilder students={students} filterMethod={filterMethod} category={category} />
+      <TableBuilder
+        students={students}
+        filterMethod={filterMethod}
+        category={category}
+      />
     </main>
   )
 }
