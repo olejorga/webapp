@@ -22,11 +22,12 @@ export default async function handler(
   res: NextApiResponse<Response>
 ) {
   const country = countries[Math.floor(Math.random() * countries.length)]
-  // Added 200 return status
-  if(req.method === 'GET') {
-    if(country){
+  // La til 200 return status.
+  if (req.method === 'GET') {
+    if (country) {
       return res.status(200).json({success: true, data: country})
     }
+
     return res.status(404).json({ success: false, data: null })
   }
 }

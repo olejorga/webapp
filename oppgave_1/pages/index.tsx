@@ -25,11 +25,32 @@ const Home: NextPage = () => {
 
   useEffect(() => {
     if (!isFirstRender.current) return
+
     isFirstRender.current = false
+    
+    // La til håndtering av response, samt error håndtering.
     const handler = async () => {
       try {
-        // Påfølgende kode lånt fra https://developer.mozilla.org/en-US/docs/Web/API/fetch
-        const {data} = await fetch('api/countries', {
+        const response = await fetch('/api/countries', {
+          method: 'get',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+        
+        const { success, data } = await response.json()
+
+        if (success) setCountry(data)
+        else throw Error(`${response.status}: Could not fetch countries.`)
+        
+      } catch (error) {
+        console.log(error)
+        alert((error as Error).message)
+      }
+      
+      try {
+        // Følgende kode er lånt fra https://developer.mozilla.org/en-US/docs/Web/API/fetch.
+        const { data } = await fetch('api/countries', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -38,13 +59,15 @@ const Home: NextPage = () => {
           if(response.ok) return response.json()
           throw new Error(`HTTP ERROR! Status: ${response.status}`)
         })
-        console.log(data.name) // Bør fjernes før levering
-        setCountry(data) // La til setCountry(data) slik at country faktisk blir oppdatert
+
+        // La til denne slik at country faktisk blir oppdatert.
+        setCountry(data) 
+
       } catch (error) {
-        console.log("ERROR")
         console.log(error)
       }
     }
+
     handler()
   }, [setCountry]) 
 

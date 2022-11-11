@@ -52,12 +52,17 @@ export const useGame = () => {
   }
 
   const handleGuess = (letter: string) => {
-    if(isGameOver) return // La til denne for å stoppe spillet når alle strikes er brukt opp
+    // La til denne for å stoppe spillet når alle strikes er brukt opp.
+    if(isGameOver) return
+
     if (!country?.name?.toLowerCase().includes(letter.toLowerCase())) {
       const strikeCopy = [...strikes]
       strikeCopy.pop()
-      setStrikes([{ icon: '🚫', guess: letter }, ...strikeCopy]) // La til setStrikes([{ icon: '🚫', guess: letter }, ...strikeCopy]) for å endre ikonet ved feil gjett
+
+      // La til denne for å endre ikonet ved feil valg.
+      setStrikes([{ icon: '🚫', guess: letter }, ...strikeCopy])
     }
+
     setGuesses((prev: string[]) => [...prev, letter.toLowerCase()])
   }
 

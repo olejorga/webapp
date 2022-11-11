@@ -51,7 +51,9 @@ main {
 }
 
 .letters {
-  display: grid; // Byttet fra display: block til display: grid
+  // Byttet til grid slik at vi kan bruke gap til 
+  // å få rom rundt bokstavene.
+  display: grid;
   gap: 1rem;
   grid-template-columns: repeat(auto-fill, 50px);
 
@@ -61,6 +63,7 @@ main {
     padding: 2rem;
     box-shadow: 4px 4px 0 0 #c1c1c1;
     &.highlight {
+      // Endret til korrekt farge for valgte bokstaver.
       background-color: #fed24a;
     }
   }

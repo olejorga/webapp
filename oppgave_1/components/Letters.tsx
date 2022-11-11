@@ -5,7 +5,7 @@ const letterList = Array.from('ABCDEFGHIJKLMNOPQRSTUVWXYZÆØÅ')
 type LettersProps = {
   getMessage: () => string
   guesses: string[]
-  handleGuess: (letter: string) => void // endret inputtype fra number til string
+  handleGuess: (letter: string) => void // Endret input type fra number til string.
 }
 
 type LetterProps = Pick<LettersProps, 'handleGuess' | 'guesses'> & {
