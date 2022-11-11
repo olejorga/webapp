@@ -7,33 +7,18 @@ export default function useFilter() {
     const [filterMethod, setFilterMethod] = useState("")
     const [category, setCategory] = useState<Category[] | undefined>(undefined)
      
-      const generateFilter = (filterMethod: string, students: Student[]): string[] => {
-        let currentFilter = [""]
+      const getTitle = (filterMethod: string): string => {
+        let currentFilter = ""
         console.log(filterMethod)
         switch(filterMethod){
           case "age":
-              currentFilter[0] = "alder"
-              students?.forEach(({ age }) => {
-                if (!currentFilter.includes(age.toString())) {
-                    currentFilter.push(age.toString())
-                  }
-              })
+              currentFilter = "alder"
               break;
               case "group":
-              currentFilter[0] = "klasse";
-              students?.forEach(({ group }) => {
-                  if (!currentFilter.includes(group.toString())) {
-                      currentFilter.push(group.toString())
-                    }
-                })
+              currentFilter = "klasse";
               break;
           case "gender":
-              currentFilter[0] = "kjønn"
-              students?.forEach(({ gender }) => {
-                  if (!currentFilter.includes(gender.toString())) {
-                      currentFilter.push(gender.toString())
-                    }
-                })
+              currentFilter = "kjønn"
               break;
           }
           return currentFilter
@@ -46,7 +31,7 @@ export default function useFilter() {
         setStudents,
         filterMethod,
         setFilterMethod,
-        generateFilter,
+        getTitle,
         category,
         setCategory
     }

@@ -19,7 +19,7 @@ export type Students = {
 
 export type Category = {
     count: {
-      amount: number
+      _all: number
     },
-    name: string
+    value: string
   }

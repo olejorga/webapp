@@ -15,24 +15,25 @@ type TableBuilderProps = {
 }
 
 const TableBuilder = ({ students, filterMethod, category }: TableBuilderProps) => {
-  const { generateFilter } = useFilter()
+  const { getTitle } = useFilter()
 
   if (students == undefined) return null
   if (category == undefined) return null
 
-  // let currentFilter = generateFilter(filterMethod, students)
+   let title = getTitle(filterMethod)
 
-  console.log(category)
+  category.map(({count }) => console.log(count._all))
   return (
     <>
-      {category.map(({count, name}, index) => (
+      {category.map(({count, value}, index) => (
         <div key={index}>
           <h1>
-            Gruppering etter {category[index].name}: 1
+            Gruppering etter {title}: {value}
           </h1>
           <ul className="studentTable">
-            <StudentTable students={students} filterMethod={filterMethod} />
+            <StudentTable students={students} filterMethod={value} />
           </ul>
+          <h3>{count._all}</h3>
         </div>
       ))}
     </>

@@ -37,23 +37,25 @@ const Home: NextPage = () => {
         console.log('ERROR')
         console.log(error)
       }
-      try {
-        // Påfølgende kode lånt fra https://developer.mozilla.org/en-US/docs/Web/API/fetch
-        const { data } = await fetch(url + '/category', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }).then((response) => {
-          if (response.ok) return response.json()
-          throw new Error(`HTTP ERROR! Status: ${response.status}`)
-        })
+      if(filterMethod){
+        try {
+          // Påfølgende kode lånt fra https://developer.mozilla.org/en-US/docs/Web/API/fetch
+          const { data } = await fetch(url + '/category', {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          }).then((response) => {
+            if (response.ok) return response.json()
+            throw new Error(`HTTP ERROR! Status: ${response.status}`)
+          })
         setCategory(data as Category[])
       } catch (error) {
         console.log('ERROR')
         console.log(error)
       }
     }
+  }
     handler()
   }, [students, setStudents, filterMethod, isFirstRender, setFilterMethod, setCategory])
 
