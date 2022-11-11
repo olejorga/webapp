@@ -1,11 +1,12 @@
 import { useRef, useState } from "react";
-import { Student } from "../types";
+import { Student, Category } from "../types";
 
 export default function useFilter() {
     const isFirstRender = useRef(true)
     const [students, setStudents] = useState<Student[] | undefined>(undefined)
     const [filterMethod, setFilterMethod] = useState("")
-    
+    const [category, setCategory] = useState<Category[] | undefined>(undefined)
+     
       const generateFilter = (filterMethod: string, students: Student[]): string[] => {
         let currentFilter = [""]
         console.log(filterMethod)
@@ -45,6 +46,8 @@ export default function useFilter() {
         setStudents,
         filterMethod,
         setFilterMethod,
-        generateFilter
+        generateFilter,
+        category,
+        setCategory
     }
 }

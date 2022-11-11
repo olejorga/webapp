@@ -1,5 +1,5 @@
 import useFilter from '../hooks/useFilter'
-import { Student } from '../types'
+import { Category, Student } from '../types'
 import StudentTable from './StudentTable'
 
 const classes = [
@@ -10,25 +10,28 @@ const classes = [
 
 type TableBuilderProps = {
   students: Student[] | undefined
-  filterMethod: string
+  filterMethod: string,
+  category: Category[] | undefined
 }
 
-const TableBuilder = ({ students, filterMethod }: TableBuilderProps) => {
-  console.log(students)
+const TableBuilder = ({ students, filterMethod, category }: TableBuilderProps) => {
   const { generateFilter } = useFilter()
 
   if (students == undefined) return null
-  let currentFilter = generateFilter(filterMethod, students)
+  if (category == undefined) return null
 
+  // let currentFilter = generateFilter(filterMethod, students)
+
+  console.log(category)
   return (
     <>
-      {currentFilter.map((value, index) => (
+      {category.map(({count, name}, index) => (
         <div key={index}>
-          <h1 hidden={index == 0}>
-            Gruppering etter {currentFilter[0]}: {value}
+          <h1>
+            Gruppering etter {category[index].name}: 1
           </h1>
           <ul className="studentTable">
-            <StudentTable students={students} filterMethod={value} />
+            <StudentTable students={students} filterMethod={filterMethod} />
           </ul>
         </div>
       ))}

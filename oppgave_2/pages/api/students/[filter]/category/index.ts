@@ -1,25 +1,28 @@
+import { Category } from '../../../../../types/index';
 import { PrismaClient } from '@prisma/client'
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { Student, Students } from '../../../../../types'
 
 const prisma = new PrismaClient()
 
-type Response = {
+type Response2 = {
   success: boolean,
-  data: number | null
+  data: [
+    Category
+  ]
 }
+
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Response>
+  res: NextApiResponse<Response2>
 ) {
-  const { filter, category  } = req.query
-  if(category)
+  const { filter } = req.query
   switch(filter){
     case "gender":
-      const studentsByGender = await prisma.student.count({ 
-        where: {
-          gender: category
+      const studentsByGender = await prisma.student.groupBy({
+        by: ['gender'],
+        _count: {
+          _all: true
         }
       })
       if (req.method === 'GET') {
@@ -29,9 +32,10 @@ export default async function handler(
       return res.status(404).json({ success: false, data: null })
     }
     case "age":
-      const studentsByAge = await prisma.student.count({
-        where: {
-          age: Number(category)
+      const studentsByAge = await prisma.student.groupBy({
+        by: ['age'],
+        _count: {
+          _all: true
         }
       })
       if (req.method === 'GET') {
@@ -40,10 +44,11 @@ export default async function handler(
         }
       return res.status(404).json({ success: false, data: null })
     }
-   default:
-      const studentsByGroup = await prisma.student.count({
-        where: {
-          group: category 
+   case "group":
+      const studentsByGroup = await prisma.student.groupBy({
+        by: ['group'],
+        _count: {
+          _all: true
         }
       })
       if (req.method === 'GET') {
@@ -52,5 +57,8 @@ export default async function handler(
         }
         return res.status(404).json({ success: false, data: null })
       }
-  } 
+      
+    default:
+      return
+    }
 }

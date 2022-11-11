@@ -16,3 +16,10 @@ export type Students = {
     students: Student[]
     studyGroup: string
 }
+
+export type Category = {
+    count: {
+      amount: number
+    },
+    name: string
+  }
