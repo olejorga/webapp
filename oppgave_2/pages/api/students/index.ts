@@ -18,6 +18,7 @@ export default async function handler(
     if (students) {
       return res.status(200).json({ success: true, data: students })
     }
+    
     return res.status(404).json({ success: false, data: null })
   }
 }

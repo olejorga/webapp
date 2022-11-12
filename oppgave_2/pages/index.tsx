@@ -18,42 +18,36 @@ const Home: NextPage = () => {
 
   useEffect(() => {
     if (!isFirstRender.current) return
+
     isFirstRender.current = false
+
     const url = filterMethod ? 'api/students/' + filterMethod : 'api/students'
+
     const handler = async () => {
       try {
-        // Påfølgende kode lånt fra https://developer.mozilla.org/en-US/docs/Web/API/fetch
-        const { data } = await fetch(url, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }).then((response) => {
-          if (response.ok) return response.json()
-          throw new Error(`HTTP ERROR! Status: ${response.status}`)
-        })
-        setStudents(data as Student[])
+        const res = await fetch(url)
+        const { success, data } = await res.json()
+
+        if (success) setStudents(data as Student[])
+        else throw Error(`${res.status}: Could not fetch students.`)
+
       } catch (error) {
-        console.log('ERROR')
         console.log(error)
+        alert((error as Error).message)
       }
+
       if (filterMethod) {
         try {
-          // Påfølgende kode lånt fra https://developer.mozilla.org/en-US/docs/Web/API/fetch
-          const { data } = await fetch(url + '/category', {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          }).then((response) => {
-            if (response.ok) return response.json()
-            throw new Error(`HTTP ERROR! Status: ${response.status}`)
-          })
-          setCategory(data as Category[])
-        } catch (error) {
-          console.log('ERROR')
-          console.log(error)
-        }
+        const res = await fetch(url + "/category")
+        const { success, data } = await res.json()
+
+        if (success) setCategory(data as Category[])
+        else throw Error(`${res.status}: Could not fetch categories.`)
+
+      } catch (error) {
+        console.log(error)
+        alert((error as Error).message)
+      }
       } else {
         setCategory(undefined)
       }
@@ -68,7 +62,6 @@ const Home: NextPage = () => {
     setCategory,
   ])
 
-  console.log(category)
   return (
     <main>
       <h1>Student gruppering</h1>

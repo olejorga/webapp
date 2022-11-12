@@ -8,20 +8,16 @@ export default function useFilter() {
   const [category, setCategory] = useState<Category[] | undefined>(undefined)
 
   const getTitle = (filterMethod: string): string => {
-    let currentFilter = ''
-    console.log(filterMethod)
     switch (filterMethod) {
       case 'age':
-        currentFilter = 'alder'
-        break
+        return 'alder'
       case 'group':
-        currentFilter = 'studieretning'
-        break
+        return 'studieretning'
       case 'gender':
-        currentFilter = 'kjønn'
-        break
+        return 'kjønn'
+      default:
+        return ''
     }
-    return currentFilter
   }
 
   return {
