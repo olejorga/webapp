@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
-import { Data, Grouping, Result, Student } from "../types";
+import { useEffect, useState } from 'react'
+import { Data, Grouping, Result, Student } from '../types'
 
 export default function useData() {
     const [data, setData] = useState<Data | null>(null)
-    const [grouping, setGrouping] = useState<string | null>(null)
+    const [grouping, setGrouping] = useState<keyof Student | null>(null)
 
     useEffect(() => {
         (async () => {
@@ -11,7 +11,7 @@ export default function useData() {
                 const res = await fetch(`/api/students?groupBy=${grouping ?? ''}`)
                 const { error, ...data } = await res.json()
 
-                if (!res.ok || error) throw Error(error ?? "Could not fetch students.")
+                if (!res.ok || error) throw Error(error ?? 'Could not fetch students.')
                 else setData(data)
 
             } catch (error) {

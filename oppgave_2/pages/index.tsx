@@ -40,7 +40,7 @@ export default function Test() {
       {data?.type == 'grouped' && (data.records as Grouping[]).map((g, i) => (
         <div key={i}>
           <h2>
-            {`Gruppering etter ${g.key}: ${g.value}`}
+            {`Gruppering etter ${translate(g.key)}: ${g.value}`}
           </h2>
           <Table students={g.students} />
           <p className="count">
@@ -50,4 +50,20 @@ export default function Test() {
       ))}
     </main>
   )
+}
+
+const translate = (key: keyof Student) => {
+  switch (key) {
+    case 'age':
+      return 'alder'
+  
+    case 'gender':
+      return 'kjønn'
+
+    case 'group':
+      return 'klasse'
+
+    default:
+      return ''
+  }
 }
