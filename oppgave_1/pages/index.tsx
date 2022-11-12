@@ -47,25 +47,6 @@ const Home: NextPage = () => {
         console.log(error)
         alert((error as Error).message)
       }
-      
-      try {
-        // Følgende kode er lånt fra https://developer.mozilla.org/en-US/docs/Web/API/fetch.
-        const { data } = await fetch('api/countries', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }).then((response) => {
-          if(response.ok) return response.json()
-          throw new Error(`HTTP ERROR! Status: ${response.status}`)
-        })
-
-        // La til denne slik at country faktisk blir oppdatert.
-        setCountry(data) 
-
-      } catch (error) {
-        console.log(error)
-      }
     }
 
     handler()
