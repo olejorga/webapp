@@ -1,24 +1,24 @@
-export type Data = { status: true; data: Record<string, unknown> }
-export type Error = { status: false; error: string }
-
-export type Result = Data | Error
-
 export type Student = {
-  id: string
-  name: string
-  gender: string
-  age: number
-  group: string
-}
+  id: string;
+  name: string;
+  gender: string;
+  age: number;
+  group: string;
+};
 
-export type Students = {
-  students: Student[]
-  studyGroup: string
-}
+export type Grouping = {
+  key: keyof Student;
+  value: unknown;
+  students: Student[];
+};
 
-export type Category = {
-  count: {
-    _all: number
-  }
-  value: string
-}
+export type Data = {
+  type: 'students' | 'grouped';
+  records: Student[] | Grouping[];
+};
+
+export type Error = {
+  error: string;
+};
+
+export type Result = Data | Error;

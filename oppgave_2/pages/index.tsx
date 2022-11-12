@@ -1,82 +1,53 @@
-import type { NextPage } from 'next'
-import { useEffect } from 'react'
-import FilterButton from '../components/FilterButton'
-import TableBuilder from '../components/TableBuilder'
-import useFilter from '../hooks/useFilter'
-import { Category, Student } from '../types'
+import Radio from "../components/Radio"
+import Table from "../components/Table"
+import useData from "../hooks/useData"
+import { Grouping, Student } from "../types"
 
-const Home: NextPage = () => {
-  const {
-    isFirstRender,
-    students,
-    setStudents,
-    filterMethod,
-    setFilterMethod,
-    setCategory,
-    category,
-  } = useFilter()
-
-  useEffect(() => {
-    if (!isFirstRender.current) return
-
-    isFirstRender.current = false
-
-    const url = filterMethod ? 'api/students/' + filterMethod : 'api/students'
-
-    const handler = async () => {
-      try {
-        const res = await fetch(url)
-        const { success, data } = await res.json()
-
-        if (success) setStudents(data as Student[])
-        else throw Error(`${res.status}: Could not fetch students.`)
-
-      } catch (error) {
-        console.log(error)
-        alert((error as Error).message)
-      }
-
-      if (filterMethod) {
-        try {
-        const res = await fetch(url + "/category")
-        const { success, data } = await res.json()
-
-        if (success) setCategory(data as Category[])
-        else throw Error(`${res.status}: Could not fetch categories.`)
-
-      } catch (error) {
-        console.log(error)
-        alert((error as Error).message)
-      }
-      } else {
-        setCategory(undefined)
-      }
-    }
-    handler()
-  }, [
-    students,
-    setStudents,
-    filterMethod,
-    isFirstRender,
-    setFilterMethod,
-    setCategory,
-  ])
+export default function Test() {
+  const { data, grouping, setGrouping } = useData()
 
   return (
     <main>
       <h1>Student gruppering</h1>
-      <FilterButton
-        setFilterMethod={setFilterMethod}
-        filterMethod={filterMethod}
-        isFirstRender={isFirstRender}
-      />
-      <TableBuilder
-        students={students}
-        filterMethod={filterMethod}
-        category={category}
-      />
+      {/* Filters. */}
+      <section>
+        <Radio 
+          label="Ingen" 
+          checked={grouping == null} 
+          onChange={() => setGrouping(null)} 
+        />
+        <Radio 
+          label="Alder" 
+          checked={grouping == 'age'} 
+          onChange={() => setGrouping('age')} 
+        />
+        <Radio 
+          label="Kjønn" 
+          checked={grouping == 'gender'} 
+          onChange={() => setGrouping('gender')} 
+        />
+        <Radio 
+          label="Klasse" 
+          checked={grouping == 'group'} 
+          onChange={() => setGrouping('group')} 
+        />
+      </section>
+
+      {/* All students. */}
+      {data?.type == 'students' && <Table students={data.records as Student[]} />}
+
+      {/* Grouped students. */}
+      {data?.type == 'grouped' && (data.records as Grouping[]).map((g, i) => (
+        <div key={i}>
+          <h2>
+            {`Gruppering etter ${g.key}: ${g.value}`}
+          </h2>
+          <Table students={g.students} />
+          <p className="count">
+            {`Antall: ${g.students.length}`}
+          </p>
+        </div>
+      ))}
     </main>
   )
 }
-
-export default Home
