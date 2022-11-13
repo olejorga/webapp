@@ -1,154 +1,208 @@
-# Oppgave 3.1
+```
+🚧 WIP: Coffee break.
+```
 
-## Ressurser
+# Model
 
-## Datamodeller
+## Employee
 
-- Employee
+```ts
+type Employee = {
+  id: string
+  name: string
+  rules: string
+}
+```
 
-  - Id _string_
-  - Navn _string_
-  - rules _string?_
+## Day
 
-- Day
+```ts
+type Day = {
+  id: string
+  name: string
+  employee: Employee
+  employeeId: string
+  week: Week
+  weekId: string
+}
+```
 
-  - Id _string_
-  - name _string_
-  - EmployeeId _string_
-  - WeekId _string_
+## Week
 
-- Week
+```ts
+type Week = {
+  id: string
+  number: number
+}
+```
 
-  - Id _string_
-  - WeekNumber _number_
+## Alteration
 
-- Lunch (Kombinasjonen av Employee+Dag kan benyttes)
+```ts
+type Alteration = {
+  id: string
+  day: Day
+  dayId: string
+  employee: Employee
+  employeeId: string
+}
+```
 
-- Alteration (Overskrivelse for dag)
-  - Id _string_
-  - DayId _string_
-  - EmployeeId _string_
-    - Id til Employee som erstatter lunsjen denne dagen
+## Lunch
 
----
+```ts
+type Lunch = {
+  id: string
+  day: Day
+  dayId: string
+  employee: Employee
+  employeeId: string
+}
+```
 
-### Employee
+# Resources
 
-- **Create**
-  - Success
-    - Statuskode: 201
-    - Respons: Employee
-  - Error:
-    - Statuskode: 400
-    - Respons: null
-- **Read**
-  - Success
-    - Statuskode: 200
-    - Respons: Employee
-  - Error:
-    - Statuskode: 404
-    - Respons: null
-- **Update**
-  - Success
-    - Statuskode: 200
-    - Respons: Employee
-  - Error:
-    - Statuskode: 400
-    - Respons: null
-- **Delete?**
-  - Success
-    - Statuskode: 204
-    - Respons: null
-  - Error:
-    - Statuskode: 400
-    - Respons: null
+## Response
 
-### Day
+```ts
+// The standard response returned from all endpoints.
+// Will always be data or an error.
+type Response<T> = Data<T> | Error
 
-- Read
-  - Success
-    - Statuskode: 200
-    - Respons: Day
-  - Error:
-    - Statuskode: 404
-    - Respons: null
-- Update
-  - Success
-    - Statuskode: 200
-    - Respons: Employee
-  - Error:
-    - Statuskode: 400
-    - Respons: null
+type Data<T> = { data: T }
+type Error = { error: string }
+```
 
-### Week
+## Employee
 
-- Read
-  - Success
-    - Statuskode: 200
-    - Respons: Week
-  - Error:
-    - Statuskode: 404
-    - Respons: null
-- Create
-  - Success
-    - Statuskode: 201
-    - Respons: Week
-  - Error:
-    - Statuskode: 400
-    - Respons: null
-- Update
-  - Success
-    - Statuskode: 200
-    - Respons: Week
-  - Error:
-    - Statuskode: 400
-    - Respons: null
+```
+👉 /api/employees
 
-### Lunch
+GET:
+  200: Data<Employee[]>
+  500: Error
 
-- All informasjon hentes fra andre ressurser
+  PARAMS:
+    ?search={phrase} Employees with names containing phrase.
 
----
+POST:
+  201: Data<Employee>
+  400: Error
+  500: Error
+```
 
-### Endepunkt
+```
+👉 /api/employees/{id}
 
-#### Employee
+PUT:
+  200: Data<Employee>
+  400: Error
+  404: Error
+  500: Error
+```
 
-    - /api/Employee
-      - Henter listen av alle ansatte
-    - /api/Employee/{id}
-      - Henter ansatt med {id} og viser dagene denne personen har lunsj
+## Day
 
-#### Day
+```
+👉 /api/days
 
-    -  /api/Day/{Employeeid}
-      - Henter alle dager til en ansatt
+GET:
+  200: Data<Day[]>
+  500: Error
 
-#### Week
+  PARAMS:
+    ?employee={id} Days employee is responsible for lunch. 
+```
 
-    - /api/Week
-      - Henter listen over alle uker.
-    - /api/Week/{id}
-      - Henter uken med {id}
+## Week
 
-### Sider
+```
+👉 /api/weeks
 
-#### Homepage
+GET:
+  200: Data<Week[]>
+  500: Error
 
-- Viser en oversikt over alle uker der man kan se utvidet informasjon om en ukes dager og hvilken ansatt som har ansvar for lunsj den dagen.
-- Skal kunne generere ny lunsj liste (oppgave 3.6)
-- Skal kunne søke etter ansatt
-- Skal kunne laste ned lunsjlisten i Excel-format. (3.5)
-- Velge en periode som skal vises (f.eks. uke 2-6)
+  PARAMS:
+    ?start={number} All weeks from week nr (incl).
+    ?end={number} All weeks until week nr (incl).
+```
 
-#### Alteration
+```
+👉 /api/weeks/{id}
 
-- Opprette en endring for en spesifikk dag.
+GET:
+  200: Data<Week>
+  404: Error
+  500: Error
+```
 
-#### Employee
+## Alteration
 
-- Se alle dager en ansatt har ansvaret for.
+```
+👉 /api/alterations
 
-#### Ny Employee
+POST:
+  201: Data<Alteration>
+  400: Error
+  500: Error
+```
 
-- Opprette en ny Employee.
+## Lunch
+
+```
+👉 /api/lunch
+
+GET:
+  200: Data<Lunch>
+  500: Error
+
+  PARAMS:
+    ?format=excel Download lunch plan as an excel file.
+
+POST:
+  201: Data<Lunch>
+  400: Error
+  500: Error
+```
+
+## Demo
+
+```
+👉 /api/demo
+
+POST:
+  201: Data<null>
+  400: Error
+  500: Error
+```
+
+# Pages
+
+## Home
+
+```
+👉 /
+
+- Overview over all weeks.
+  - Each week can be expanded to se idividual days.
+- Can generate a new lunch plan. (3.6)
+- Can search for an employee.
+- Can download lunch plan as an excel file. (3.5)
+- Filter weeks by an interval.
+```
+
+## Alteration
+
+```
+👉 /alteration
+
+- Can create a new alteration.
+```
+
+## Employee
+
+```
+👉 /employee
+
+- Can create a new employee.
