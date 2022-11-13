@@ -52,11 +52,29 @@ type Alteration = {
 
 ```ts
 type Lunch = {
-  id: string
-  day: Day
-  dayId: string
-  employee: Employee
-  employeeId: string
+  weeks: {
+    lunches: {
+      [week: string]: {
+        [day: string]: Employee
+      }
+    }
+    alterations?: {
+      [day: string]: Employee
+    }
+  }
+}
+```
+
+## Options
+
+```ts
+type Options = {
+  vacations: number[],
+  yearSize: number,
+  workDays: number,
+  batchSize: number,
+  maxOccurrences: number,
+  days: string[]
 }
 ```
 
@@ -90,6 +108,8 @@ POST:
   201: Data<Employee>
   400: Error
   500: Error
+  
+  BODY: Employee
 ```
 
 ```
@@ -100,6 +120,8 @@ PUT:
   400: Error
   404: Error
   500: Error
+  
+  BODY: Employee
 ```
 
 ## Day
@@ -147,6 +169,8 @@ POST:
   201: Data<Alteration>
   400: Error
   500: Error
+  
+  BODY: Alteration
 ```
 
 ## Lunch
@@ -165,6 +189,8 @@ POST:
   201: Data<Lunch>
   400: Error
   500: Error
+  
+  BODY: Options
 ```
 
 ## Demo
@@ -172,9 +198,8 @@ POST:
 ```
 👉 /api/demo
 
-POST:
-  201: Data<null>
-  400: Error
+GET:
+  200: Data<{ message: "Database seeded with example data." }>
   500: Error
 ```
 
