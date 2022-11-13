@@ -46,6 +46,14 @@ export default async function handler(
   }
 }
 
+/**
+ * Creates an array of grouped students based upon a 
+ * common key value in the student object.
+ * 
+ * @param students The students to be grouped. 
+ * @param key The key of the common value which the grouping will be based on.
+ * @returns An array of grouped students.
+ */
 const group = async (students: Student[], key: keyof Student): Promise<Grouping[]> => {
   const groups = await prisma.student.groupBy({ by: [key] })
   return groups.map(g => ({ 

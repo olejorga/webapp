@@ -52,6 +52,13 @@ export default function Test() {
   )
 }
 
+/**
+ * Translates key names of a student object into 
+ * norwegian.
+ * 
+ * @param key The key that ought to be translated.
+ * @returns A translation of the passed key.
+ */
 const translate = (key: keyof Student) => {
   switch (key) {
     case 'age':
