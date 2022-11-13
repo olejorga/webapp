@@ -67,6 +67,7 @@ type Lunch = {
 ```ts
 // The standard response returned from all endpoints.
 // Will always be data or an error.
+// Generic "T" is the type of data expected.
 type Response<T> = Data<T> | Error
 
 type Data<T> = { data: T }
