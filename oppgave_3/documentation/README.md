@@ -152,7 +152,7 @@ GET:
 ```
 
 ```
-👉 /api/weeks/{id}
+👉 /api/weeks/{number}
 
 GET:
   200: Data<Week>
