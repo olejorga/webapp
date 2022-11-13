@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Data, Grouping, Result, Student } from '../types'
+import { Data, Student } from '../types'
 
 export default function useData() {
     const [data, setData] = useState<Data | null>(null)
