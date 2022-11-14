@@ -25,8 +25,8 @@ type Day = {
   employeeId: string
   week: Week  // Use prisma include.
   weekId: string
-  alteration: Alteration  // Use prisma include.
-  alterationId: string
+  alteration?: Alteration  // Use prisma include.
+  alterationId?: string
 }
 ```
 
@@ -159,8 +159,20 @@ POST:
 👉 /api/demo
 
 GET:
-  200: Data<{ message: "Database seeded with example data." }>
+  200: Data<null>
   500: Error
+```
+
+## Custom
+```
+👉 /api/custom
+
+POST:
+  201: Data<null>
+  400: Error
+  500: Error
+  
+  BODY: Options
 ```
 
 # Pages
