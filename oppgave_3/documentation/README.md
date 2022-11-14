@@ -11,6 +11,7 @@ type Employee = {
   id: string
   name: string
   rules: string
+  days: Day[] // Use prisma include.
 }
 ```
 
@@ -20,10 +21,12 @@ type Employee = {
 type Day = {
   id: string
   name: string
-  employee: Employee
+  employee: Employee  // Use prisma include.
   employeeId: string
-  week: Week
+  week: Week  // Use prisma include.
   weekId: string
+  alteration: Alteration  // Use prisma include.
+  alterationId: string
 }
 ```
 
@@ -33,6 +36,7 @@ type Day = {
 type Week = {
   id: string
   number: number
+  days: Day[]  // Use prisma include.
 }
 ```
 
@@ -41,27 +45,10 @@ type Week = {
 ```ts
 type Alteration = {
   id: string
-  day: Day
+  day: Day // Use prisma include.
   dayId: string
-  employee: Employee
+  employee: Employee // Use prisma include.
   employeeId: string
-}
-```
-
-## Lunch
-
-```ts
-type Lunch = {
-  weeks: {
-    lunches: {
-      [week: string]: {
-        [day: string]: Employee
-      }
-    }
-    alterations?: {
-      [day: string]: Employee
-    }
-  }
 }
 ```
 
@@ -69,12 +56,12 @@ type Lunch = {
 
 ```ts
 type Options = {
-  vacations: number[],
-  yearSize: number,
-  workDays: number,
-  batchSize: number,
-  maxOccurrences: number,
-  days: string[]
+  vacations: number[] // Array of week numbers.
+  yearSize: number // Number of weeks in a year.
+  workDays: number // Number of work days per week.
+  batchSize: number // ...
+  maxOccurrences: number // ...
+  days: string[] // Array of names of days.
 }
 ```
 
@@ -92,7 +79,7 @@ type Data<T> = { data: T }
 type Error = { error: string }
 ```
 
-## Employee
+## Employee 
 
 ```
 👉 /api/employees
@@ -115,6 +102,11 @@ POST:
 ```
 👉 /api/employees/{id}
 
+GET:
+  200: Data<Employee>
+  404: Error
+  500: Error
+
 PUT:
   200: Data<Employee>
   400: Error
@@ -122,19 +114,6 @@ PUT:
   500: Error
   
   BODY: Employee
-```
-
-## Day
-
-```
-👉 /api/days
-
-GET:
-  200: Data<Day[]>
-  500: Error
-
-  PARAMS:
-    ?employee={id} Days employee is responsible for lunch. 
 ```
 
 ## Week
@@ -149,6 +128,7 @@ GET:
   PARAMS:
     ?start={number} All weeks from week nr (incl).
     ?end={number} All weeks until week nr (incl).
+    ?format=excel Download lunch plan as an excel file.
 ```
 
 ```
@@ -173,26 +153,6 @@ POST:
   BODY: Alteration
 ```
 
-## Lunch
-
-```
-👉 /api/lunch
-
-GET:
-  200: Data<Lunch>
-  500: Error
-
-  PARAMS:
-    ?format=excel Download lunch plan as an excel file.
-
-POST:
-  201: Data<Lunch>
-  400: Error
-  500: Error
-  
-  BODY: Options
-```
-
 ## Demo
 
 ```
@@ -210,25 +170,77 @@ GET:
 ```
 👉 /
 
-- Overview over all weeks.
-  - Each week can be expanded to se idividual days.
-- Can generate a new lunch plan. (3.6)
-- Can search for an employee.
+This page is the entry point.
+
+- Can navigate to weeks overview (👉 /weeks).
+- Can navigate to employee overview (👉 /employees).
+
+- Can generate a lunch plan based on demo data. (3.2)
 - Can download lunch plan as an excel file. (3.5)
-- Filter weeks by an interval.
+- Can generate a new lunch plan. (3.6)
+```
+
+## Week
+```
+👉 /weeks
+
+This page is an overview of all weeks.
+
+- Each week can be expanded to see idividual days.
+  - Shows who is responsible for lunch each day.
+- Filter weeks (↪️ /weeks?start={number}&end={number}).
+- Can go to an individual week (👉 /weeks/{number}).
+```
+
+```
+👉 /weeks/{number}
+
+This page is an overview of a individual week.
+
+- Shows an overview of all days within that week.
+- Shows who is responsible for lunch each day.
+
+```
+
+## Employee
+```
+👉 /employees
+
+This page is an overview of all employees.
+
+- Can go to an individual employee (👉 /employee/{id}).
+- Can search for employee (↪️ /employees?search={phrase}).
+```
+
+```
+👉 /employees/{id}
+
+This page is an overview of an individual employee.
+
+- Shows an overview of days the employee is responsible for.
+- Can choose to edit employee (👉 /employee/{id}/edit).
+```
+
+```
+👉 /employees/{id}/update
+
+This page is for editing an employee.
+
+- When done, the user is redirected (↪️ /employee/{id}).
+```
+
+```
+👉 /employees/create
+
+This page is for creating a new employee.
+
+- When done, the user is redirected (↪️ /employee/{id}).
 ```
 
 ## Alteration
 
 ```
-👉 /alteration
+👉 /alterations/create
 
-- Can create a new alteration.
+This page is for creating a new alteration.
 ```
-
-## Employee
-
-```
-👉 /employee
-
-- Can create a new employee.
