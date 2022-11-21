@@ -1,5 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { Result, Week } from '../../types'
+import { Week } from '../../types/model'
+import { Result } from '../../types/result'
+
 import WeekService from './week.service'
 
 export default class WeekController {

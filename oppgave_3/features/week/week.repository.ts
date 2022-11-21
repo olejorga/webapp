@@ -1,6 +1,7 @@
 import prisma from '../../lib/db'
 import { NotFoundError } from '@prisma/client/runtime'
-import { ResultAsync, Week } from '../../types'
+import { Week } from '../../types/model'
+import { ResultAsync } from '../../types/result'
 
 export default class WeekRepository {
   async create(week: Week): ResultAsync<Week> {

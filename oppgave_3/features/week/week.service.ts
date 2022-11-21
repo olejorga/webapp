@@ -1,4 +1,5 @@
-import { Result, ResultAsync, Week } from '../../types'
+import { Week } from '../../types/model'
+import { ResultAsync } from '../../types/result'
 import WeekRepository from './week.repository'
 
 export default class WeekService {
