@@ -1,9 +1,10 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { Employee, Result } from '../../types'
+import { Employee } from '../../types/model'
+import { Result } from '../../types/result'
 import EmployeeService from './employee.service'
 
 export default class EmployeeController {
-  constructor(private readonly service: EmployeeService) {}
+  constructor(private readonly service: EmployeeService) { }
 
   async createEmployee(
     req: NextApiRequest,

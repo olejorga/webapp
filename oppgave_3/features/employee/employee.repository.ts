@@ -1,6 +1,7 @@
 import prisma from '../../lib/db'
-import { Employee, ResultAsync } from '../../types'
+import { ResultAsync } from '../../types/result'
 import { NotFoundError } from '@prisma/client/runtime'
+import { Employee } from '../../types/model'
 
 export default class EmployeeRepository {
   async create(employee: Employee): ResultAsync<Employee> {
