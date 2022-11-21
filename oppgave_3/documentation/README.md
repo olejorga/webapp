@@ -71,11 +71,11 @@ type Options = {
 // Generic "T" is the type of data expected.
 type Result<T> = Data<T> | Error
 
-type Data<T> = { status: number, data: T }
-type Error = { status: number, error: string }
+type Data<T> = { status: number; data: T }
+type Error = { status: number; error: string }
 ```
 
-## Employee 
+## Employee
 
 ```
 👉 /api/employees
@@ -91,7 +91,7 @@ POST:
   201: Data<Employee>
   400: Error
   500: Error
-  
+
   BODY: Employee
 ```
 
@@ -110,7 +110,7 @@ PUT:
   400: Error
   404: Error
   500: Error
-  
+
   BODY: Employee
 ```
 
@@ -149,7 +149,7 @@ POST:
   201: Data<Alteration>
   400: Error
   500: Error
-  
+
   BODY: Alteration
 ```
 
@@ -176,7 +176,7 @@ POST:
   201: Data<null>
   400: Error
   500: Error
-  
+
   BODY: Options
 ```
 
@@ -198,6 +198,7 @@ This page is the entry point.
 ```
 
 ## Week
+
 ```
 👉 /weeks
 
@@ -220,6 +221,7 @@ This page is an overview of a individual week.
 ```
 
 ## Employee
+
 ```
 👉 /employees
 
@@ -235,7 +237,7 @@ This page is an overview of all employees.
 This page is an overview of an individual employee.
 
 - Shows an overview of days the employee is responsible for.
-- Can choose to edit employee (👉 /employee/{id}/edit).
+- Can choose to edit employee (👉 /employee/{id}/update).
 ```
 
 ```
