@@ -1,12 +1,12 @@
 import prisma from '../../lib/db'
-import { Employee, ResultAsync } from '../../types'
+import { ResultAsync } from '../../types/result'
 import { NotFoundError } from '@prisma/client/runtime'
+import { Employee } from '../../types/model'
 
 export default class EmployeeRepository {
   async create(employee: Employee): ResultAsync<Employee> {
     try {
       const e = await prisma.employee.create({ data: employee as any })
-      console.log({ status: 201, data: e })
       return { status: 201, data: e }
     } catch {
       return { status: 500, message: 'Could not create employee' }
