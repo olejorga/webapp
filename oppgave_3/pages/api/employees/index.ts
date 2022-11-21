@@ -1,5 +1,6 @@
 import { Employee } from '@prisma/client'
 import type { NextApiRequest, NextApiResponse } from 'next'
+import { controllers } from '../../../dependencies'
 import { Result } from '../../../types/result'
 
 export default async function employeeHandler(
