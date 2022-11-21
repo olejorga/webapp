@@ -14,7 +14,7 @@ export default class EmployeeService {
   }
 
   async updateEmployee(employee: Employee): ResultAsync<Employee> {
-    throw new Error()
+    return this.repository.update(employee)
   }
 
   async findEmployeeById(id: string): ResultAsync<Employee> {

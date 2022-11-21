@@ -32,7 +32,17 @@ export default class EmployeeRepository {
   }
 
   async update(employee: Employee): ResultAsync<Employee> {
-    throw new Error()
+    try {
+      const updatedEmployee = await prisma.employee.update({
+        where: {
+          id: employee.id,
+        },
+        data: employee,
+      })
+      return { status: 200, data: updatedEmployee }
+    } catch {
+      return { status: 500, message: 'Server error' }
+    }
   }
 
   async find(id: string): ResultAsync<Employee> {

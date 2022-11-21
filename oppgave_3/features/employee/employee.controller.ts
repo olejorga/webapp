@@ -1,3 +1,4 @@
+import { employees } from './../../data/employees'
 import { Employee } from '@prisma/client'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { Result } from '../../types'
@@ -27,7 +28,8 @@ export default class EmployeeController {
     req: NextApiRequest,
     res: NextApiResponse<Result<Employee>>
   ) {
-    throw new Error()
+    const result = await this.service.updateEmployee(req.body)
+    return res.status(result.status).json(result)
   }
 
   async findEmployeeById(
