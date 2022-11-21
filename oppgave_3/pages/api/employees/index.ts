@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import EmployeeController from '../../../features/employee/employee.controller'
 import EmployeeRepository from '../../../features/employee/employee.repository'
 import EmployeeService from '../../../features/employee/employee.service'
-import { Result } from '../../../types'
+import { Result } from '../../../types/result'
 
 export default async function employeeHandler(
   req: NextApiRequest,
