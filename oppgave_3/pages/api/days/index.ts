@@ -1,17 +1,16 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { controllers } from '../../../dependencies'
-import { Week } from '../../../types/model'
+import { Day } from '../../../types/model'
 import { Result } from '../../../types/result'
 
-export default async function weekHandler(
+export default async function daysHandler(
   req: NextApiRequest,
-  res: NextApiResponse<Result<Week[]>>
+  res: NextApiResponse<Result<Day[]>
 ) {
   const { method } = req
 
   switch (method?.toUpperCase()) {
     case 'GET':
-      return
+        return res.status(200)
     default:
       return res
         .status(405)
