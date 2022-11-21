@@ -1,7 +1,3 @@
-```
-🚧 WIP: Coffee break.
-```
-
 # Model
 
 ## Employee
@@ -11,7 +7,8 @@ type Employee = {
   id: string
   name: string
   rules: string
-  days: Day[] // Use prisma include.
+  days: Day[]
+  alterations: Alteration[]
 }
 ```
 
@@ -21,12 +18,11 @@ type Employee = {
 type Day = {
   id: string
   name: string
-  employee: Employee  // Use prisma include.
+  employee: Employee
   employeeId: string
-  week: Week  // Use prisma include.
+  week: Week
   weekId: string
-  alteration?: Alteration  // Use prisma include.
-  alterationId?: string
+  alteration?: Alteration
 }
 ```
 
@@ -36,7 +32,7 @@ type Day = {
 type Week = {
   id: string
   number: number
-  days: Day[]  // Use prisma include.
+  days: Day[]
 }
 ```
 
@@ -45,9 +41,9 @@ type Week = {
 ```ts
 type Alteration = {
   id: string
-  day: Day // Use prisma include.
+  day: Day
   dayId: string
-  employee: Employee // Use prisma include.
+  employee: Employee
   employeeId: string
 }
 ```
