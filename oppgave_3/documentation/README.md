@@ -69,9 +69,9 @@ type Options = {
 // The standard response returned from all endpoints.
 // Will always be data or an error.
 // Generic "T" is the type of data expected.
-type Response<T> = Data<T> | Error
+type Result<T> = Data<T> | Error
 
-type Data<T> = { data: T }
+type Data<T> = { status: number, data: T }
 type Error = { status: number, error: string }
 ```
 
