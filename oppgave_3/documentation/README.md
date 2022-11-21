@@ -76,7 +76,7 @@ type Options = {
 type Response<T> = Data<T> | Error
 
 type Data<T> = { data: T }
-type Error = { error: string }
+type Error = { status: number, error: string }
 ```
 
 ## Employee 
