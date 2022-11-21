@@ -76,7 +76,7 @@ type Options = {
 type Response<T> = Data<T> | Error
 
 type Data<T> = { data: T }
-type Error = { error: string }
+type Error = { status: number, error: string }
 ```
 
 ## Employee 
@@ -99,6 +99,8 @@ POST:
   BODY: Employee
 ```
 
+Includes each day a employee is responsible for.
+
 ```
 👉 /api/employees/{id}
 
@@ -117,6 +119,8 @@ PUT:
 ```
 
 ## Week
+
+Includes days and the employee assigned to each day.
 
 ```
 👉 /api/weeks
@@ -155,6 +159,8 @@ POST:
 
 ## Demo
 
+Populates the database with example data.
+
 ```
 👉 /api/demo
 
@@ -164,6 +170,9 @@ GET:
 ```
 
 ## Custom
+
+Generates a luch list based on a configuration.
+
 ```
 👉 /api/custom
 
