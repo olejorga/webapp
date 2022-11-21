@@ -1,9 +1,6 @@
-import { employees } from './../../data/employees'
-import { ResultAsync } from './../../types/index'
-import { Employee, Prisma } from '@prisma/client'
-import { PrismaClient } from '@prisma/client'
-
-const prisma = new PrismaClient()
+import { Prisma } from '@prisma/client'
+import { Employee, ResultAsync } from './../../types/index'
+import prisma from '../../lib/db'
 
 export default class EmployeeRepository {
   async create(employee: Employee): ResultAsync<Employee> {
