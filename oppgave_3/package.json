@@ -7,7 +7,12 @@
     "build": "next build",
     "start": "next start",
     "test": "vitest",
-    "test:ui": "vitest --ui"
+    "test:ui": "vitest --ui",
+    "prisma:init": "prisma init",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:generate": "prisma generate",
+    "prisma:seed": "prisma db seed",
+    "prisma:push": "prisma db push"
   },
   "dependencies": {
     "@prisma/client": "4.5.0",

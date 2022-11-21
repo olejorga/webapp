@@ -1,0 +1,43 @@
+//// ------------------------------------------------------
+//// THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+//// ------------------------------------------------------
+
+Table Employee {
+  id String [pk]
+  name String [not null]
+  rules String [not null]
+  days Day [not null]
+  alterations Alteration [not null]
+}
+
+Table Day {
+  id String [pk]
+  name String [not null]
+  employee Employee [not null]
+  employeeId String [not null]
+  week Week [not null]
+  weekId String [not null]
+  alteration Alteration
+}
+
+Table Week {
+  id String [pk]
+  number Int [not null]
+  days Day [not null]
+}
+
+Table Alteration {
+  id String [pk]
+  day Day [not null]
+  dayId String [unique, not null]
+  employee Employee [not null]
+  employeeId String [not null]
+}
+
+Ref: Day.employeeId > Employee.id
+
+Ref: Day.weekId > Week.id
+
+Ref: Alteration.dayId - Day.id
+
+Ref: Alteration.employeeId > Employee.id
