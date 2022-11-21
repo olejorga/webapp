@@ -7,7 +7,6 @@ export default class EmployeeRepository {
   async create(employee: Employee): ResultAsync<Employee> {
     try {
       const e = await prisma.employee.create({ data: employee as any })
-      console.log({ status: 201, data: e })
       return { status: 201, data: e }
     } catch {
       return { status: 500, message: 'Could not create employee' }
