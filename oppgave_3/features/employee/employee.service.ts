@@ -6,11 +6,11 @@ export default class EmployeeService {
   constructor(private readonly repository: EmployeeRepository) {}
 
   async createEmployee(employee: Employee): ResultAsync<Employee> {
-    throw new Error()
+    return this.repository.create(employee)
   }
 
   async getEmployees(): ResultAsync<Employee[]> {
-    throw new Error()
+    return this.repository.read()
   }
 
   async updateEmployee(employee: Employee): ResultAsync<Employee> {
@@ -18,6 +18,6 @@ export default class EmployeeService {
   }
 
   async findEmployeeById(id: string): ResultAsync<Employee> {
-    throw new Error()
+    return this.repository.find(id)
   }
 }

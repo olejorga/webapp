@@ -12,15 +12,15 @@ export default class EmployeeController {
     res: NextApiResponse<Result<Employee>>
   ) {
     const employee: Employee = req.body
-
-    throw new Error()
+    res.json(await this.service.createEmployee(employee))
   }
 
   async getEmployees(
     req: NextApiRequest,
     res: NextApiResponse<Result<Employee[]>>
   ) {
-    throw new Error()
+    const result = await this.service.getEmployees()
+    return res.status(result.status).json(result)
   }
 
   async updateEmployee(
@@ -34,6 +34,8 @@ export default class EmployeeController {
     req: NextApiRequest,
     res: NextApiResponse<Result<Employee>>
   ) {
-    throw new Error()
+    const { id } = req.query
+    const result = await this.service.findEmployeeById(id)
+    return res.status(result.status).json(result)
   }
 }

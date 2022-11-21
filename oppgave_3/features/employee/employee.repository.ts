@@ -1,13 +1,34 @@
-import { Employee } from '@prisma/client'
-import { Result, ResultAsync } from '../../types'
+import { employees } from './../../data/employees'
+import { ResultAsync } from './../../types/index'
+import { Employee, Prisma } from '@prisma/client'
+import { PrismaClient } from '@prisma/client'
+
+const prisma = new PrismaClient()
 
 export default class EmployeeRepository {
   async create(employee: Employee): ResultAsync<Employee> {
-    throw new Error()
+    try {
+      const e = await prisma.employee.create({ data: employee })
+      console.log({ status: 201, data: e })
+      return { status: 201, data: e }
+    } catch {
+      return { status: 500, message: 'Could not create employee' }
+    }
   }
 
   async read(): ResultAsync<Employee[]> {
-    throw new Error()
+    try {
+      const employees = await prisma.employee.findMany()
+      console.log(employees)
+      return { status: 200, data: employees }
+    } catch (ex) {
+      if (ex instanceof Prisma.NotFoundError) {
+        console.log(ex)
+        return { status: 404, message: ex.message }
+      } else {
+        return { status: 500, message: 'Server error' }
+      }
+    }
   }
 
   async update(employee: Employee): ResultAsync<Employee> {
@@ -15,6 +36,17 @@ export default class EmployeeRepository {
   }
 
   async find(id: string): ResultAsync<Employee> {
-    throw new Error()
+    try {
+      const employee = await prisma.employee.findUnique({
+        where: {
+          id: id,
+        },
+      })
+      if (employee == null)
+        return { status: 404, message: 'Employee not found' }
+      return { status: 200, data: employee }
+    } catch {
+      return { status: 500, message: 'Server error' }
+    }
   }
 }
