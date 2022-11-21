@@ -8,16 +8,16 @@ export type Employee = {
   id: string
   name: string
   rules: string
-  days: Day[]
-  alterations: Alteration[]
+  days?: Day[]
+  alterations?: Alteration[]
 }
 
 export type Day = {
   id: string
   name: string
-  employee: Employee
+  employee?: Employee
   employeeId: string
-  week: Week
+  week?: Week
   weekId: string
   alteration?: Alteration
 }
@@ -25,13 +25,13 @@ export type Day = {
 export type Week = {
   id: string
   number: number
-  days: Day[]
+  days?: Day[]
 }
 
 export type Alteration = {
   id: string
-  day: Day
+  day?: Day
   dayId: string
-  employee: Employee
+  employee?: Employee
   employeeId: string
 }

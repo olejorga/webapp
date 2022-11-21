@@ -1,8 +1,5 @@
-import { employees } from './../../data/employees'
-import { Employee } from '@prisma/client'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { Result } from '../../types'
-import EmployeeRepository from './employee.repository'
+import { Employee, Result } from '../../types'
 import EmployeeService from './employee.service'
 
 export default class EmployeeController {
@@ -37,7 +34,12 @@ export default class EmployeeController {
     res: NextApiResponse<Result<Employee>>
   ) {
     const { id } = req.query
-    const result = await this.service.findEmployeeById(id)
-    return res.status(result.status).json(result)
+
+    if (id) {
+      const result = await this.service.findEmployeeById(id as string)
+      return res.status(result.status).json(result)
+    } else {
+      return res.status(400).json({ status: 400, message: 'Missing id.' })
+    }
   }
 }
