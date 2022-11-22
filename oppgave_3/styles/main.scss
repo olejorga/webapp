@@ -38,7 +38,7 @@ li {
 }
 
 .weekList {
-  &:nth-child(2n) {
-    gap: 1rem;
-  }
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
