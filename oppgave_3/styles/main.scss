@@ -3,8 +3,15 @@
 main {
   max-width: 760px;
   margin: 0 auto;
+
+  h1 {
+    margin-bottom: 1rem;
+  }
 }
 
+.yearTitle {
+  margin-bottom: 1rem;
+}
 .year {
   // Byttet til grid slik at vi kan bruke gap til
   // å få rom rundt bokstavene.
@@ -15,7 +22,7 @@ main {
   .week {
     text-align: center;
     border: 1px solid #333;
-    background-color: black;
+    background-color: #363636;
     font-weight: 500;
     font-style: bold;
     color: white;
