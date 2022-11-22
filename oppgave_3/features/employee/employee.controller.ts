@@ -4,7 +4,7 @@ import { Result } from '../../types/result'
 import EmployeeService from './employee.service'
 
 export default class EmployeeController {
-  constructor(private readonly service: EmployeeService) { }
+  constructor(private readonly service: EmployeeService) {}
 
   async createEmployee(
     req: NextApiRequest,
