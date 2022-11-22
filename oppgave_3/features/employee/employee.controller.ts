@@ -11,7 +11,8 @@ export default class EmployeeController {
     res: NextApiResponse<Result<Employee>>
   ) {
     const employee: Employee = req.body
-    res.json(await this.service.createEmployee(employee))
+    const result = await this.service.createEmployee(employee)
+    return res.status(result.status).json(result)
   }
 
   async getEmployees(

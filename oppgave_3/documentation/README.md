@@ -167,7 +167,7 @@ GET:
 
 ## Custom
 
-Generates a luch list based on a configuration.
+Generates a lunch list based on a configuration.
 
 ```
 👉 /api/custom
@@ -204,7 +204,7 @@ This page is the entry point.
 
 This page is an overview of all weeks.
 
-- Each week can be expanded to see idividual days.
+- Each week can be expanded to see individual days.
   - Shows who is responsible for lunch each day.
 - Filter weeks (↪️ /weeks?start={number}&end={number}).
 - Can go to an individual week (👉 /weeks/{number}).

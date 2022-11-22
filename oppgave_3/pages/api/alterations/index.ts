@@ -1,17 +1,21 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { controllers } from '../../../dependencies'
-import { Week } from '../../../types/model'
+import { Alteration } from '../../../types/model'
 import { Result } from '../../../types/result'
 
-export default async function weekHandler(
+export default async function alterationHandler(
   req: NextApiRequest,
-  res: NextApiResponse<Result<Week[]>>
+  res: NextApiResponse<Result<Alteration | Alteration[]>>
 ) {
   const { method } = req
 
   switch (method?.toUpperCase()) {
     case 'GET':
-      return controllers.week.getWeeks(req, res)
+      return controllers.alteration.getAlterations(req, res)
+
+    case 'POST':
+      return controllers.alteration.createAlteration(req, res)
+
     default:
       return res
         .status(405)

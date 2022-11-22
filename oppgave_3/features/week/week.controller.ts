@@ -31,8 +31,8 @@ export default class WeekController {
     const { start, end } = req.query
     if (start && end) {
       const result = await this.service.getWeeksByPeriod(
-        start as unknown as number,
-        end as unknown as number
+        start as any,
+        end as any
       )
       return res.status(result.status).json(result)
     } else {
