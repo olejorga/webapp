@@ -26,7 +26,12 @@ export const services = {
 }
 
 export const controllers = {
-  demo: new DemoController(null, null, null, null),
+  demo: new DemoController(
+    repositories.employee,
+    repositories.week,
+    repositories.day,
+    repositories.alteration
+  ),
   employee: new EmployeeController(services.employee),
   week: new WeekController(services.week),
   alteration: new AlterationController(services.alteration),
