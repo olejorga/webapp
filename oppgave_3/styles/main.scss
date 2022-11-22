@@ -4,3 +4,22 @@ main {
   max-width: 760px;
   margin: 0 auto;
 }
+
+.year {
+  // Byttet til grid slik at vi kan bruke gap til
+  // å få rom rundt bokstavene.
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, 50px);
+
+  .week {
+    background: lighten(#c1c1c1, 30%);
+    border: 1px solid #333;
+    padding: 0.5rem;
+    box-shadow: 4px 4px 0 0 #c1c1c1;
+    &.highlight {
+      // Endret til korrekt farge for valgte bokstaver.
+      background-color: #fed24a;
+    }
+  }
+}
