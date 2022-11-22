@@ -7,6 +7,7 @@ const Home: NextPage = () => {
     <main>
       <h1>Lunsjkalender</h1>
       <Year></Year>
+      <hr className="solid" />
       <WeekList></WeekList>
     </main>
   )

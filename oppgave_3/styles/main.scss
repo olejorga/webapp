@@ -13,14 +13,13 @@ main {
   grid-template-columns: repeat(auto-fill, 50px);
 
   .week {
-    background: lighten(#c1c1c1, 30%);
+    text-align: center;
     border: 1px solid #333;
-    padding: 0.5rem;
-    box-shadow: 4px 4px 0 0 #c1c1c1;
-    &.highlight {
-      // Endret til korrekt farge for valgte bokstaver.
-      background-color: #fed24a;
-    }
+    background-color: black;
+    font-weight: 500;
+    font-style: bold;
+    color: white;
+    padding: 0.3rem;
   }
 }
 .weekDetailBox {
@@ -60,4 +59,10 @@ li {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+}
+
+hr.solid {
+  border-top: 1px solid #eaeaea;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
