@@ -1,62 +1,78 @@
 import prisma from '../../lib/db'
-import { NotFoundError } from '@prisma/client/runtime'
+import { Result } from '../../types/result'
 import { Week } from '../../types/model'
-import { ResultAsync } from '../../types/result'
+import { NewWeek } from '../../types/dtos'
 
-export default class WeekRepository {
-  async create(week: Week): ResultAsync<Week> {
-    try {
-      const w = await prisma.week.create({ data: week as any })
-      console.log({ status: 201, data: w })
-      return { status: 201, data: w }
-    } catch {
-      return { status: 500, message: 'Could not create Week' }
+export const create = async (week: NewWeek): Promise<Result<Week>> => {
+  try {
+    return {
+      status: 201,
+      data: await prisma.week.create({ data: week }),
+    }
+  } catch (error) {
+    return {
+      status: 500,
+      error: 'Could not create week.',
     }
   }
+}
 
-  async read(): ResultAsync<Week[]> {
-    try {
-      const weeks = await prisma.week.findMany()
-      console.log(weeks)
-      return { status: 200, data: weeks }
-    } catch (ex) {
-      if (ex instanceof NotFoundError) {
-        console.log(ex)
-        return { status: 404, message: ex.message }
-      } else {
-        return { status: 500, message: 'Server error' }
-      }
+export const read = async (): Promise<Result<Week[]>> => {
+  try {
+    return {
+      status: 200,
+      data: await prisma.week.findMany(),
+    }
+  } catch (e) {
+    return {
+      status: 500,
+      error: 'Could not retrive weeks.',
     }
   }
+}
 
-  async find(id: string): ResultAsync<Week> {
-    try {
-      const week = await prisma.week.findUnique({
+export const find = async (number: number): Promise<Result<Week>> => {
+  try {
+    const week = await prisma.week.findFirst({ where: { number } })
+    return week
+      ? {
+          status: 200,
+          data: week,
+        }
+      : {
+          status: 404,
+          error: `Could not find week with number=${number}.`,
+        }
+  } catch {
+    return {
+      status: 500,
+      error: 'Could not retrive week.',
+    }
+  }
+}
+
+export const search = async (
+  start: number,
+  end: number
+): Promise<Result<Week[]>> => {
+  try {
+    return {
+      status: 200,
+      data: await prisma.week.findMany({
         where: {
-          id: id,
+          AND: [
+            { number: start },
+            { number: { gt: start } },
+            { number: { lt: end } },
+            { number: end },
+          ],
         },
-      })
-      if (week == null) return { status: 404, message: 'Week not found' }
-      return { status: 200, data: week }
-    } catch {
-      return { status: 500, message: 'Server error' }
+      }),
     }
-  }
-
-  async period(start: number, end: number): ResultAsync<Week[]> {
-    try {
-      const weeks = await prisma.week.findMany({
-        // TODO logic for start => end
-      })
-      return { status: 200, data: weeks }
-    } catch (ex) {
-      console.log(ex)
-      if (ex instanceof NotFoundError) {
-        console.log(ex)
-        return { status: 404, message: ex.message }
-      } else {
-        return { status: 500, message: 'Server error' }
-      }
+  } catch {
+    return {
+      status: 500,
+      error: 'Could not retrive employees.',
     }
   }
 }

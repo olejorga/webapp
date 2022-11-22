@@ -13,8 +13,8 @@ Table Employee {
 Table Day {
   id String [pk]
   name String [not null]
-  employee Employee [not null]
-  employeeId String [not null]
+  employee Employee
+  employeeId String
   week Week [not null]
   weekId String [not null]
   alteration Alteration
@@ -22,7 +22,7 @@ Table Day {
 
 Table Week {
   id String [pk]
-  number Int [not null]
+  number Int [unique, not null]
   days Day [not null]
 }
 

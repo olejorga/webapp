@@ -1,24 +1,22 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { controllers } from '../../../dependencies'
 import { Alteration } from '../../../types/model'
 import { Result } from '../../../types/result'
+import * as controller from '../../../features/alteration/alteration.controller'
 
-export default async function alterationHandler(
+export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Result<Alteration | Alteration[]>>
+  res: NextApiResponse<Result<Alteration[] | Alteration>>
 ) {
   const { method } = req
 
   switch (method?.toUpperCase()) {
     case 'GET':
-      return controllers.alteration.getAlterations(req, res)
+      return controller.read(req, res)
 
     case 'POST':
-      return controllers.alteration.createAlteration(req, res)
+      return controller.create(req, res)
 
     default:
-      return res
-        .status(405)
-        .json({ status: 405, message: 'Method not allowed!' })
+      return res.status(405).json({ status: 405, error: 'Method not allowed.' })
   }
 }

@@ -1,23 +1,28 @@
+import { EditedEmployee, NewEmployee } from '../../types/dtos'
 import { Employee } from '../../types/model'
-import { ResultAsync } from '../../types/result'
-import EmployeeRepository from './employee.repository'
+import { Result } from '../../types/result'
+import * as repo from './employee.repository'
 
-export default class EmployeeService {
-  constructor(private readonly repository: EmployeeRepository) { }
+export const create = async (
+  employee: NewEmployee
+): Promise<Result<Employee>> => {
+  return await repo.create(employee)
+}
 
-  async createEmployee(employee: Employee): ResultAsync<Employee> {
-    return this.repository.create(employee)
-  }
+export const read = async (): Promise<Result<Employee[]>> => {
+  return await repo.read()
+}
 
-  async getEmployees(): ResultAsync<Employee[]> {
-    return this.repository.read()
-  }
+export const update = async (
+  employee: EditedEmployee
+): Promise<Result<Employee>> => {
+  return await repo.update(employee)
+}
 
-  async updateEmployee(employee: Employee): ResultAsync<Employee> {
-    return this.repository.update(employee)
-  }
+export const find = async (id: string): Promise<Result<Employee>> => {
+  return await repo.find(id)
+}
 
-  async findEmployeeById(id: string): ResultAsync<Employee> {
-    return this.repository.find(id)
-  }
+export const search = async (name: string): Promise<Result<Employee[]>> => {
+  return await repo.search(name)
 }

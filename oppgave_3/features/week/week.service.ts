@@ -1,23 +1,23 @@
+import { NewWeek } from '../../types/dtos'
 import { Week } from '../../types/model'
-import { ResultAsync } from '../../types/result'
-import WeekRepository from './week.repository'
+import { Result } from '../../types/result'
+import * as repo from './week.repository'
 
-export default class WeekService {
-  constructor(private readonly repository: WeekRepository) {}
+export const create = async (week: NewWeek): Promise<Result<Week>> => {
+  return await repo.create(week)
+}
 
-  async createWeek(week: Week): ResultAsync<Week> {
-    return this.repository.create(week)
-  }
+export const read = async (): Promise<Result<Week[]>> => {
+  return await repo.read()
+}
 
-  async getWeek(): ResultAsync<Week[]> {
-    return this.repository.read()
-  }
+export const find = async (number: number): Promise<Result<Week>> => {
+  return await repo.find(number)
+}
 
-  async findWeekById(id: string): ResultAsync<Week> {
-    return this.repository.find(id)
-  }
-
-  async getWeeksByPeriod(start: number, end: number): ResultAsync<Week[]> {
-    return this.repository.period(start, end)
-  }
+export const search = async (
+  start: number,
+  end: number
+): Promise<Result<Week[]>> => {
+  return await repo.search(start, end)
 }

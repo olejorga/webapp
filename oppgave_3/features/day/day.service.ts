@@ -1,19 +1,8 @@
+import { NewDay } from '../../types/dtos'
 import { Day } from '../../types/model'
-import { ResultAsync } from '../../types/result'
-import DayRepository from './day.repository'
+import { Result } from '../../types/result'
+import * as repo from './day.repository'
 
-export default class DayService {
-  constructor(private readonly repository: DayRepository) {}
-
-  async createDay(day: Day): ResultAsync<Day> {
-    return this.repository.create(day)
-  }
-
-  async getDays(): ResultAsync<Day[]> {
-    return this.repository.read()
-  }
-
-  async findDayById(id: string): ResultAsync<Day> {
-    return this.repository.find(id)
-  }
+export const create = async (day: NewDay): Promise<Result<Day>> => {
+  return await repo.create(day)
 }

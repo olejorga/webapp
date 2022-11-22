@@ -1,20 +1,22 @@
+import { Employee } from '@prisma/client'
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { controllers } from '../../../dependencies'
+import * as controller from '../../../features/employee/employee.controller'
+import { Result } from '../../../types/result'
 
-export default async function employeeHandler(
+export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<any>
+  res: NextApiResponse<Result<Employee>>
 ) {
   const { method } = req
 
   switch (method?.toUpperCase()) {
     case 'GET':
-      return await controllers.employee.findEmployeeById(req, res)
+      return await controller.find(req, res)
+
     case 'PUT':
-      return await controllers.employee.updateEmployee(req, res)
+      return await controller.update(req, res)
+
     default:
-      return res
-        .status(405)
-        .json({ status: 405, message: 'Method not allowed!' })
+      return res.status(405).json({ status: 405, error: 'Method not allowed.' })
   }
 }

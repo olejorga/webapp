@@ -1,24 +1,22 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { controllers } from '../../../dependencies'
 import { Employee } from '../../../types/model'
 import { Result } from '../../../types/result'
+import * as controller from '../../../features/employee/employee.controller'
 
-export default async function employeeHandler(
+export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Result<Employee | Employee[]>>
+  res: NextApiResponse<Result<Employee[] | Employee>>
 ) {
   const { method } = req
 
   switch (method?.toUpperCase()) {
     case 'GET':
-      return controllers.employee.getEmployees(req, res)
+      return await controller.read(req, res)
 
     case 'POST':
-      return controllers.employee.createEmployee(req, res)
+      return await controller.create(req, res)
 
     default:
-      return res
-        .status(405)
-        .json({ status: 405, message: 'Method not allowed!' })
+      return res.status(405).json({ status: 405, error: 'Method not allowed.' })
   }
 }

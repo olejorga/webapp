@@ -1,12 +1,5 @@
-export type Data<T> = {
+export type Result<Data> = {
   status: number
-  data: T
+  data?: Data
+  error?: string
 }
-
-export type Error = {
-  status: number
-  message: string
-}
-
-export type Result<T> = Data<T> | Error
-export type ResultAsync<T> = Promise<Result<T>>
