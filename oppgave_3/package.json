@@ -12,7 +12,8 @@
     "prisma:migrate": "prisma migrate dev",
     "prisma:generate": "prisma generate",
     "prisma:seed": "prisma db seed",
-    "prisma:push": "prisma db push"
+    "prisma:push": "prisma db push",
+    "prisma:studio": "npx prisma studio"
   },
   "dependencies": {
     "@prisma/client": "^4.6.1",
