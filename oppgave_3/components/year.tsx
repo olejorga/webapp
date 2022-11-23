@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { type } from 'os'
 import { useState } from 'react'
 import { Day, Week } from '../types/model'
@@ -16,12 +17,7 @@ export default function Year({ weeks }: YearProps) {
   const [buttonIndex, setbuttonIndex] = useState(Number)
   const [chosenWeek, setchosenWeek] = useState()
 
-  function handleClick(week: Week) {
-    setActive(!active)
-    if (start > 0) setEnd(week.number)
-    else setStart(week.number)
-    setbuttonIndex(week.number)
-  }
+  function handleClick(week: Week) {}
 
   console.log('START: ' + start)
   console.log('END: ' + end)
@@ -30,16 +26,17 @@ export default function Year({ weeks }: YearProps) {
       <h2 className="yearTitle">Uker</h2>
       <ul className="year">
         {weeks.map((week) => (
-          <button
-            key={week.id}
-            onClick={() => handleClick(week)}
-            className="week"
-            style={{
-              backgroundColor: active && week.number > start ? 'black' : 'grey',
-            }}
-          >
-            {week.number}
-          </button>
+          <Link key={week.id} href={`weeks/${week.number}`}>
+            <button
+              className="week"
+              style={{
+                backgroundColor:
+                  active && week.number > start ? 'black' : 'grey',
+              }}
+            >
+              {week.number}
+            </button>
+          </Link>
         ))}
       </ul>
     </>

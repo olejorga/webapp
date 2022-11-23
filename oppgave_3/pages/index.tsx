@@ -8,12 +8,12 @@ const Home: NextPage = () => {
     useData()
 
   return (
-    <main>
+    <>
       <h1>Lunsjkalender</h1>
       <Year weeks={weeks}></Year>
       <hr className="solid" />
       <WeekList weeks={weeks}></WeekList>
-    </main>
+    </>
   )
 }
 

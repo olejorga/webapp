@@ -44,7 +44,10 @@ export const read = async (): Promise<Result<Week[]>> => {
 
 export const find = async (number: number): Promise<Result<Week>> => {
   try {
-    const week = await prisma.week.findFirst({ where: { number } })
+    const week = await prisma.week.findFirst({
+      where: { number },
+      include: { days: { include: { employee: true } } },
+    })
     return week
       ? {
           status: 200,

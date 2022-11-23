@@ -10,22 +10,10 @@ export default function useData() {
   useEffect(() => {
     ;(async () => {
       try {
-        const res = await fetch(`/api/employees`)
-        const { status, data, error } = await res.json()
-        if (error)
-          throw Error(status + ': ' + error ?? 'Could not fetch employees')
-        else setEmployees(data)
-      } catch (error) {
-        alert((error as Error).message)
-      }
-    })()
-    ;(async () => {
-      try {
         const res = await fetch(`/api/weeks`)
         const { status, data, error } = await res.json()
         console.log(data)
-        if (error)
-          throw Error(status + ': ' + error ?? 'Could not fetch employees')
+        if (error) throw Error(status + ': ' + error ?? 'Could not fetch weeks')
         else setWeeks(data)
       } catch (error) {
         alert((error as Error).message)
