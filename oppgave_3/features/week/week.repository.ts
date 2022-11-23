@@ -1,3 +1,4 @@
+import { employees } from './../../data/employees'
 import prisma from '../../lib/db'
 import { Result } from '../../types/result'
 import { Week } from '../../types/model'
@@ -22,7 +23,15 @@ export const read = async (): Promise<Result<Week[]>> => {
   try {
     return {
       status: 200,
-      data: await prisma.week.findMany(),
+      data: await prisma.week.findMany({
+        include: {
+          days: {
+            include: {
+              employee: true,
+            },
+          },
+        },
+      }),
     }
   } catch (error) {
     console.error(error)

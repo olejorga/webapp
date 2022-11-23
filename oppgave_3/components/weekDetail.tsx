@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Day, Week } from '../types/model'
+import { Day, Employee, Week } from '../types/model'
 
 type WeekProps = {
   week: Week
@@ -10,7 +10,6 @@ export default function WeekDetail({ week }: WeekProps) {
   const [hidden, setHidden] = useState(true)
 
   useEffect(() => {
-    console.log('hei')
     if (hidden) setButtonText('Se dager')
     else setButtonText('Lukk dager')
   }, [hidden])
@@ -26,7 +25,7 @@ export default function WeekDetail({ week }: WeekProps) {
         {week.days?.map((d) => (
           <li key={d.id} className="daysList">
             <span>{d.name}</span>
-            <span>{d.employeeId}</span>
+            <span>{d.employee?.name ?? 'Ferie'}</span>
           </li>
         ))}
       </ul>
