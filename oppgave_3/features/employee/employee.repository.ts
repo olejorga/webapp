@@ -4,12 +4,15 @@ import { Employee } from '../../types/model'
 import { EditedEmployee, NewEmployee } from '../../types/dtos'
 
 export const create = async (
-  employee: NewEmployee
+  employee: NewEmployee,
+  id?: string
 ): Promise<Result<Employee>> => {
   try {
     return {
       status: 201,
-      data: await prisma.employee.create({ data: employee }),
+      data: await prisma.employee.create({
+        data: id ? { ...employee, id } : employee,
+      }),
     }
   } catch (error) {
     return {
@@ -25,7 +28,8 @@ export const read = async (): Promise<Result<Employee[]>> => {
       status: 200,
       data: await prisma.employee.findMany(),
     }
-  } catch (e) {
+  } catch (error) {
+    console.error(error)
     return {
       status: 500,
       error: 'Could not retrive employees.',
@@ -46,7 +50,8 @@ export const update = async (
         data: employee,
       }),
     }
-  } catch (e) {
+  } catch (error) {
+    console.error(error)
     return {
       status: 500,
       error: 'Could not update employee.',
@@ -66,7 +71,8 @@ export const find = async (id: string): Promise<Result<Employee>> => {
           status: 404,
           error: `Could not find employee with id=${id}.`,
         }
-  } catch {
+  } catch (error) {
+    console.error(error)
     return {
       status: 500,
       error: 'Could not retrive employee.',
@@ -82,7 +88,8 @@ export const search = async (name: string): Promise<Result<Employee[]>> => {
         where: { name: { contains: name } },
       }),
     }
-  } catch {
+  } catch (error) {
+    console.error(error)
     return {
       status: 500,
       error: 'Could not retrive employees.',

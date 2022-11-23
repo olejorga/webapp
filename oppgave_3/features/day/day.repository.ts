@@ -10,6 +10,7 @@ export const create = async (day: NewDay): Promise<Result<Day>> => {
       data: await prisma.day.create({ data: day }),
     }
   } catch (error) {
+    console.error(error)
     return {
       status: 500,
       error: 'Could not create day.',
