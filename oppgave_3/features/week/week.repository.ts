@@ -10,6 +10,7 @@ export const create = async (week: NewWeek): Promise<Result<Week>> => {
       data: await prisma.week.create({ data: week }),
     }
   } catch (error) {
+    console.error(error)
     return {
       status: 500,
       error: 'Could not create week.',
@@ -23,7 +24,8 @@ export const read = async (): Promise<Result<Week[]>> => {
       status: 200,
       data: await prisma.week.findMany(),
     }
-  } catch (e) {
+  } catch (error) {
+    console.error(error)
     return {
       status: 500,
       error: 'Could not retrive weeks.',
@@ -43,7 +45,8 @@ export const find = async (number: number): Promise<Result<Week>> => {
           status: 404,
           error: `Could not find week with number=${number}.`,
         }
-  } catch {
+  } catch (error) {
+    console.error(error)
     return {
       status: 500,
       error: 'Could not retrive week.',
@@ -69,7 +72,8 @@ export const search = async (
         },
       }),
     }
-  } catch {
+  } catch (error) {
+    console.error(error)
     return {
       status: 500,
       error: 'Could not retrive employees.',

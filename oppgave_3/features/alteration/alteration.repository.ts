@@ -12,6 +12,7 @@ export const create = async (
       data: await prisma.alteration.create({ data: alteration }),
     }
   } catch (error) {
+    console.error(error)
     return {
       status: 500,
       error: 'Could not create alteration.',
@@ -25,7 +26,8 @@ export const read = async (): Promise<Result<Alteration[]>> => {
       status: 200,
       data: await prisma.alteration.findMany(),
     }
-  } catch (e) {
+  } catch (error) {
+    console.error(error)
     return {
       status: 500,
       error: 'Could not retrive alterations.',
