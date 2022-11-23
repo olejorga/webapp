@@ -11,13 +11,20 @@ type YearProps = {
 export default function Year({ weeks }: YearProps) {
   console.log(weeks)
   const [active, setActive] = useState(true)
+  const [start, setStart] = useState(0)
+  const [end, setEnd] = useState(Number)
   const [buttonIndex, setbuttonIndex] = useState(Number)
   const [chosenWeek, setchosenWeek] = useState()
 
   function handleClick(week: Week) {
     setActive(!active)
+    if (start > 0) setEnd(week.number)
+    else setStart(week.number)
     setbuttonIndex(week.number)
   }
+
+  console.log('START: ' + start)
+  console.log('END: ' + end)
   return (
     <>
       <h2 className="yearTitle">Uker</h2>
@@ -27,7 +34,9 @@ export default function Year({ weeks }: YearProps) {
             key={week.id}
             onClick={() => handleClick(week)}
             className="week"
-            style={{ backgroundColor: active ? 'black' : 'grey' }}
+            style={{
+              backgroundColor: active && week.number > start ? 'black' : 'grey',
+            }}
           >
             {week.number}
           </button>
