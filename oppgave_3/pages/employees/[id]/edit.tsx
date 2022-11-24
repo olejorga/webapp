@@ -1,8 +1,8 @@
 import { GetServerSidePropsContext } from 'next'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { EmployeeProvider } from '../../../context/employeeContext'
-import { useEmployeeContext } from '../../../hooks/useEmployeeContext'
+import { EmployeeProvider } from '../../../context/employeesContext'
+import { useEmployeeContext } from '../../../hooks/useEmployees'
 import { Employee } from '../../../types/model'
 
 type EditProps = {
