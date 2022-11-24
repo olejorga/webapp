@@ -26,7 +26,15 @@ export const read = async (): Promise<Result<Employee[]>> => {
   try {
     return {
       status: 200,
-      data: await prisma.employee.findMany(),
+      data: await prisma.employee.findMany({
+        include: {
+          days: {
+            include: {
+              week: true,
+            },
+          },
+        },
+      }),
     }
   } catch (error) {
     console.error(error)
@@ -61,7 +69,10 @@ export const update = async (
 
 export const find = async (id: string): Promise<Result<Employee>> => {
   try {
-    const employee = await prisma.employee.findUnique({ where: { id } })
+    const employee = await prisma.employee.findUnique({
+      where: { id },
+      include: { days: { include: { week: true } } },
+    })
     return employee
       ? {
           status: 200,

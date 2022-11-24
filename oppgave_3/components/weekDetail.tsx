@@ -1,3 +1,5 @@
+import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { Day, Employee, Week } from '../types/model'
 
@@ -6,6 +8,7 @@ type WeekProps = {
 }
 
 export default function WeekDetail({ week }: WeekProps) {
+  const router = useRouter()
   const [buttonText, setButtonText] = useState('Se dager')
   const [hidden, setHidden] = useState(true)
 
@@ -23,10 +26,12 @@ export default function WeekDetail({ week }: WeekProps) {
       <h2 className="weekDetailTitle">Uke {week.number}</h2>
       <ul hidden={hidden}>
         {week.days?.map((d) => (
-          <li key={d.id} className="daysList">
-            <span>{d.name}</span>
-            <span>{d.employee?.name ?? 'Ferie'}</span>
-          </li>
+          <Link key={d.id} href={`employees/${d.employee?.id}`}>
+            <li className="daysList">
+              <span>{d.name}</span>
+              <span>{d.employee?.name ?? 'Ferie'}</span>
+            </li>
+          </Link>
         ))}
       </ul>
       <p className="weekDetailToggle" onClick={handleClick}>
