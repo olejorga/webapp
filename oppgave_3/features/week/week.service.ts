@@ -7,17 +7,13 @@ export const create = async (week: NewWeek): Promise<Result<Week>> => {
   return await repo.create(week)
 }
 
-export const read = async (): Promise<Result<Week[]>> => {
-  return await repo.read()
+export const read = async (
+  start?: number,
+  end?: number
+): Promise<Result<Week[]>> => {
+  return await repo.read(start, end)
 }
 
 export const find = async (number: number): Promise<Result<Week>> => {
   return await repo.find(number)
-}
-
-export const search = async (
-  start: number,
-  end: number
-): Promise<Result<Week[]>> => {
-  return await repo.search(start, end)
 }

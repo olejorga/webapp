@@ -7,27 +7,13 @@ export const read = async (
   req: NextApiRequest,
   res: NextApiResponse<Result<Week[]>>
 ) => {
-  const { start, end } = req.query
+  let { start, end } = req.query
 
-  if (start && end) {
-    const result = await service.search(
-      parseInt(start as string),
-      parseInt(end as string)
-    )
-    return res.status(result.status).json(result)
-  }
+  const result = await service.read(
+    start ? parseInt(start as string) : undefined,
+    end ? parseInt(end as string) : undefined
+  )
 
-  if (start) {
-    const result = await service.search(parseInt(start as string), 52)
-    return res.status(result.status).json(result)
-  }
-
-  if (end) {
-    const result = await service.search(0, parseInt(end as string))
-    return res.status(result.status).json(result)
-  }
-
-  const result = await service.read()
   return res.status(result.status).json(result)
 }
 

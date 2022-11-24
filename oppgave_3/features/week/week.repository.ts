@@ -19,11 +19,17 @@ export const create = async (week: NewWeek): Promise<Result<Week>> => {
   }
 }
 
-export const read = async (): Promise<Result<Week[]>> => {
+export const read = async (
+  start?: number,
+  end?: number
+): Promise<Result<Week[]>> => {
   try {
     return {
       status: 200,
       data: await prisma.week.findMany({
+        where: {
+          AND: [{ number: { gte: start } }, { number: { lte: end } }],
+        },
         include: {
           days: {
             include: {
@@ -62,28 +68,6 @@ export const find = async (number: number): Promise<Result<Week>> => {
     return {
       status: 500,
       error: 'Could not retrive week.',
-    }
-  }
-}
-
-export const search = async (
-  start: number,
-  end: number
-): Promise<Result<Week[]>> => {
-  try {
-    return {
-      status: 200,
-      data: await prisma.week.findMany({
-        where: {
-          AND: [{ number: { gte: start } }, { number: { lte: end } }],
-        },
-      }),
-    }
-  } catch (error) {
-    console.error(error)
-    return {
-      status: 500,
-      error: 'Could not retrive employees.',
     }
   }
 }

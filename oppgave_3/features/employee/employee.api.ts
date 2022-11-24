@@ -6,8 +6,14 @@ export const create = (employee: NewEmployee) => {
   return api<Employee>('/employees').post(employee)
 }
 
-export const read = () => {
-  return api<Employee>('/employees').get()
+export const read = (name?: string) => {
+  let url = '/weeks'
+
+  if (name) {
+    url += `?name=${name}`
+  }
+
+  return api<Employee[]>(url).get()
 }
 
 export const update = (employee: EditedEmployee) => {
@@ -16,8 +22,4 @@ export const update = (employee: EditedEmployee) => {
 
 export const find = (id: string) => {
   return api<Employee>('/employees/' + id).get()
-}
-
-export const search = (name: string) => {
-  return api<Employee>('/employees/name?=' + name).get()
 }

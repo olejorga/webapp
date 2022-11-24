@@ -16,13 +16,8 @@ export const read = async (
   res: NextApiResponse<Result<Employee[]>>
 ) => {
   const { name } = req.query
+  const result = await service.read(name as string)
 
-  if (name) {
-    const result = await service.search(name as string)
-    return res.status(result.status).json(result)
-  }
-
-  const result = await service.read()
   return res.status(result.status).json(result)
 }
 

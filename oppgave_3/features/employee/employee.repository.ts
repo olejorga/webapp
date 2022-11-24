@@ -22,11 +22,12 @@ export const create = async (
   }
 }
 
-export const read = async (): Promise<Result<Employee[]>> => {
+export const read = async (name?: string): Promise<Result<Employee[]>> => {
   try {
     return {
       status: 200,
       data: await prisma.employee.findMany({
+        where: { name: { contains: name } },
         include: {
           days: {
             include: {
@@ -87,23 +88,6 @@ export const find = async (id: string): Promise<Result<Employee>> => {
     return {
       status: 500,
       error: 'Could not retrive employee.',
-    }
-  }
-}
-
-export const search = async (name: string): Promise<Result<Employee[]>> => {
-  try {
-    return {
-      status: 200,
-      data: await prisma.employee.findMany({
-        where: { name: { contains: name } },
-      }),
-    }
-  } catch (error) {
-    console.error(error)
-    return {
-      status: 500,
-      error: 'Could not retrive employees.',
     }
   }
 }

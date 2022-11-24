@@ -10,8 +10,8 @@ export const create = async (
   return await repo.create(employee, id)
 }
 
-export const read = async (): Promise<Result<Employee[]>> => {
-  return await repo.read()
+export const read = async (name?: string): Promise<Result<Employee[]>> => {
+  return await repo.read(name)
 }
 
 export const update = async (
@@ -29,8 +29,4 @@ export const update = async (
 
 export const find = async (id: string): Promise<Result<Employee>> => {
   return await repo.find(id)
-}
-
-export const search = async (name: string): Promise<Result<Employee[]>> => {
-  return await repo.search(name)
 }
