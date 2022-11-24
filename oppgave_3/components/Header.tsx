@@ -8,7 +8,7 @@ export default function Header() {
           <Link href="/">Home</Link>
         </li>
         <li>
-          <Link href="/">Home</Link>
+          <Link href="/employees">Employees</Link>
         </li>
         <li>
           <Link href="/">Home</Link>

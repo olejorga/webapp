@@ -3,7 +3,7 @@
 main {
   max-width: 760px;
   margin: 0 auto;
-  margin-top: 5rem;
+  margin-top: 7rem;
 
   h1 {
     margin-bottom: 1rem;
@@ -83,7 +83,7 @@ hr.solid {
 }
 
 .head {
-  display: block;
+  display: flex;
   background-color: red;
   position: fixed;
   top: 0;
@@ -93,10 +93,15 @@ hr.solid {
 
 .headerul {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  width: 50%;
   flex-direction: row;
+  align-content: space-between;
   margin: auto;
+  justify-content: space-around;
+}
+
+.employeeDetail {
+  margin-top: 1rem;
 }
 
 .footer {
