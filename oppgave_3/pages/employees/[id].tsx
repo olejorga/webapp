@@ -22,5 +22,5 @@ export default function EmployeeDetailPage() {
   }, [router.asPath])
 
   if (employee == undefined) return
-  return <EmployeeDetail employee={employee} />
+  return <EmployeeDetail toggleHidden={false} employee={employee} />
 }

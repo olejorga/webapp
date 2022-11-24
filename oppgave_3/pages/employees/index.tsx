@@ -27,6 +27,7 @@ export default function AllEmployeesPage() {
       <ul>
         {employees.map((employee) => (
           <EmployeeDetail
+            toggleHidden={true}
             key={employee.id}
             employee={employee}
           ></EmployeeDetail>

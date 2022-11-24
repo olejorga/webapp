@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { type } from 'os'
 import { useState } from 'react'
 import { Day, Week } from '../types/model'
+import DropDown from './DropDown'
 
 // const weekTest = Array.from({ length: 52 }, (_, i) => i + 1)
 
@@ -13,8 +14,8 @@ export default function Year({ weeks }: YearProps) {
   console.log(weeks)
   const [active, setActive] = useState(true)
   const [start, setStart] = useState(0)
-  const [end, setEnd] = useState(Number)
-  const [buttonIndex, setbuttonIndex] = useState(Number)
+  const [end, setEnd] = useState<number>(Number)
+  const [buttonIndex, setbuttonIndex] = useState<number>(Number)
   const [chosenWeek, setchosenWeek] = useState()
 
   function handleClick(week: Week) {}
@@ -24,6 +25,7 @@ export default function Year({ weeks }: YearProps) {
   return (
     <>
       <h2 className="yearTitle">Uker</h2>
+      <DropDown weeks={weeks} />
       <ul className="year">
         {weeks.map((week) => (
           <Link key={week.id} href={`weeks/${week.number}`}>
