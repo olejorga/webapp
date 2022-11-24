@@ -28,12 +28,7 @@ export default function EmployeeDetail({
       <div className="weekDetailBox employeeDetail">
         <div className="employeeTitle">
           <h2 className="weekDetailTitle">{employee.name}</h2>
-          <Link
-            className="employeeEditLink"
-            href={`/employees/${employee.id}/edit`}
-          >
-            Edit
-          </Link>
+          <Link href={`/employees/${employee.id}/edit`}>Edit</Link>
         </div>
         {toggleHidden ? (
           <div>

@@ -165,4 +165,8 @@ form.editForm {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+
+  a {
+    color: var(--darkGrey);
+  }
 }
