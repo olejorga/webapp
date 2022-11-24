@@ -2,7 +2,7 @@ import '../styles/main.scss'
 import type { AppProps } from 'next/app'
 import Layout from '../components/Layout'
 
-function MyApp({ Component, pageProps }: AppProps) {
+function LunchApp({ Component, pageProps }: AppProps) {
   return (
     <Layout>
       <Component {...pageProps} />
@@ -10,4 +10,4 @@ function MyApp({ Component, pageProps }: AppProps) {
   )
 }
 
-export default MyApp
+export default LunchApp
