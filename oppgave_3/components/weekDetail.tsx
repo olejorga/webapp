@@ -10,7 +10,7 @@ export default function WeekDetail({ week }: WeekProps) {
       <h2 className="weekDetailTitle">Uke {week.number}</h2>
       <ul>
         {week.days?.map((d) => (
-          <li key={d.id} className="daysList">
+          <li key={d.id} className="listItem">
             <span>{d.name}</span>
             <span>{d.employee?.name ?? 'Ferie'}</span>
           </li>

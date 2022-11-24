@@ -26,7 +26,7 @@ export default function WeekListItem({ week }: WeekProps) {
       <h2 className="weekDetailTitle">Uke {week.number}</h2>
       <ul hidden={hidden}>
         {week.days?.map((d) => (
-          <li key={d.id} className="daysList">
+          <li key={d.id} className="listItem">
             <span>{d.name}</span>
             {d.employee != null ? (
               <Link href={`employees/${d.employee?.id}`}>

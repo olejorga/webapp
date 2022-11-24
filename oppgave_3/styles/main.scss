@@ -3,6 +3,7 @@
 main {
   max-width: 760px;
   margin: 0 auto;
+  margin-top: 5rem;
 
   h1 {
     margin-bottom: 1rem;
@@ -52,7 +53,7 @@ ul {
   margin-bottom: 1rem;
 }
 
-li {
+.listItem {
   padding: 1rem;
   display: flex;
   justify-content: space-between;
@@ -79,4 +80,24 @@ hr.solid {
   border-top: 1px solid #eaeaea;
   margin-top: 1rem;
   margin-bottom: 1rem;
+}
+
+.head {
+  display: block;
+  background-color: red;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 5rem;
+}
+
+.headerul {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  margin: auto;
+}
+
+.footer {
 }
