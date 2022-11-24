@@ -6,6 +6,9 @@ import { Employee } from '../types/model'
 
 export const useEmployeeContext = <Data>() => {
   const ctx = useContext(EmployeeContext)
+  const data = ctx?.data as Data | null | undefined
+
+  if (!ctx) throw new Error('Missing <EmployeeProvider />.')
 
   const create = (employee: Employee) => {
     api<Employee>('/employees', {
@@ -13,7 +16,10 @@ export const useEmployeeContext = <Data>() => {
       body: JSON.stringify(employee),
     }).then(({ error }) => {
       if (error) ctx?.setError(error)
-      else ctx?.refresh()
+      else {
+        ctx?.setError(null)
+        ctx?.refresh()
+      }
     })
   }
 
@@ -25,11 +31,12 @@ export const useEmployeeContext = <Data>() => {
       body: JSON.stringify(employee),
     }).then(({ error }) => {
       if (error) ctx?.setError(error)
-      else ctx?.refresh()
+      else {
+        ctx?.setError(null)
+        ctx?.refresh()
+      }
     })
   }
-
-  const data = ctx?.data as Data | null | undefined
 
   return { data, error: ctx?.error, create, update }
 }
