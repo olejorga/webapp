@@ -31,5 +31,5 @@ export const useEmployeeContext = <Data>() => {
 
   const data = ctx?.data as Data | null | undefined
 
-  return { data, error: ctx?.error, create }
+  return { data, error: ctx?.error, create, update }
 }
