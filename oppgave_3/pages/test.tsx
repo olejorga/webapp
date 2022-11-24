@@ -4,9 +4,14 @@ import { useEmployeeContext } from "../hooks/useEmployeeContext"
 
 export default function Test() {
   return (
-    <EmployeeProvider id="1">
-      <List />
-    </EmployeeProvider>
+    <>
+      <EmployeeProvider id="8">
+        <Single />
+      </EmployeeProvider>
+      <EmployeeProvider>
+        <List />
+      </EmployeeProvider>
+    </>
   )
 }
 
@@ -26,5 +31,22 @@ function List() {
         <li key={e.id}>{e.name}</li>
       ))}
     </ul>
+  )
+}
+
+function Single() {
+  const { data: employee, error } = useEmployeeContext<Employee>()
+
+  return (
+    <>
+      {/* ERROR */}
+      {error && <p>{error}</p>}
+
+      {/* LOADING */}
+      {!error && !employee && <p>Loading...</p>}
+
+      {/* READY */}
+      {employee && <p style={{fontSize: 20}}>{employee.name}</p>}
+    </>
   )
 }
