@@ -4,7 +4,12 @@ export default function Footer() {
   return (
     <>
       <footer className="footer">
-        <Link href="/">To the top</Link>
+        <div className="footerContent">
+          <Link className="link" href="/">
+            To the top
+          </Link>
+          <p>&copy; Gutta krutt</p>
+        </div>
       </footer>
     </>
   )

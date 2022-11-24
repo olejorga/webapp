@@ -5,16 +5,24 @@ export default function Header() {
     <div className="head">
       <ul className="headerul">
         <li>
-          <Link href="/">Home</Link>
+          <Link href="/" style={{ textDecoration: 'none' }}>
+            Home
+          </Link>
         </li>
         <li>
-          <Link href="/employees">Employees</Link>
+          <Link className="link" href="/employees">
+            Employees
+          </Link>
         </li>
         <li>
-          <Link href="/">Home</Link>
+          <Link className="link" href="/">
+            Home
+          </Link>
         </li>
         <li>
-          <Link href="/">Home</Link>
+          <Link className="link" href="/">
+            Home
+          </Link>
         </li>
       </ul>
     </div>
