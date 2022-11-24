@@ -41,6 +41,13 @@ main {
   display: inline-block;
 }
 
+.employeeDetailLink {
+  text-decoration: underline;
+  color: blue;
+  cursor: pointer;
+  display: inline-block;
+}
+
 ul {
   margin-bottom: 1rem;
 }

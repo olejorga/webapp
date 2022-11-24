@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import WeekDetail from '../../components/weekDetail'
+import WeekDetail from '../../components/WeekDetail'
+import WeekListItem from '../../components/weekListItem'
 import { Week } from '../../types/model'
 
 export default function WeekDetailPage() {

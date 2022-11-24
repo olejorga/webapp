@@ -1,5 +1,5 @@
 import { Day, Week } from '../types/model'
-import WeekDetail from './weekDetail'
+import WeekListItem from './weekListItem'
 
 type WeekListProps = {
   weeks: Week[]
@@ -10,7 +10,7 @@ export default function WeekList({ weeks }: WeekListProps) {
     <>
       <ul className="weekList">
         {weeks.map((week) => (
-          <WeekDetail key={week.id} week={week}></WeekDetail>
+          <WeekListItem key={week.id} week={week}></WeekListItem>
         ))}
       </ul>
     </>
