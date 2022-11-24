@@ -75,12 +75,7 @@ export const search = async (
       status: 200,
       data: await prisma.week.findMany({
         where: {
-          AND: [
-            { number: start },
-            { number: { gt: start } },
-            { number: { lt: end } },
-            { number: end },
-          ],
+          AND: [{ number: { gte: start } }, { number: { lte: end } }],
         },
       }),
     }

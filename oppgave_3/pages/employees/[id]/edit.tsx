@@ -1,69 +1,87 @@
+import { GetServerSidePropsContext } from 'next'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import { EmployeeProvider } from '../../../context/employeeContext'
+import { useEmployeeContext } from '../../../hooks/useEmployeeContext'
 import { Employee } from '../../../types/model'
 
 type EditProps = {
   employee: Employee
 }
+
 type FormProps = {
   name: string
   rules: string
 }
 
-const Edit = () => {
-  const [employee, setEmployee] = useState<Employee>()
-  const router = useRouter()
-  const { id } = router.query
-  useEffect(() => {
-    ;(async () => {
-      try {
-        const res = await fetch(`../../api/employees/${id}`)
-        const { status, data, error } = await res.json()
-        if (error) throw Error(status + ': ' + error ?? 'Could not fetch data')
-        else setEmployee(data)
-      } catch (error) {
-        alert((error as Error).message)
-      }
-    })()
-  }, [router, id])
+type EditEmployeeProps = {
+  id: string
+}
 
-  const isValid = ({ name, rules }: FormProps): boolean => {
-    return name.length > 0 && rules.length > 0
-  }
+export default function EditEmployee({ id }: EditEmployeeProps ) {
+  // const isValid = ({ name, rules }: FormProps): boolean => {
+  //   return name.length > 0 && rules.length > 0
+  // }
 
-  const handleData = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const id = event.target?.id
-  }
-  const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-  }
-  console.log(employee)
-  if (employee == undefined) return
+  // const handleData = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const id = event.target?.id
+  // }
+  // const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  //   event.preventDefault()
+  // }
+
   return (
-    <form className="editForm" onSubmit={handleFormSubmit}>
-      <label htmlFor="name">
-        Navn:
-        <input
-          id="name"
-          type="text"
-          placeholder="Navn"
-          onChange={handleData}
-          value={employee.name}
-        />
-      </label>
-      <label htmlFor="rules">
-        Regler:
-        <input
-          id="rules"
-          type="text"
-          placeholder="Regler"
-          onChange={handleData}
-          value={employee.rules}
-        />
-      </label>
-      <button className="submitUpdate">Lagre endringer</button>
-    </form>
+    <EmployeeProvider id={id}>
+      <EditEmployeeForm />
+    </EmployeeProvider>
   )
 }
 
-export default Edit
+export function getServerSideProps({ query }: GetServerSidePropsContext) {
+  const { id } = query
+
+  return {
+    props: {
+      id
+    }
+  }
+}
+
+function EditEmployeeForm() {
+  const { data: employee, error, update } = useEmployeeContext<Employee>()
+  const [name, setName] = useState<string | undefined>()
+
+  useEffect(() => {
+    if (employee?.name) setName(employee.name) 
+  }, [employee?.name])
+
+  const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+
+    if (employee) {
+      update({ id: employee.id, name: name as string })
+    }
+  }
+
+  return (
+    <>
+      { !employee && <p>Loading...</p>}
+      { employee &&
+        <form className="editForm" onSubmit={handleFormSubmit}>
+        <label htmlFor="name">
+          Navn:
+          <input
+            id="name"
+            type="text"
+            name="name"
+            placeholder="Navn"
+            onChange={(e) => setName(e.target.value)}
+            value={name}
+          />
+        </label>
+        <button className="submitUpdate">Lagre endringer</button>
+      </form>
+      }
+    </>   
+  )
+}

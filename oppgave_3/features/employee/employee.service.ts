@@ -17,6 +17,13 @@ export const read = async (): Promise<Result<Employee[]>> => {
 export const update = async (
   employee: EditedEmployee
 ): Promise<Result<Employee>> => {
+  if (!employee.name) {
+    return {
+      status: 400,
+      error: 'Name cannot be empty.',
+    }
+  }
+
   return await repo.update(employee)
 }
 

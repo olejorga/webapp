@@ -37,7 +37,7 @@ export const WeekProvider = ({ id, start, end, children }: WeekProviderProps) =>
         }
       )
     } else if (start && end) {
-      api<Week[]>(`'/weeks?start=${start}&end=${end}`).then(
+      api<Week[]>(`/weeks?start=${start}&end=${end}`).then(
         ({ error, data }) => {
           if (error) setError(error)
           if (data) setData(data)

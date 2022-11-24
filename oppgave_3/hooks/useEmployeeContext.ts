@@ -14,6 +14,9 @@ export const useEmployeeContext = <Data>() => {
     api<Employee>('/employees', {
       method: 'POST',
       body: JSON.stringify(employee),
+      headers: {
+        'Content-Type': 'application/json',
+      },
     }).then(({ error }) => {
       if (error) ctx?.setError(error)
       else {
@@ -26,9 +29,12 @@ export const useEmployeeContext = <Data>() => {
   const update = (employee: EditedEmployee) => {
     const { id } = employee
 
-    api<Employee>('/employees' + id, {
+    api<Employee>('/employees/' + id, {
       method: 'PUT',
       body: JSON.stringify(employee),
+      headers: {
+        'Content-Type': 'application/json',
+      },
     }).then(({ error }) => {
       if (error) ctx?.setError(error)
       else {
