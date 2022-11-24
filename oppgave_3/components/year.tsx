@@ -1,16 +1,18 @@
 import Link from 'next/link'
 import { type } from 'os'
 import { useState } from 'react'
-import { Day, Week } from '../types/model'
+import { Day, Employee, Week } from '../types/model'
 import DropDown from './DropDown'
+import SearchFieldEmployee from './SearchFieldEmployee'
 
 // const weekTest = Array.from({ length: 52 }, (_, i) => i + 1)
 
 type YearProps = {
   weeks: Week[]
+  employee: Employee[]
 }
 
-export default function Year({ weeks }: YearProps) {
+export default function Year({ weeks, employee }: YearProps) {
   console.log(weeks)
   const [active, setActive] = useState(true)
   const [start, setStart] = useState(0)
@@ -25,7 +27,14 @@ export default function Year({ weeks }: YearProps) {
   return (
     <>
       <h2 className="yearTitle">Uker</h2>
-      <DropDown weeks={weeks} />
+      <ul className="listItem">
+        <li>
+          <DropDown weeks={weeks} />
+        </li>
+        <li>
+          <SearchFieldEmployee employees={employee} />
+        </li>
+      </ul>
       <ul className="year">
         {weeks.map((week) => (
           <Link key={week.id} href={`weeks/${week.number}`}>

@@ -10,7 +10,7 @@ const Home: NextPage = () => {
   return (
     <>
       <h1>Lunsjkalender</h1>
-      <Year weeks={weeks}></Year>
+      <Year weeks={weeks} employee={employees}></Year>
       <hr className="solid" />
       <WeekList weeks={weeks}></WeekList>
     </>

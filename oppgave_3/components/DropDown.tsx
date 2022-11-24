@@ -46,8 +46,9 @@ export default function DropDown({ weeks }: YearProps) {
           </option>
         ))}
       </select>
-
-      <button onClick={showWeekPeriod}>See period</button>
+      <span>
+        <button onClick={showWeekPeriod}>See period</button>
+      </span>
     </>
   )
 }
