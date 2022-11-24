@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { Employee } from '../types/model'
 
@@ -25,7 +26,15 @@ export default function EmployeeDetail({
   return (
     <>
       <div className="weekDetailBox employeeDetail">
-        <h2 className="weekDetailTitle">{employee.name}</h2>
+        <div className="employeeTitle">
+          <h2 className="weekDetailTitle">{employee.name}</h2>
+          <Link
+            className="employeeEditLink"
+            href={`/employees/${employee.id}/edit`}
+          >
+            Edit
+          </Link>
+        </div>
         {toggleHidden ? (
           <div>
             <ul hidden={hidden}>

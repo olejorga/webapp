@@ -144,3 +144,25 @@ a {
     text-decoration: underline;
   }
 }
+
+form.editForm {
+  display: grid;
+  gap: 1rem;
+  label {
+    width: 100;
+    input {
+      float: right;
+      margin-right: 50%;
+    }
+  }
+
+  .submitupdate {
+    background-color: var(--lightGrey);
+  }
+}
+
+.employeeTitle {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}

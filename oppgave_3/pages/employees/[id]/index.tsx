@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import EmployeeDetail from '../../components/employeeDetail'
-import { Employee } from '../../types/model'
+import EmployeeDetail from '../../../components/employeeDetail'
+import { Employee } from '../../../types/model'
 
 export default function EmployeeDetailPage() {
   const router = useRouter()
