@@ -1,6 +1,5 @@
 import { useRouter } from 'next/router'
-import { useContext, useEffect, useState } from 'react'
-import { EmployeeContext } from '../../../context/employeeContext'
+import { useEffect, useState } from 'react'
 import { Employee } from '../../../types/model'
 
 type EditProps = {
@@ -14,14 +13,11 @@ type FormProps = {
 const Edit = () => {
   const [employee, setEmployee] = useState<Employee>()
   const router = useRouter()
-
+  const { id } = router.query
   useEffect(() => {
-    if (router.asPath.includes('[')) return
     ;(async () => {
       try {
-        const res = await fetch(
-          `../../api/${router.asPath.replace('/edit', '')}`
-        )
+        const res = await fetch(`../../api/employees/${id}`)
         const { status, data, error } = await res.json()
         if (error) throw Error(status + ': ' + error ?? 'Could not fetch data')
         else setEmployee(data)
@@ -29,7 +25,7 @@ const Edit = () => {
         alert((error as Error).message)
       }
     })()
-  }, [router])
+  }, [router, id])
 
   const isValid = ({ name, rules }: FormProps): boolean => {
     return name.length > 0 && rules.length > 0
