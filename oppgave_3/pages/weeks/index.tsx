@@ -1,4 +1,4 @@
-import WeekList from '../../components/weekList'
+import WeekList from '../../components/WeekList'
 
 export default function WeekDetailPage() {
   return <WeekList weeks={[]}></WeekList>

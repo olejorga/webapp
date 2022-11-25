@@ -204,8 +204,8 @@ function Filter() {
         onChange={onStartSelect}
         value={start?.toString()}
       >
-        {weeks?.map(({ id, number }) => (
-          <option key={id} value={number}>
+        {weeks?.map(({ number }) => (
+          <option key={number} value={number}>
             {number}
           </option>
         ))}
@@ -216,8 +216,8 @@ function Filter() {
         onChange={onEndSelect}
         value={end?.toString()}
       >
-        {weeks?.map(({ id, number }) => (
-          <option key={id} value={number}>
+        {weeks?.map(({ number }) => (
+          <option key={number} value={number}>
             {number}
           </option>
         ))}
