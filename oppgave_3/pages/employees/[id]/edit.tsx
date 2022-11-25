@@ -1,8 +1,7 @@
 import { GetServerSidePropsContext } from 'next'
-import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
-import { EmployeeProvider } from '../../../context/employeesContext'
-import { useEmployeeContext } from '../../../hooks/useEmployees'
+import { stringify } from 'querystring'
+import React, { ReactHTML, useEffect, useState } from 'react'
+import { find, update } from '../../../features/employee/employee.api'
 import { Employee } from '../../../types/model'
 
 type EditProps = {
@@ -18,23 +17,19 @@ type EditEmployeeProps = {
   id: string
 }
 
-export default function EditEmployee({ id }: EditEmployeeProps ) {
-  // const isValid = ({ name, rules }: FormProps): boolean => {
-  //   return name.length > 0 && rules.length > 0
-  // }
+export default function EditEmployee({ id }: EditEmployeeProps) {
+  const [error, setError] = useState<string | null>()
+  const [employee, setEmployee] = useState<Employee | null>()
 
-  // const handleData = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   const id = event.target?.id
-  // }
-  // const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-  //   event.preventDefault()
-  // }
-
-  return (
-    <EmployeeProvider id={id}>
-      <EditEmployeeForm />
-    </EmployeeProvider>
-  )
+  useEffect(() => {
+    console.log(id)
+    find(id).then(({ data: employee, error }) => {
+      if (error) setError(error)
+      if (employee) setEmployee(employee)
+    })
+  }, [id])
+  console.log(employee ?? 'NULL OG NIKS')
+  return <>{employee && <EditEmployeeForm employee={employee} />}</>
 }
 
 export function getServerSideProps({ query }: GetServerSidePropsContext) {
@@ -42,46 +37,59 @@ export function getServerSideProps({ query }: GetServerSidePropsContext) {
 
   return {
     props: {
-      id
-    }
+      id,
+    },
   }
 }
 
-function EditEmployeeForm() {
-  const { data: employee, error, update } = useEmployeeContext<Employee>()
-  const [name, setName] = useState<string | undefined>()
+type EmployeeProps = {
+  employee: Employee
+}
+
+function EditEmployeeForm({ employee }: EmployeeProps) {
+  const { id, name } = employee
+  const [newName, setNewName] = useState<string | undefined>()
+  const [isValid, setValid] = useState(true)
 
   useEffect(() => {
-    if (employee?.name) setName(employee.name) 
-  }, [employee?.name])
+    setNewName(name)
+  }, [name])
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setNewName(event.target.value)
+    setValid(true)
+  }
 
   const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-
-    if (employee) {
-      update({ id: employee.id, name: name as string })
+    if (newName) update({ id: id, name: newName })
+    else {
+      setValid(false)
     }
   }
 
   return (
     <>
-      { !employee && <p>Loading...</p>}
-      { employee &&
+      {!name && <p>Loading...</p>}
+      {name && (
         <form className="editForm" onSubmit={handleFormSubmit}>
-        <label htmlFor="name">
-          Navn:
-          <input
-            id="name"
-            type="text"
-            name="name"
-            placeholder="Navn"
-            onChange={(e) => setName(e.target.value)}
-            value={name}
-          />
-        </label>
-        <button className="submitUpdate">Lagre endringer</button>
-      </form>
-      }
-    </>   
+          <label htmlFor="name">
+            Navn:
+            <input
+              id="name"
+              type="text"
+              name="name"
+              placeholder="Navn"
+              onChange={handleChange}
+              value={newName}
+            />
+          </label>
+          <p id="nameError" hidden={isValid}>
+            En ansatt må ha et navn
+          </p>
+          <button className="submitUpdate">Lagre endringer</button>
+        </form>
+      )}
+    </>
   )
 }

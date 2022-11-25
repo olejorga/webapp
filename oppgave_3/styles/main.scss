@@ -173,7 +173,6 @@ form.editForm {
 }
 
 .input {
-  
 }
 
 .error {
@@ -213,4 +212,8 @@ form.editForm {
   to {
     transform: rotate(360deg);
   }
+}
+
+#nameError {
+  color: red;
 }
