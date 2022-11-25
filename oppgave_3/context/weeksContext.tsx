@@ -12,6 +12,8 @@ import * as api from '../features/week/week.api'
 type Context = {
   weeks: Week[] | null
   error: string | null
+  start: number | undefined
+  end: number | undefined
   setStart: Dispatch<SetStateAction<number | undefined>>
   setEnd: Dispatch<SetStateAction<number | undefined>>
 }
@@ -32,7 +34,9 @@ export const WeeksProvider = ({ children }: PropsWithChildren) => {
   }, [start, end])
 
   return (
-    <WeeksContext.Provider value={{ weeks, error, setStart, setEnd }}>
+    <WeeksContext.Provider
+      value={{ weeks, error, start, end, setStart, setEnd }}
+    >
       {children}
     </WeeksContext.Provider>
   )
