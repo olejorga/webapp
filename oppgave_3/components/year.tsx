@@ -1,15 +1,11 @@
 import Link from 'next/link'
-import { type } from 'os'
-import { useState } from 'react'
 import { useWeeks } from '../hooks/useWeeks'
-import { Day, Employee, Week } from '../types/model'
 import DropDown from './DropDown'
 import Error from './Error'
 import Loader from './Loader'
-import SearchFieldEmployee from './SearchFieldEmployee'
 
 export default function Year() {
-  let { weeks, error } = useWeeks()
+  const { weeks, error } = useWeeks()
 
   return (
     <>

@@ -1,5 +1,4 @@
 import { useWeeks } from '../hooks/useWeeks'
-import { Day, Week } from '../types/model'
 import Error from './Error'
 import Loader from './Loader'
 import WeekListItem from './weekListItem'

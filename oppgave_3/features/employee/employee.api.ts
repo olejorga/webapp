@@ -7,7 +7,7 @@ export const create = (employee: NewEmployee) => {
 }
 
 export const read = (name?: string) => {
-  let url = '/weeks'
+  let url = '/employees'
 
   if (name) {
     url += `?name=${name}`

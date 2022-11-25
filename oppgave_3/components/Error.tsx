@@ -3,5 +3,9 @@ type ErrorProps = {
 }
 
 export default function Error({ message }: ErrorProps) {
-  return <div></div>
+  return (
+    <article className="error">
+      <p>Hello World!</p>
+    </article>
+  )
 }

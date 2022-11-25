@@ -1,6 +1,8 @@
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import EmployeeDetail from '../../components/employeeDetail'
+import EmployeeList from '../../components/EmployeeList'
+import { EmployeeProvider } from '../../context/employeesContext'
 import { Employee } from '../../types/model'
 
 export default function AllEmployeesPage() {
@@ -23,16 +25,8 @@ export default function AllEmployeesPage() {
 
   if (employees == undefined) return
   return (
-    <>
-      <ul>
-        {employees.map((employee) => (
-          <EmployeeDetail
-            toggleHidden={true}
-            key={employee.id}
-            employee={employee}
-          ></EmployeeDetail>
-        ))}
-      </ul>
-    </>
+    <EmployeeProvider>
+      <EmployeeList />
+    </EmployeeProvider>
   )
 }
