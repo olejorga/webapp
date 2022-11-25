@@ -11,24 +11,28 @@ type YearProps = {
 
 export default function DropDown() {
   const { weeks, setStart, setEnd, error } = useWeeks()
-  const [en, setEn] = useState<number>(0)
-  const [to, setTo] = useState<number>(0)
+  const [startWeek, setStartWeek] = useState<number>(0)
+  const [endWeek, setEndWeek] = useState<number>(0)
+  const [hidden, setHidden] = useState(false)
 
   const startWeekChange = (event: any) => {
-    setEn(event.target.value)
+    setStartWeek(event.target.value)
   }
 
   const endWeekChange = (event: any) => {
-    setTo(event.target.value)
+    setEndWeek(event.target.value)
   }
 
   const showWeekPeriod = () => {
-    if (en > to) return
-    setStart(en)
-    setEnd(to)
+    if (!(startWeek > endWeek)) {
+      setStart(startWeek)
+      setEnd(endWeek)
+    } else return
   }
 
   const resetWeekPeriod = () => {
+    setStartWeek(0)
+    setEndWeek(0)
     setStart(undefined)
     setEnd(undefined)
   }
@@ -40,7 +44,12 @@ export default function DropDown() {
       {weeks && (
         <>
           <label htmlFor="startWeek">Select period from week: </label>
-          <select name="startWeek" id="startWeek" onChange={startWeekChange}>
+          <select
+            value={startWeek}
+            name="startWeek"
+            id="startWeek"
+            onChange={startWeekChange}
+          >
             {weeks.map((week) => (
               <option key={week.id} value={week.number}>
                 {week.number}
@@ -49,7 +58,12 @@ export default function DropDown() {
           </select>
 
           <label htmlFor="endWeek">to week: </label>
-          <select name="endWeek" id="endWeek" onChange={endWeekChange}>
+          <select
+            value={endWeek}
+            name="endWeek"
+            id="endWeek"
+            onChange={endWeekChange}
+          >
             {weeks.map((week) => (
               <option key={week.id} value={week.number}>
                 {week.number}
