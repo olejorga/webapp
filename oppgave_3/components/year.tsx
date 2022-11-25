@@ -16,7 +16,7 @@ export default function Year() {
           <h2 className="yearTitle">Uker</h2>
           <ul className="listItem">
             <li>
-              <DropDown weeks={weeks} />
+              <DropDown />
             </li>
           </ul>
           <ul className="year">
