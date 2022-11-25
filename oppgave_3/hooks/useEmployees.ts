@@ -7,7 +7,7 @@ export const useEmployees = () => {
   if (!ctx) throw new Error('Missing <EmployeeProvider />.')
 
   return {
-    data: ctx.data,
+    employees: ctx.employees,
     error: ctx.error,
     setName: ctx.setName,
   }

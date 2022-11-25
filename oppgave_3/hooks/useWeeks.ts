@@ -7,7 +7,7 @@ export const useWeeks = () => {
   if (!ctx) throw new Error('Missing <WeeksProvider />.')
 
   return {
-    data: ctx.data,
+    weeks: ctx.weeks,
     error: ctx.error,
     setStart: ctx.setStart,
     setError: ctx.setEnd,

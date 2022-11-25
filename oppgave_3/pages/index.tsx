@@ -1,20 +1,14 @@
-import type { NextPage } from 'next'
 import Year from '../components/year'
 import WeekList from '../components/weekList'
-import useData from '../hooks/useData'
+import { WeeksProvider } from '../context/weeksContext'
 
-const Home: NextPage = () => {
-  const { employees, weeks, setEmployees, setWeeks, filter, setFilter } =
-    useData()
-
+export default function HomePage() {
   return (
-    <>
+    <WeeksProvider>
       <h1>Lunsjkalender</h1>
-      <Year weeks={weeks} employee={employees}></Year>
+      <Year></Year>
       <hr className="solid" />
-      <WeekList weeks={weeks}></WeekList>
-    </>
+      <WeekList></WeekList>
+    </WeeksProvider>
   )
 }
-
-export default Home
