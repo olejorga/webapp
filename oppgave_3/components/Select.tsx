@@ -21,7 +21,6 @@ export default function Select({
       <select
         className="bg-neutral-300 px-3 py-1 ring-1 ring-black"
         onChange={onChange}
-        defaultValue="default"
         value={value ? value : 'default'}
       >
         <option disabled={true} value="default">

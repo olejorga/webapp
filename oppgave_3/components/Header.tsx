@@ -11,10 +11,10 @@ export default function Header() {
           </a>
         </Link>
         <Link href="/" className="">
-          <a>UKER</a>
+          <a>Kalender</a>
         </Link>
         <Link href="/employees" className="">
-          <a>ANSATTE</a>
+          <a>Ansatte</a>
         </Link>
       </nav>
     </header>

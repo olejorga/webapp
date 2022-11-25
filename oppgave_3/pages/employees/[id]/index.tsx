@@ -1,26 +1,32 @@
-import { useRouter } from 'next/router'
+import { Employee } from '@prisma/client'
+import { GetServerSidePropsContext } from 'next'
 import { useEffect, useState } from 'react'
-import EmployeeDetail from '../../../components/employeeDetail'
-import { Employee } from '../../../types/model'
+import EmployeeDetail from '../../../components/EmployeeDetail'
+import { find } from '../../../features/employee/employee.api'
 
-export default function EmployeeDetailPage() {
-  const router = useRouter()
-  const [employee, setEmployee] = useState<Employee>()
+type EmployeePageProps = {
+  id: string
+}
+
+export default function EmployeeDetailPage({ id }: EmployeePageProps) {
+  const [employee, setEmployee] = useState<Employee | null>(null)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    ;(async () => {
-      try {
-        const res = await fetch(`../api/${router.asPath}`)
-        const { status, data, error } = await res.json()
-        console.log(data)
-        if (error) throw Error(status + ': ' + error ?? 'Could not fetch data')
-        else setEmployee(data)
-      } catch (error) {
-        alert((error as Error).message)
-      }
-    })()
-  }, [router.asPath])
+    find(id).then(({ data, error }) => {
+      if (error) setError(error)
+      if (data) setEmployee(data)
+    })
+  }, [id])
 
-  if (employee == undefined) return
-  return <EmployeeDetail toggleHidden={false} employee={employee} />
+  return (
+    <section>
+      {employee && <EmployeeDetail employee={employee} expanded={true} />}
+    </section>
+  )
+}
+
+export function getServerSideProps(ctx: GetServerSidePropsContext) {
+  const { id } = ctx.query
+  return { props: { id } }
 }
