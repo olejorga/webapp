@@ -35,6 +35,7 @@ export const seed = async (
             name: dayName,
             employeeId: employee.id.toString(),
             weekId: week.id,
+            overrideId: null,
           })
 
           if (error) {
@@ -45,6 +46,7 @@ export const seed = async (
             name: dayName,
             employeeId: null,
             weekId: week.id,
+            overrideId: null,
           })
 
           if (error) {

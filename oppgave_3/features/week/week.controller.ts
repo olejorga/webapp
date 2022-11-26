@@ -10,7 +10,9 @@ export const read = async (
 ) => {
   await sleep(1000)
 
-  let { start, end } = req.query
+  let { start, end, excel } = req.query
+
+  // TODO: Handle excel parsing!
 
   const result = await service.read(
     start ? parseInt(start as string) : undefined,
