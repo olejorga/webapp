@@ -2,11 +2,13 @@ import { ChangeEventHandler, useEffect, useState } from 'react'
 import { useWeeks } from '../hooks/useWeeks'
 import { Week } from '../types/model'
 import Button from './Button'
+import Error from './Error'
+import Loader from './Loader'
 import Select from './Select'
 import Warning from './Warning'
 
 export default function WeekFilter() {
-  const { weeks, start, end, setStart, setEnd } = useWeeks()
+  const { weeks, error, start, end, setStart, setEnd } = useWeeks()
   const [allWeeks, setAllWeeks] = useState<Week[]>()
 
   useEffect(() => {
@@ -28,7 +30,11 @@ export default function WeekFilter() {
     setEnd(parseInt(event.target.value))
   }
 
-  if (weeks && weeks.length == 0) {
+  if (error) {
+    return <Error message={error} />
+  } else if (!weeks && !error) {
+    return <Loader />
+  } else if (weeks && weeks.length == 0) {
     return <Warning message="Ingen uker? 🤔" />
   }
 

@@ -8,7 +8,7 @@ export const read = async (
   req: NextApiRequest,
   res: NextApiResponse<Result<Week[]>>
 ) => {
-  await sleep(2000)
+  await sleep(1000)
 
   let { start, end } = req.query
 
@@ -24,6 +24,8 @@ export const find = async (
   req: NextApiRequest,
   res: NextApiResponse<Result<Week>>
 ) => {
+  await sleep(1000)
+
   const { number } = req.query
 
   if (number) {

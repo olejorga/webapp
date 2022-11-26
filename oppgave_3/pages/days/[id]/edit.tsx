@@ -1,6 +1,8 @@
 import { GetServerSidePropsContext } from 'next'
 import Link from 'next/link'
 import React, { ChangeEventHandler, useEffect, useState } from 'react'
+import Error from '../../../components/Error'
+import Loader from '../../../components/Loader'
 import Select from '../../../components/Select'
 import { Column, Row, Table } from '../../../components/Table'
 import { find, update } from '../../../features/day/day.api'
@@ -46,6 +48,12 @@ export default function EditDayPage({ id }: EditDayPageProps) {
         setOverrideId(data.overrideId)
       }
     })
+  }
+
+  if (error) {
+    return <Error message={error} />
+  } else if (!error && (!day || !employees)) {
+    return <Loader />
   }
 
   return (

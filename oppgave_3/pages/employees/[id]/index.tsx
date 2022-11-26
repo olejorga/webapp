@@ -2,6 +2,8 @@ import { Employee } from '@prisma/client'
 import { GetServerSidePropsContext } from 'next'
 import { useEffect, useState } from 'react'
 import EmployeeDetail from '../../../components/EmployeeDetail'
+import Error from '../../../components/Error'
+import Loader from '../../../components/Loader'
 import { find } from '../../../features/employee/employee.api'
 
 type EmployeePageProps = {
@@ -18,6 +20,12 @@ export default function EmployeePage({ id }: EmployeePageProps) {
       if (data) setEmployee(data)
     })
   }, [id])
+
+  if (error) {
+    return <Error message={error} />
+  } else if (!error && !employee) {
+    return <Loader />
+  }
 
   return employee && <EmployeeDetail employee={employee} expanded={true} />
 }

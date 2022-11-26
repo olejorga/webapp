@@ -1,7 +1,9 @@
 import { GetServerSidePropsContext } from 'next'
 import React, { FormEvent, useEffect, useState } from 'react'
 import Button from '../../../components/Button'
+import Error from '../../../components/Error'
 import Input from '../../../components/Input'
+import Loader from '../../../components/Loader'
 import { find, update } from '../../../features/employee/employee.api'
 import { Employee } from '../../../types/model'
 
@@ -37,6 +39,12 @@ export default function EditEmployeePage({ id }: EditEmployeePageProps) {
       setButtonText('Lagret')
       setTimeout(() => setButtonText('Lagre'), 2000)
     })
+  }
+
+  if (error) {
+    return <Error message={error} />
+  } else if (!error && !employee) {
+    return <Loader />
   }
 
   return (
