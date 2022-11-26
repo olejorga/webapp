@@ -10,9 +10,11 @@ export const read = async (
 ) => {
   await sleep(1000)
 
-  let { start, end, excel } = req.query
+  let { start, end, format } = req.query
 
-  // TODO: Handle excel parsing!
+  // TODO: Handle excel format parsing!
+  // (👉 /api/weeks?format=excel)
+  // * HINT: "if (format == 'excel')".
 
   const result = await service.read(
     start ? parseInt(start as string) : undefined,

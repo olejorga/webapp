@@ -9,6 +9,8 @@ export const generate = async (
   res: NextApiResponse<Result<null>>
 ) => {
   // TODO: Write algorhtim!
+  // (👉 /api/generate)
+  // *NB: Get "options" from local file.
 
   res.status(200).json({ status: 200, data: null })
 }
