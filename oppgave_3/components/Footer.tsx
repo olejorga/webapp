@@ -6,7 +6,7 @@ export default function Footer() {
     <footer className="container my-16">
       <nav className="flex items-center justify-between gap-4 rounded-xl bg-black px-8 py-4 font-medium text-white ring-2 ring-black">
         <p className="flex items-center gap-2">
-          <Logo inverted={true} />
+          <Logo className="fill-white" />
           <span>&copy; Gutta krutt</span>
         </p>
         <Link href="#" className="">

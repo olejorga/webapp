@@ -1,11 +1,17 @@
 import { useWeeks } from '../hooks/useWeeks'
+import Error from './Error'
+import Loader from './Loader'
 import Warning from './Warning'
 import WeekDetail from './WeekDetail'
 
 export default function WeekList() {
-  const { weeks } = useWeeks()
+  const { weeks, error } = useWeeks()
 
-  if (weeks && weeks.length == 0) {
+  if (error) {
+    return <Error message={error} />
+  } else if (!weeks && !error) {
+    return <Loader />
+  } else if (weeks && weeks.length == 0) {
     return <Warning message="Ingen uker? 🤔" />
   }
 

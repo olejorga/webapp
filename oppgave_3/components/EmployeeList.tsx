@@ -1,11 +1,17 @@
 import { useEmployees } from '../hooks/useEmployees'
 import EmployeeDetail from './EmployeeDetail'
+import Error from './Error'
+import Loader from './Loader'
 import Warning from './Warning'
 
 export default function EmployeeList() {
-  const { employees } = useEmployees()
+  const { employees, error } = useEmployees()
 
-  if (employees && employees.length == 0) {
+  if (error) {
+    return <Error message={error} />
+  } else if (!employees && !error) {
+    return <Loader />
+  } else if (employees && employees.length == 0) {
     return <Warning message="Ingen ansatte? 🤔" />
   }
 

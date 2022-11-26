@@ -1,4 +1,8 @@
-export default function Logo({ inverted }: { inverted?: boolean }) {
+type LogoProps = {
+  className?: string
+}
+
+export default function Logo({ className }: LogoProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -6,7 +10,8 @@ export default function Logo({ inverted }: { inverted?: boolean }) {
       height="24px"
       viewBox="0 0 24 24"
       width="24px"
-      fill={inverted ? '#fff' : '#000'}
+      fill="#000000"
+      className={className}
     >
       <g>
         <rect fill="none" height="24" width="24" />

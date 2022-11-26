@@ -1,6 +1,6 @@
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
-import { Day, Employee } from '../types/model'
+import { useState } from 'react'
+import { Employee } from '../types/model'
 import Card from './Card'
 import { Column, Row, Table } from './Table'
 
