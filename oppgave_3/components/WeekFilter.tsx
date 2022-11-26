@@ -1,10 +1,18 @@
-import { ChangeEventHandler } from 'react'
+import { ChangeEventHandler, useEffect, useState } from 'react'
 import { useWeeks } from '../hooks/useWeeks'
+import { Week } from '../types/model'
 import Button from './Button'
 import Select from './Select'
 
 export default function WeekFilter() {
   const { weeks, start, end, setStart, setEnd } = useWeeks()
+  const [allWeeks, setAllWeeks] = useState<Week[]>()
+
+  useEffect(() => {
+    if (!allWeeks && weeks) {
+      setAllWeeks(weeks)
+    }
+  }, [allWeeks, weeks])
 
   const reset = () => {
     setStart(undefined)
@@ -28,8 +36,12 @@ export default function WeekFilter() {
         onChange={handleStartSelect}
         value={start?.toString()}
       >
-        {weeks?.map(({ number }) => (
-          <option key={number} value={number}>
+        {allWeeks?.map(({ number }) => (
+          <option
+            key={number}
+            value={number}
+            disabled={end ? end < number : false}
+          >
             {number}
           </option>
         ))}
@@ -40,8 +52,12 @@ export default function WeekFilter() {
         onChange={handleEndSelect}
         value={end?.toString()}
       >
-        {weeks?.map(({ number }) => (
-          <option key={number} value={number}>
+        {allWeeks?.map(({ number }) => (
+          <option
+            key={number}
+            value={number}
+            disabled={start ? start > number : false}
+          >
             {number}
           </option>
         ))}
