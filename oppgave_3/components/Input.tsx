@@ -9,9 +9,9 @@ export default function Input(props: InputProps) {
   const { label, ...rest } = props
 
   return (
-    <label>
+    <label className="inline-flex flex-col gap-2">
       <span>{label}</span>
-      <input className="input" {...rest} />
+      <input className="px-3 py-1 ring-1 ring-black" {...rest} />
     </label>
   )
 }

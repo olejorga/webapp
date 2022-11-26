@@ -1,5 +1,6 @@
 import { ChangeEventHandler } from 'react'
 import { useWeeks } from '../hooks/useWeeks'
+import Button from './Button'
 import Select from './Select'
 
 export default function WeekFilter() {
@@ -10,11 +11,11 @@ export default function WeekFilter() {
     setEnd(undefined)
   }
 
-  const onStartSelect: ChangeEventHandler<HTMLSelectElement> = (event) => {
+  const handleStartSelect: ChangeEventHandler<HTMLSelectElement> = (event) => {
     setStart(parseInt(event.target.value))
   }
 
-  const onEndSelect: ChangeEventHandler<HTMLSelectElement> = (event) => {
+  const handleEndSelect: ChangeEventHandler<HTMLSelectElement> = (event) => {
     setEnd(parseInt(event.target.value))
   }
 
@@ -24,7 +25,7 @@ export default function WeekFilter() {
       <Select
         label="Fra"
         placeholder="--"
-        onChange={onStartSelect}
+        onChange={handleStartSelect}
         value={start?.toString()}
       >
         {weeks?.map(({ number }) => (
@@ -36,7 +37,7 @@ export default function WeekFilter() {
       <Select
         label="Til"
         placeholder="--"
-        onChange={onEndSelect}
+        onChange={handleEndSelect}
         value={end?.toString()}
       >
         {weeks?.map(({ number }) => (
@@ -45,9 +46,7 @@ export default function WeekFilter() {
           </option>
         ))}
       </Select>
-      <button className="bg-black px-3 py-1 text-white" onClick={reset}>
-        Nullstill
-      </button>
+      <Button onClick={reset}>Nullstill</Button>
     </section>
   )
 }

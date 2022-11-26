@@ -1,7 +1,7 @@
 import WeekFilter from '../components/WeekFilter'
+import WeekList from '../components/WeekList'
 import YearOverview from '../components/YearOverview'
 import { WeeksProvider } from '../context/weeksContext'
-import WeekList from './weeks'
 
 export default function HomePage() {
   return (

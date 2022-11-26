@@ -14,7 +14,12 @@ export default function EmployeeDetail({ employee, expanded }: EmployeeProps) {
 
   return (
     <Card>
-      <h2 className="mb-4 text-2xl font-bold">{employee.name}</h2>
+      <nav className="flex justify-between">
+        <h2 className="mb-4 text-2xl font-bold">{employee.name}</h2>
+        <Link href={`/employees/${employee.id}/edit`}>
+          <a className="underline">Rediger</a>
+        </Link>
+      </nav>
       {open && (
         <Table>
           {employee.days?.map((day) => (

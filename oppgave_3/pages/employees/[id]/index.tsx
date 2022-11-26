@@ -8,7 +8,7 @@ type EmployeePageProps = {
   id: string
 }
 
-export default function EmployeeDetailPage({ id }: EmployeePageProps) {
+export default function EmployeePage({ id }: EmployeePageProps) {
   const [employee, setEmployee] = useState<Employee | null>(null)
   const [error, setError] = useState<string | null>(null)
 
@@ -19,11 +19,7 @@ export default function EmployeeDetailPage({ id }: EmployeePageProps) {
     })
   }, [id])
 
-  return (
-    <section>
-      {employee && <EmployeeDetail employee={employee} expanded={true} />}
-    </section>
-  )
+  return employee && <EmployeeDetail employee={employee} expanded={true} />
 }
 
 export function getServerSideProps(ctx: GetServerSidePropsContext) {

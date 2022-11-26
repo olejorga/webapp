@@ -1,12 +1,9 @@
-import { ChangeEventHandler, ReactNode } from 'react'
+import { DetailedHTMLProps, SelectHTMLAttributes } from 'react'
 
-type SelectProps = {
-  label: string
-  placeholder: string
-  value?: string
-  onChange?: ChangeEventHandler<HTMLSelectElement>
-  children: ReactNode
-}
+type SelectProps = Omit<
+  DetailedHTMLProps<SelectHTMLAttributes<HTMLSelectElement>, HTMLSelectElement>,
+  'className'
+> & { label: string }
 
 export default function Select({
   label,

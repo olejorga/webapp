@@ -1,45 +1,61 @@
 import { GetServerSidePropsContext } from 'next'
-import { stringify } from 'querystring'
-import React, { ReactHTML, useEffect, useState } from 'react'
+import React, { FormEvent, useEffect, useState } from 'react'
+import Button from '../../../components/Button'
+import Card from '../../../components/Card'
+import Input from '../../../components/Input'
 import { find, update } from '../../../features/employee/employee.api'
 import { Employee } from '../../../types/model'
 
-type EditProps = {
-  employee: Employee
-}
-
-type FormProps = {
-  name: string
-  rules: string
-}
-
-type EditEmployeeProps = {
+type EditEmployeePageProps = {
   id: string
 }
 
-export default function EditEmployee({ id }: EditEmployeeProps) {
-  const [error, setError] = useState<string | null>()
-  const [employee, setEmployee] = useState<Employee | null>()
+export default function EditEmployeePage({ id }: EditEmployeePageProps) {
+  const [employee, setEmployee] = useState<Employee | null>(null)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    console.log(id)
-    find(id).then(({ data: employee, error }) => {
+    find(id).then(({ error, data }) => {
       if (error) setError(error)
-      if (employee) setEmployee(employee)
+      if (data) setEmployee(data)
     })
   }, [id])
-  console.log(employee ?? 'NULL OG NIKS')
-  return <>{employee && <EditEmployeeForm employee={employee} />}</>
+
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+
+    const form = event.currentTarget
+    const elements = form.elements as typeof form.elements & {
+      name: HTMLInputElement
+    }
+
+    update({ id, name: elements.name.value }).then(({ error, data }) => {
+      if (error) setError(error)
+      if (data) setEmployee(data)
+
+      elements.name.value = ''
+    })
+  }
+
+  return (
+    <section>
+      <h1 className="mb-8 text-2xl font-bold">Rediger ansatt</h1>
+      <form className="flex flex-col items-start gap-4" onSubmit={handleSubmit}>
+        <Input
+          name="name"
+          label="Navn"
+          placeholder={employee?.name}
+          required={true}
+        />
+        <Button>Lagre</Button>
+      </form>
+    </section>
+  )
 }
 
 export function getServerSideProps({ query }: GetServerSidePropsContext) {
   const { id } = query
-
-  return {
-    props: {
-      id,
-    },
-  }
+  return { props: { id } }
 }
 
 type EmployeeProps = {

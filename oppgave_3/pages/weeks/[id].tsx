@@ -1,27 +1,28 @@
-import { useRouter } from 'next/router'
+import { Week } from '@prisma/client'
+import { GetServerSidePropsContext } from 'next'
 import { useEffect, useState } from 'react'
-import WeekDetail from '../../components/weekDetail'
-import WeekListItem from '../../components/WeekDetail'
-import { Week } from '../../types/model'
+import WeekDetail from '../../components/WeekDetail'
+import { find } from '../../features/week/week.api'
 
-export default function WeekDetailPage() {
-  const router = useRouter()
-  const [week, setWeek] = useState<Week>()
+type WeekPageProps = {
+  id: string
+}
+
+export default function WeekPage({ id }: WeekPageProps) {
+  const [week, setWeek] = useState<Week | null>(null)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    ;(async () => {
-      try {
-        const res = await fetch(`../api/${router.asPath}`)
-        const { status, data, error } = await res.json()
-        console.log(data)
-        if (error) throw Error(status + ': ' + error ?? 'Could not fetch data')
-        else setWeek(data)
-      } catch (error) {
-        alert((error as Error).message)
-      }
-    })()
-  }, [router.asPath])
+    find(id).then(({ data, error }) => {
+      if (error) setError(error)
+      if (data) setWeek(data)
+    })
+  }, [id])
 
-  if (week == undefined) return
-  return <WeekDetail week={week} />
+  return week && <WeekDetail week={week} expanded={true} />
+}
+
+export function getServerSideProps(ctx: GetServerSidePropsContext) {
+  const { id } = ctx.query
+  return { props: { id } }
 }
