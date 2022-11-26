@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
+import sleep from '../../lib/sleep'
 import { Week } from '../../types/model'
 import { Result } from '../../types/result'
 import * as service from './week.service'
@@ -7,6 +8,8 @@ export const read = async (
   req: NextApiRequest,
   res: NextApiResponse<Result<Week[]>>
 ) => {
+  await sleep(2000)
+
   let { start, end } = req.query
 
   const result = await service.read(
