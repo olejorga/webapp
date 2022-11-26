@@ -1,4 +1,3 @@
-import { employees } from './../../data/employees'
 import prisma from '../../lib/db'
 import { Result } from '../../types/result'
 import { Week } from '../../types/model'
