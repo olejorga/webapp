@@ -1,12 +1,6 @@
 import { GetServerSidePropsContext } from 'next'
 import Link from 'next/link'
-import React, {
-  ChangeEventHandler,
-  FormEvent,
-  useEffect,
-  useState,
-} from 'react'
-import Button from '../../../components/Button'
+import React, { ChangeEventHandler, useEffect, useState } from 'react'
 import Select from '../../../components/Select'
 import { Column, Row, Table } from '../../../components/Table'
 import { find, update } from '../../../features/day/day.api'

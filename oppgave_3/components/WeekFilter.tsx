@@ -3,6 +3,7 @@ import { useWeeks } from '../hooks/useWeeks'
 import { Week } from '../types/model'
 import Button from './Button'
 import Select from './Select'
+import Warning from './Warning'
 
 export default function WeekFilter() {
   const { weeks, start, end, setStart, setEnd } = useWeeks()
@@ -25,6 +26,10 @@ export default function WeekFilter() {
 
   const handleEndSelect: ChangeEventHandler<HTMLSelectElement> = (event) => {
     setEnd(parseInt(event.target.value))
+  }
+
+  if (weeks && weeks.length == 0) {
+    return <Warning message="Ingen uker? 🤔" />
   }
 
   return (

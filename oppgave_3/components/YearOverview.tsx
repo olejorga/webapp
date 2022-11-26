@@ -1,8 +1,13 @@
 import Link from 'next/link'
 import { useWeeks } from '../hooks/useWeeks'
+import Warning from './Warning'
 
 export default function YearOverview() {
   const { weeks } = useWeeks()
+
+  if (weeks && weeks.length == 0) {
+    return <Warning message="Ingen uker? 🤔" />
+  }
 
   return (
     <section>
