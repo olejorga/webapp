@@ -17,30 +17,46 @@ export default function WeekDetail({ week, expanded }: WeekProps) {
       <h2 className="mb-4 text-2xl font-bold">{`Uke ${week.number}`}</h2>
       {open && (
         <Table>
-          {week.days?.map((day) => (
-            <Row key={day.id}>
-              <Column>{day.name}</Column>
-              <Column>
-                <span className="flex flex-col items-start">
-                  <Link href={'/employees/' + day.employee?.id}>
-                    <a className={day.override ? 'line-through' : 'underline'}>
-                      {day.employee?.name}
-                    </a>
+          {week.days && week.days.length > 0 ? (
+            week.days.map((day) => (
+              <Row key={day.id}>
+                <Column>{day.name}</Column>
+                <Column>
+                  <span className="flex flex-col items-start">
+                    {day.employee ? (
+                      <Link href={'/employees/' + day.employee?.id}>
+                        <a
+                          className={
+                            day.override ? 'line-through' : 'underline'
+                          }
+                        >
+                          {day.employee?.name}
+                        </a>
+                      </Link>
+                    ) : (
+                      <span className={day.override ? 'line-through' : ''}>
+                        Ferie! 🥳
+                      </span>
+                    )}
+                    {day.override && (
+                      <Link href={'/employees/' + day.override?.id}>
+                        <a className="underline">{day.override?.name}</a>
+                      </Link>
+                    )}
+                  </span>
+                </Column>
+                <Column>
+                  <Link href={`/days/${day.id}/edit`}>
+                    <a className="underline">Rediger</a>
                   </Link>
-                  {day.override && (
-                    <Link href={'/employees/' + day.override?.id}>
-                      <a className="underline">{day.override?.name}</a>
-                    </Link>
-                  )}
-                </span>
-              </Column>
-              <Column>
-                <Link href={`/days/${day.id}/edit`}>
-                  <a className="underline">Rediger</a>
-                </Link>
-              </Column>
+                </Column>
+              </Row>
+            ))
+          ) : (
+            <Row>
+              <Column>Ingen dager denne uken? 🤔</Column>
             </Row>
-          ))}
+          )}
         </Table>
       )}
       {!expanded && (

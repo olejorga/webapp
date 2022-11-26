@@ -6,9 +6,13 @@ export default function EmployeeList() {
 
   return (
     <section className="flex flex-col gap-8">
-      {employees?.map((employee) => (
-        <EmployeeDetail key={employee.id} employee={employee} />
-      ))}
+      {employees && employees.length > 0 ? (
+        employees.map((employee) => (
+          <EmployeeDetail key={employee.id} employee={employee} />
+        ))
+      ) : (
+        <p>Ingen ansatte? 🤔</p>
+      )}
     </section>
   )
 }

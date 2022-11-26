@@ -27,7 +27,7 @@ export default function EmployeeDetail({ employee, expanded }: EmployeeProps) {
               <h3 className="mb-2 text-lg font-bold">Ekstra</h3>
               <Card>
                 <Table>
-                  {employee.overrides?.map((day) => (
+                  {employee.overrides.map((day) => (
                     <Row key={day.id}>
                       <Column>{day.name}</Column>
                       <Column>
@@ -42,25 +42,32 @@ export default function EmployeeDetail({ employee, expanded }: EmployeeProps) {
               <hr className="mt-8 mb-6" />
             </>
           )}
-
           <h3 className="text-lg font-bold">Planlagt</h3>
           <Table>
-            {employee.days?.map((day) => (
-              <Row key={day.id}>
-                <Column>
-                  <span className={day.overrideId ? 'line-through' : ''}>
-                    {day.name}
-                  </span>
-                </Column>
-                <Column>
-                  <Link href={'/weeks/' + day.week?.number}>
-                    <a
-                      className={day.overrideId ? 'line-through' : 'underline'}
-                    >{`Uke ${day.week?.number}`}</a>
-                  </Link>
-                </Column>
+            {employee.days && employee.days.length > 0 ? (
+              employee.days.map((day) => (
+                <Row key={day.id}>
+                  <Column>
+                    <span className={day.overrideId ? 'line-through' : ''}>
+                      {day.name}
+                    </span>
+                  </Column>
+                  <Column>
+                    <Link href={'/weeks/' + day.week?.number}>
+                      <a
+                        className={
+                          day.overrideId ? 'line-through' : 'underline'
+                        }
+                      >{`Uke ${day.week?.number}`}</a>
+                    </Link>
+                  </Column>
+                </Row>
+              ))
+            ) : (
+              <Row>
+                <Column>Ingen lunsjer! 🥳</Column>
               </Row>
-            ))}
+            )}
           </Table>
         </>
       )}

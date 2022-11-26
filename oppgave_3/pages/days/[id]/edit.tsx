@@ -1,4 +1,5 @@
 import { GetServerSidePropsContext } from 'next'
+import Link from 'next/link'
 import React, {
   ChangeEventHandler,
   FormEvent,
@@ -70,7 +71,19 @@ export default function EditDayPage({ id }: EditDayPageProps) {
         </Row>
         <Row>
           <Column>{`${day?.name} (Uke ${day?.week?.number})`}</Column>
-          <Column>{day?.employee?.name}</Column>
+          <Column>
+            {day?.employee ? (
+              <Link href={'/employees/' + day.employee?.id}>
+                <a className={day.override ? 'line-through' : 'underline'}>
+                  {day.employee?.name}
+                </a>
+              </Link>
+            ) : (
+              <span className={day?.override ? 'line-through' : ''}>
+                Ferie! 🥳
+              </span>
+            )}
+          </Column>
           <Column>
             <div className="flex items-center gap-2">
               <Select

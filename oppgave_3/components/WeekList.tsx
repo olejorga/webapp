@@ -6,9 +6,11 @@ export default function WeekList() {
 
   return (
     <section className="flex flex-col gap-8">
-      {weeks?.map((week) => (
-        <WeekDetail key={week.id} week={week} />
-      ))}
+      {weeks && weeks.length > 0 ? (
+        weeks.map((week) => <WeekDetail key={week.id} week={week} />)
+      ) : (
+        <p>Ingen uker? 🤔</p>
+      )}
     </section>
   )
 }
