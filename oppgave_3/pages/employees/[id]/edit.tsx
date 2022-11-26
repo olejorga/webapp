@@ -1,7 +1,6 @@
 import { GetServerSidePropsContext } from 'next'
 import React, { FormEvent, useEffect, useState } from 'react'
 import Button from '../../../components/Button'
-import Card from '../../../components/Card'
 import Input from '../../../components/Input'
 import { find, update } from '../../../features/employee/employee.api'
 import { Employee } from '../../../types/model'
@@ -13,6 +12,7 @@ type EditEmployeePageProps = {
 export default function EditEmployeePage({ id }: EditEmployeePageProps) {
   const [employee, setEmployee] = useState<Employee | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [buttonText, setButtonText] = useState('Lagre')
 
   useEffect(() => {
     find(id).then(({ error, data }) => {
@@ -34,6 +34,8 @@ export default function EditEmployeePage({ id }: EditEmployeePageProps) {
       if (data) setEmployee(data)
 
       elements.name.value = ''
+      setButtonText('Lagret')
+      setTimeout(() => setButtonText('Lagre'), 2000)
     })
   }
 
@@ -47,7 +49,7 @@ export default function EditEmployeePage({ id }: EditEmployeePageProps) {
           placeholder={employee?.name}
           required={true}
         />
-        <Button>Lagre</Button>
+        <Button>{buttonText}</Button>
       </form>
     </section>
   )
