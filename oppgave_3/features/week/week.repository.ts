@@ -33,6 +33,7 @@ export const read = async (
           days: {
             include: {
               employee: true,
+              override: true,
             },
           },
         },
@@ -51,7 +52,7 @@ export const find = async (number: number): Promise<Result<Week>> => {
   try {
     const week = await prisma.week.findFirst({
       where: { number },
-      include: { days: { include: { employee: true } } },
+      include: { days: { include: { employee: true, override: true } } },
     })
     return week
       ? {

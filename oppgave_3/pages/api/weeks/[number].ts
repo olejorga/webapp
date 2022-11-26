@@ -1,4 +1,4 @@
-import { Week } from '@prisma/client'
+import { Week } from '../../../types/model'
 import { NextApiRequest, NextApiResponse } from 'next'
 import * as controller from '../../../features/week/week.controller'
 import { Result } from '../../../types/result'

@@ -3,29 +3,22 @@ export type Employee = {
   name: string
   rules: string
   days?: Day[]
-  alterations?: Alteration[]
+  overrides?: Day[]
 }
 
 export type Day = {
   id: string
   name: string
-  employee?: Employee
+  employee?: Employee | null
   employeeId: string | null
   week?: Week
   weekId: string
-  alteration?: Alteration
+  override?: Employee | null
+  overrideId: string | null
 }
 
 export type Week = {
   id: string
   number: number
   days?: Day[]
-}
-
-export type Alteration = {
-  id: string
-  day?: Day
-  dayId: string
-  employee?: Employee
-  employeeId: string
 }

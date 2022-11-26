@@ -1,7 +1,11 @@
 import { PropsWithChildren } from 'react'
 
 export function Table({ children }: PropsWithChildren) {
-  return <table className="w-full table-fixed">{children}</table>
+  return (
+    <table className="w-full table-fixed">
+      <tbody>{children}</tbody>
+    </table>
+  )
 }
 
 export function Row({ children }: PropsWithChildren) {

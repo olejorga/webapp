@@ -15,30 +15,23 @@ model Employee {
   id String @id @default(cuid())
   name String
   rules String
-  days Day[]
-  alterations Alteration[]
+  days Day[] @relation("employee")
+  overrides Day[] @relation("override")
 }
 
 model Day {
   id String @id @default(cuid())
   name String
-  employee Employee? @relation(fields: [employeeId], references: [id])
+  employee Employee? @relation("employee", fields: [employeeId], references: [id])
   employeeId String?
   week Week @relation(fields: [weekId], references: [id])
   weekId String
-  alteration Alteration?
+  override Employee? @relation("override",fields: [overrideId], references: [id])
+  overrideId String?
 }
 
 model Week {
   id String @id @default(cuid())
   number Int @unique
   days Day[]
-}
-
-model Alteration {
-  id String @id @default(cuid())
-  day Day @relation(fields: [dayId], references: [id])
-  dayId String @unique
-  employee Employee @relation(fields: [employeeId], references: [id])
-  employeeId String
 }

@@ -33,8 +33,16 @@ export const read = async (name?: string): Promise<Result<Employee[]>> => {
             include: {
               week: true,
             },
+            orderBy: { week: { number: 'asc' } },
+          },
+          overrides: {
+            include: {
+              week: true,
+            },
+            orderBy: { week: { number: 'asc' } },
           },
         },
+        orderBy: { name: 'asc' },
       }),
     }
   } catch (error) {
@@ -72,7 +80,13 @@ export const find = async (id: string): Promise<Result<Employee>> => {
   try {
     const employee = await prisma.employee.findUnique({
       where: { id },
-      include: { days: { include: { week: true } } },
+      include: {
+        days: { include: { week: true } },
+        overrides: {
+          include: { week: true },
+          orderBy: { week: { number: 'asc' } },
+        },
+      },
     })
     return employee
       ? {

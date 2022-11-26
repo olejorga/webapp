@@ -1,6 +1,6 @@
 import Link from 'next/link'
-import { useState } from 'react'
-import { Employee } from '../types/model'
+import { useEffect, useState } from 'react'
+import { Day, Employee } from '../types/model'
 import Card from './Card'
 import { Column, Row, Table } from './Table'
 
@@ -26,7 +26,7 @@ export default function EmployeeDetail({ employee, expanded }: EmployeeProps) {
             <Row key={day.id}>
               <Column>{day.name}</Column>
               <Column>
-                <Link href={'/week/' + day.week?.number}>
+                <Link href={'/weeks/' + day.week?.number}>
                   <a className="underline">{`Uke ${day.week?.number}`}</a>
                 </Link>
               </Column>

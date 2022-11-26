@@ -21,8 +21,22 @@ export default function WeekDetail({ week, expanded }: WeekProps) {
             <Row key={day.id}>
               <Column>{day.name}</Column>
               <Column>
-                <Link href={'/employees/' + day.employee?.id}>
-                  <a className="underline">{day.employee?.name}</a>
+                <span className="flex flex-col items-start">
+                  <Link href={'/employees/' + day.employee?.id}>
+                    <a className={day.override ? 'line-through' : 'underline'}>
+                      {day.employee?.name}
+                    </a>
+                  </Link>
+                  {day.override && (
+                    <Link href={'/employees/' + day.override?.id}>
+                      <a className="underline">{day.override?.name}</a>
+                    </Link>
+                  )}
+                </span>
+              </Column>
+              <Column>
+                <Link href={`/days/${day.id}/edit`}>
+                  <a className="underline">Rediger</a>
                 </Link>
               </Column>
             </Row>
