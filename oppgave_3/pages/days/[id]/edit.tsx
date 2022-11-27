@@ -18,6 +18,7 @@ export default function EditDayPage({ id }: EditDayPageProps) {
   const [employees, setEmployees] = useState<Employee[] | null>(null)
   const [overrideId, setOverrideId] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [status, setStatus] = useState<string | undefined>()
 
   useEffect(() => {
     find(id).then(({ error, data }) => {
@@ -37,20 +38,28 @@ export default function EditDayPage({ id }: EditDayPageProps) {
   const handleOverrideSelect: ChangeEventHandler<HTMLSelectElement> = (
     event
   ) => {
+    setStatus('Lagrer...')
+
     const overrideId = event.target.value ? event.target.value : null
 
     setOverrideId(overrideId)
 
     update({ id, overrideId }).then(({ error, data }) => {
-      if (error) setError(error)
+      if (error) {
+        setError(error)
+        setStatus(undefined)
+      }
       if (data) {
+        setError(null)
         setDay(data)
         setOverrideId(data.overrideId)
+        setStatus('Lagret')
+        setTimeout(() => setStatus(undefined), 1000)
       }
     })
   }
 
-  if (error) {
+  if (error && (!day || !employees)) {
     return <Error message={error} />
   } else if (!error && (!day || !employees)) {
     return <Loader />
@@ -58,6 +67,7 @@ export default function EditDayPage({ id }: EditDayPageProps) {
 
   return (
     <section>
+      {error && <Error message={error} />}
       <h1 className="mb-8 text-2xl font-bold">Rediger dag</h1>
       <Table>
         <Row>
@@ -104,6 +114,7 @@ export default function EditDayPage({ id }: EditDayPageProps) {
                   </option>
                 ))}
               </Select>
+              <span>{status}</span>
             </div>
           </Column>
         </Row>

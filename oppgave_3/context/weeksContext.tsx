@@ -27,6 +27,8 @@ export const WeeksProvider = ({ children }: PropsWithChildren) => {
   const [end, setEnd] = useState<number>()
 
   useEffect(() => {
+    setWeeks(null)
+
     api.read(start, end).then(({ error, data }) => {
       if (error) setError(error)
       if (data) setWeeks(data)

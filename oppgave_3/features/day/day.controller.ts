@@ -8,6 +8,8 @@ export const update = async (
   req: NextApiRequest,
   res: NextApiResponse<Result<Day>>
 ) => {
+  await sleep(1000)
+
   const result = await service.update(req.body)
   return res.status(result.status).json(result)
 }
