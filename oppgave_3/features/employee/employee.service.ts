@@ -7,6 +7,20 @@ export const create = async (
   employee: NewEmployee,
   id?: string
 ): Promise<Result<Employee>> => {
+  if (!employee.name) {
+    return {
+      status: 400,
+      error: '"name" missing. Must be nonempty string.',
+    }
+  }
+
+  if (!employee.rules) {
+    return {
+      status: 400,
+      error: '"rules" missing. Must be nonempty string.',
+    }
+  }
+
   return await repo.create(employee, id)
 }
 

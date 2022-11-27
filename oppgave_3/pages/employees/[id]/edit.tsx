@@ -63,7 +63,7 @@ export default function EditEmployeePage({ id }: EditEmployeePageProps) {
           name="name"
           label="Navn"
           placeholder={employee?.name}
-          // required={true}
+          required={true}
         />
         <Button>{buttonText}</Button>
       </form>
