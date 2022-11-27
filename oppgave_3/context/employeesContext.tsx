@@ -24,6 +24,8 @@ export const EmployeeProvider = ({ children }: PropsWithChildren) => {
   const [name, setName] = useState<string>()
 
   useEffect(() => {
+    setEmployees(null)
+
     api.read(name).then(({ error, data }) => {
       if (error) setError(error)
       if (data) setEmployees(data)

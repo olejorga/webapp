@@ -20,7 +20,7 @@ export const update = async (
   if (!employee.name) {
     return {
       status: 400,
-      error: 'Name cannot be empty.',
+      error: '"name" missing. Must be nonempty string.',
     }
   }
 

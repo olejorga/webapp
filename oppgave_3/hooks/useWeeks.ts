@@ -9,6 +9,8 @@ export const useWeeks = () => {
   return {
     weeks: ctx.weeks,
     error: ctx.error,
+    start: ctx.start,
+    end: ctx.end,
     setStart: ctx.setStart,
     setEnd: ctx.setEnd,
   }

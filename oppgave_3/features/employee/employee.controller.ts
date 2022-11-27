@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
+import sleep from '../../lib/sleep'
 import { Employee } from '../../types/model'
 import { Result } from '../../types/result'
 import * as service from './employee.service'
@@ -15,6 +16,8 @@ export const read = async (
   req: NextApiRequest,
   res: NextApiResponse<Result<Employee[]>>
 ) => {
+  await sleep(1000)
+
   const { name } = req.query
   const result = await service.read(name as string)
 
@@ -33,6 +36,8 @@ export const find = async (
   req: NextApiRequest,
   res: NextApiResponse<Result<Employee>>
 ) => {
+  await sleep(1000)
+
   const { id } = req.query
 
   if (id) {

@@ -1,14 +1,13 @@
+import { PropsWithChildren } from 'react'
 import Footer from './Footer'
 import Header from './Header'
 
-const Layout = ({ children }: React.PropsWithChildren<{}>) => {
+export default function Layout({ children }: PropsWithChildren) {
   return (
     <>
       <Header />
-      <main>{children}</main>
+      <main className="container">{children}</main>
       <Footer />
     </>
   )
 }
-
-export default Layout

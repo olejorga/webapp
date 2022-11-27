@@ -1,11 +1,11 @@
-import { Employee } from '../../../types/model'
+import { Day } from '../../../types/model'
 import type { NextApiRequest, NextApiResponse } from 'next'
-import * as controller from '../../../features/employee/employee.controller'
+import * as controller from '../../../features/day/day.controller'
 import { Result } from '../../../types/result'
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Result<Employee>>
+  res: NextApiResponse<Result<Day>>
 ) {
   const { method } = req
 

@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
+import sleep from '../../lib/sleep'
 import { Week } from '../../types/model'
 import { Result } from '../../types/result'
 import * as service from './week.service'
@@ -7,7 +8,11 @@ export const read = async (
   req: NextApiRequest,
   res: NextApiResponse<Result<Week[]>>
 ) => {
-  let { start, end } = req.query
+  await sleep(1000)
+
+  let { start, end, excel } = req.query
+
+  // TODO: Handle excel parsing!
 
   const result = await service.read(
     start ? parseInt(start as string) : undefined,
@@ -21,6 +26,8 @@ export const find = async (
   req: NextApiRequest,
   res: NextApiResponse<Result<Week>>
 ) => {
+  await sleep(1000)
+
   const { number } = req.query
 
   if (number) {
