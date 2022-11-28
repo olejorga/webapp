@@ -1,4 +1,6 @@
+import { type } from 'os'
 import { useWeeks } from '../hooks/useWeeks'
+import Download from './download'
 import Error from './Error'
 import Loader from './Loader'
 import Warning from './Warning'
@@ -16,10 +18,13 @@ export default function WeekList() {
   }
 
   return (
-    <section className="flex flex-col gap-8">
-      {weeks?.map((week) => (
-        <WeekDetail key={week.id} week={week} />
-      ))}
-    </section>
+    <>
+      <Download weeks={weeks}></Download>
+      <section className="flex flex-col gap-8">
+        {weeks?.map((week) => (
+          <WeekDetail key={week.id} week={week} />
+        ))}
+      </section>
+    </>
   )
 }
