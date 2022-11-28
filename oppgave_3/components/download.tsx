@@ -24,7 +24,6 @@ export default function Download({ weeks }: DownloadProps) {
 
       link.click()
 
-      // Cleanup
       URL.revokeObjectURL(url)
     }
   }
