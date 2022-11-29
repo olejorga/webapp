@@ -37,7 +37,6 @@ export async function createSpreadsheetBuffer({
   employees.forEach(({ id, name, days, overrides }) => {
     const scheduled = days?.length ?? 0
     const extra = overrides?.length ?? 0
-    console.log(scheduled + '  ' + extra)
     spreadSheet.columns = [
       ...spreadSheet.columns,
       {
@@ -49,6 +48,51 @@ export async function createSpreadsheetBuffer({
     spreadSheet.getColumn(id).values = [name, scheduled, extra]
   })
 
+  // ALTERNATIV 1
+
+  // var week = ['']
+  // var weekdays = {
+  //   mandag: [''],
+  //   tirsdag: [''],
+  //   onsdag: [''],
+  //   torsdag: [''],
+  //   fredag: [''],
+  // }
+
+  // weeks.forEach(({ number, days }) => {
+  //   week = [...week, number.toString()]
+  //   days?.forEach(({ name, employee, override }) => {
+  //     if (Object.keys(weekdays).includes(name.toLocaleLowerCase())) {
+  //       weekdays[name.toLowerCase()] = [
+  //         ...weekdays[name.toLowerCase()],
+  //         override?.name ?? employee?.name ?? 'Ferie',
+  //       ]
+  //     }
+  //   })
+  // })
+
+  // spreadSheet.getColumn('uke').values = ['Uke', ...week]
+  // spreadSheet.getColumn('mandag').values = ['Mandag', ...weekdays.mandag]
+  // spreadSheet.getColumn('tirsdag').values = ['Tirsdag', ...weekdays.tirsdag]
+  // spreadSheet.getColumn('onsdag').values = ['Onsdag', ...weekdays.onsdag]
+  // spreadSheet.getColumn('torsdag').values = ['Torsdag', ...weekdays.torsdag]
+  // spreadSheet.getColumn('fredag').values = ['Fredagdag', ...weekdays.fredag]
+
+  // ALTERNATIV 2
+  // weeks.forEach(({ number, days }) => {
+  //   spreadSheet.getColumn('uke').values = [
+  //     ...spreadSheet.getColumn('uke').values,
+  //     number,
+  //   ]
+  //   days?.forEach(({ override, employee, name }) => {
+  //     spreadSheet.getColumn(name.toLowerCase()).values = [
+  //       ...spreadSheet.getColumn(name.toLowerCase()).values,
+  //       override?.name ?? employee?.name ?? 'Ferie',
+  //     ]
+  //   })
+  // })
+
+  // ALTERNATIV 3
   weeks.forEach(({ number, days }) => {
     spreadSheet.addRow({
       uke: number,
