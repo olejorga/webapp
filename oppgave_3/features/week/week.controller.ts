@@ -15,7 +15,10 @@ export const read = async (
   // TODO: Handle excel format parsing!
   // (👉 /api/weeks?format=excel)
   // * HINT: "if (format == 'excel')".
-
+  if (format == 'excel') {
+    const result = await service.read()
+    return res.status(result.status).json(result)
+  }
   const result = await service.read(
     start ? parseInt(start as string) : undefined,
     end ? parseInt(end as string) : undefined

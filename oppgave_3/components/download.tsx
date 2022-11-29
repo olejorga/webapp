@@ -1,19 +1,23 @@
-import {
-  createSpreadsheet as createSpreadsheetBuffer,
-  fileName,
-  filetype,
-} from '../lib/excel'
-import { Week } from '../types/model'
+import { Employee } from '@prisma/client'
+import { useEffect, useState } from 'react'
+import { read } from '../features/employee/employee.api'
+import { useWeeks } from '../hooks/useWeeks'
+import { createSpreadsheetBuffer, fileName, filetype } from '../lib/excel'
 import Button from './Button'
 
-type DownloadProps = {
-  weeks: Week[] | null
-}
+export default function Download() {
+  const { weeks } = useWeeks()
+  const [employees, setEmployees] = useState<Employee[] | null>()
+  useEffect(() => {
+    ;(async () => {
+      const { data } = await read()
+      setEmployees(data)
+    })()
+  })
 
-export default function Download({ weeks }: DownloadProps) {
   const handleDownload = async () => {
-    if (weeks) {
-      const buffer = await createSpreadsheetBuffer(weeks)
+    if (weeks && employees) {
+      const buffer = await createSpreadsheetBuffer({ weeks, employees })
 
       const blob = new Blob([buffer], { type: 'application/vnd.ms-excel' })
       const url = URL.createObjectURL(blob)
@@ -28,5 +32,9 @@ export default function Download({ weeks }: DownloadProps) {
     }
   }
 
-  return <>{weeks && <Button onClick={handleDownload}>Last ned</Button>}</>
+  return (
+    <div className="my-2">
+      {weeks && <Button onClick={handleDownload}>Last ned</Button>}
+    </div>
+  )
 }

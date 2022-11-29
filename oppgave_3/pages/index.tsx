@@ -1,3 +1,4 @@
+import Download from '../components/Download'
 import WeekFilter from '../components/WeekFilter'
 import WeekList from '../components/WeekList'
 import YearOverview from '../components/YearOverview'
@@ -10,6 +11,7 @@ export default function HomePage() {
       <YearOverview />
       <WeekFilter />
       <hr className="mb-8 mt-2" />
+      <Download />
       <WeekList />
     </WeeksProvider>
   )
