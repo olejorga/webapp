@@ -48,74 +48,20 @@ export async function createSpreadsheetBuffer({
     spreadSheet.getColumn(id).values = [name, scheduled, extra]
   })
 
-  // ALTERNATIV 1
-
-  // var week = ['']
-  // var weekdays = {
-  //   mandag: [''],
-  //   tirsdag: [''],
-  //   onsdag: [''],
-  //   torsdag: [''],
-  //   fredag: [''],
-  // }
-
-  // weeks.forEach(({ number, days }) => {
-  //   week = [...week, number.toString()]
-  //   days?.forEach(({ name, employee, override }) => {
-  //     if (Object.keys(weekdays).includes(name.toLocaleLowerCase())) {
-  //       weekdays[name.toLowerCase()] = [
-  //         ...weekdays[name.toLowerCase()],
-  //         override?.name ?? employee?.name ?? 'Ferie',
-  //       ]
-  //     }
-  //   })
-  // })
-
-  // spreadSheet.getColumn('uke').values = ['Uke', ...week]
-  // spreadSheet.getColumn('mandag').values = ['Mandag', ...weekdays.mandag]
-  // spreadSheet.getColumn('tirsdag').values = ['Tirsdag', ...weekdays.tirsdag]
-  // spreadSheet.getColumn('onsdag').values = ['Onsdag', ...weekdays.onsdag]
-  // spreadSheet.getColumn('torsdag').values = ['Torsdag', ...weekdays.torsdag]
-  // spreadSheet.getColumn('fredag').values = ['Fredagdag', ...weekdays.fredag]
-
-  // ALTERNATIV 2
-  // weeks.forEach(({ number, days }) => {
-  //   spreadSheet.getColumn('uke').values = [
-  //     ...spreadSheet.getColumn('uke').values,
-  //     number,
-  //   ]
-  //   days?.forEach(({ override, employee, name }) => {
-  //     spreadSheet.getColumn(name.toLowerCase()).values = [
-  //       ...spreadSheet.getColumn(name.toLowerCase()).values,
-  //       override?.name ?? employee?.name ?? 'Ferie',
-  //     ]
-  //   })
-  // })
-
-  // ALTERNATIV 3
   weeks.forEach(({ number, days }) => {
-    spreadSheet.addRow({
-      uke: number,
-      mandag:
-        days?.find(({ name }) => name === 'Mandag')?.override?.name ??
-        days?.find(({ name }) => name === 'Mandag')?.employee?.name ??
-        'Ferie',
-      tirsdag:
-        days?.find(({ name }) => name === 'Tirsdag')?.override?.name ??
-        days?.find(({ name }) => name === 'Tirsdag')?.employee?.name ??
-        'Ferie',
-      onsdag:
-        days?.find(({ name }) => name === 'Onsdag')?.override?.name ??
-        days?.find(({ name }) => name === 'Onsdag')?.employee?.name ??
-        'Ferie',
-      torsdag:
-        days?.find(({ name }) => name === 'Torsdag')?.override?.name ??
-        days?.find(({ name }) => name === 'Torsdag')?.employee?.name ??
-        'Ferie',
-      fredag:
-        days?.find(({ name }) => name === 'Fredag')?.override?.name ??
-        days?.find(({ name }) => name === 'Fredag')?.employee?.name ??
-        'Ferie',
+    spreadSheet.getColumn('uke').values = [
+      ...spreadSheet
+        .getColumn('uke')
+        .values.filter((CellValue) => CellValue?.toString() != ''),
+      number,
+    ]
+    days?.forEach(({ override, employee, name }) => {
+      spreadSheet.getColumn(name.toLowerCase()).values = [
+        ...spreadSheet
+          .getColumn(name.toLowerCase())
+          .values.filter((CellValue) => CellValue?.toString() != ''),
+        override?.name ?? employee?.name ?? 'Ferie',
+      ]
     })
   })
 
