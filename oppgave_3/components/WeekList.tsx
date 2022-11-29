@@ -1,6 +1,4 @@
-import { type } from 'os'
 import { useWeeks } from '../hooks/useWeeks'
-import Download from './Download'
 import Error from './Error'
 import Loader from './Loader'
 import Warning from './Warning'

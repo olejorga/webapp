@@ -8,14 +8,10 @@ import Button from './Button'
 export default function Download() {
   const { weeks } = useWeeks()
   const [employees, setEmployees] = useState<Employee[] | null>()
-  useEffect(() => {
-    ;(async () => {
-      const { data } = await read()
-      setEmployees(data)
-    })()
-  })
 
   const handleDownload = async () => {
+    const { data } = await read()
+    setEmployees(data)
     if (weeks && employees) {
       const buffer = await createSpreadsheetBuffer({ weeks, employees })
 
