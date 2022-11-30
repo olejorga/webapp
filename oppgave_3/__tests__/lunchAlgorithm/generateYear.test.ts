@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { generateYear } from '../../lib/lunchAlgorithm'
 
 describe('yearGenerator', () => {
-  it(`should generate 52 weeks`, () => {
+  it(`should have 52 weeks`, () => {
     const weeks = generateYear()
     expect(weeks.length).toBe(52)
   })
