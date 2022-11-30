@@ -68,10 +68,10 @@ export function isValid(rules: string, day: string, week: number): boolean {
   var result = false
   if (rules.includes('|')) {
     const ruleArray = rules.split('|')
-    ruleArray.forEach((rule) => {
-      result = isValid(rule, day, week)
-      if (result == false) return result
-    })
+    for (var i = 0; i < ruleArray.length; i++) {
+      result = isValid(ruleArray[i], day, week)
+      if (result == false) break
+    }
   } else {
     if (rules.includes('week')) {
       if (rules.includes('odd')) {
@@ -88,7 +88,7 @@ export function isValid(rules: string, day: string, week: number): boolean {
         result = true
       } else if (rules.includes(getDayAsNumber(day).toString())) {
         result = true
-      }
+      } else result = false
     }
   }
   return result

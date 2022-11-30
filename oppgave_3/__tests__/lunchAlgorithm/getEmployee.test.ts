@@ -5,7 +5,7 @@ import { getDayAsNumber, getEmployee, isValid } from '../../lib/lunchAlgorithm'
 const employees: Employee[] = [
   { id: 'testSimen', name: 'Test Simen', rules: 'days:145' },
   { id: 'testOle', name: 'Test Ole', rules: 'days:*' },
-  { id: 'testErik', name: 'Test Erik', rules: 'days:23' },
+  { id: 'testErik', name: 'Test Erik', rules: 'days:23|week:even' },
   { id: 'testKai', name: 'Test Kai', rules: 'days:15' },
   { id: 'testRune', name: 'Test Rune', rules: 'days:*|week:odd' },
   { id: 'testLine', name: 'Test Line', rules: 'days:*|week:even' },
@@ -114,5 +114,15 @@ describe(`check if rules of employee isValid with day and week`, () => {
     const testEmployee = employees[1]
     const result = isValid(testEmployee.rules, 'Onsdag', 1)
     expect(result).toBe(true)
+  })
+  it(`should return false if DAY is OK, but WEEK is NOT OK`, () => {
+    const testEmployee = employees[2]
+    const result = isValid(testEmployee.rules, 'Tirsdag', 3)
+    expect(result).toBe(false)
+  })
+  it(`should return false if WEEK is OK, but DAY is NOT OK`, () => {
+    const testEmployee = employees[2]
+    const result = isValid(testEmployee.rules, 'Torsdag', 2)
+    expect(result).toBe(false)
   })
 })
