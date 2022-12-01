@@ -1,15 +1,28 @@
 import { Day, Employee, Week } from './../../types/model'
 import { describe, expect, it } from 'vitest'
-import { getDayAsNumber, getEmployee, isValid } from '../../lib/lunchAlgorithm'
+import {
+  addEmployeeToLunchList,
+  generateYear,
+  getCurrentBatch,
+  getDayAsNumber,
+  getEmployeeWithValidRules,
+  hasOccured,
+} from '../../lib/lunchAlgorithm'
 
 const employees: Employee[] = [
   { id: 'testSimen', name: 'Test Simen', rules: 'days:145' },
   { id: 'testOle', name: 'Test Ole', rules: 'days:*' },
   { id: 'testErik', name: 'Test Erik', rules: 'days:23|week:even' },
-  { id: 'testKai', name: 'Test Kai', rules: 'days:15' },
+  { id: 'testTor', name: 'Test Tor', rules: 'days:23|week:odd' },
+  { id: 'testKai', name: 'Test Kai', rules: 'days:135' },
   { id: 'testRune', name: 'Test Rune', rules: 'days:*|week:odd' },
   { id: 'testLine', name: 'Test Line', rules: 'days:*|week:even' },
   { id: 'testKari', name: 'Test Kari', rules: 'week:3' },
+  { id: 'testLinn', name: 'Test Linn', rules: '*' },
+  { id: 'testPelle', name: 'Test Pelle', rules: '*' },
+  { id: 'testTruls', name: 'Test Truls', rules: '*' },
+  { id: 'testErna', name: 'Test Erna', rules: 'days:145|odd' },
+  { id: 'testJens', name: 'Test Erna', rules: 'days:145|even' },
 ]
 const workWeek: Week = { id: 'workWeek', number: 4 }
 const vacationWeek: Week = { id: 'vactionWeek', number: 32 }
@@ -23,7 +36,7 @@ const testMonday: Day = {
 
 describe(`No employee returned if vacation`, () => {
   it(`should return error with message 'ferie' if vacation`, () => {
-    var { employee, error } = getEmployee(
+    var { error } = getEmployeeWithValidRules(
       employees,
       testMonday.name,
       vacationWeek.number
@@ -31,7 +44,7 @@ describe(`No employee returned if vacation`, () => {
     expect(error).toBe('Ferie')
   })
   it(`should return employee == null`, () => {
-    var { employee, error } = getEmployee(
+    var { employee } = getEmployeeWithValidRules(
       employees,
       testMonday.name,
       vacationWeek.number
@@ -40,9 +53,11 @@ describe(`No employee returned if vacation`, () => {
   })
 })
 
-it(`should return no employee and correct error message if Lørdag`, () => {
-  const { error } = getEmployee(employees, 'Lørdag', 5)
-  expect(error).toBe('Ugyldig dag')
+describe(`employees don't work in the weekends`, () => {
+  it(`should return no employee and correct error message if Lørdag`, () => {
+    const { error } = getEmployeeWithValidRules(employees, 'Lørdag', 5)
+    expect(error).toBe('Ugyldig dag')
+  })
 })
 
 describe(`dayNumber`, () => {
@@ -64,65 +79,53 @@ describe(`dayNumber`, () => {
   })
 })
 
-describe(`check if rules of employee isValid with day and week`, () => {
-  it(`should be false if test Kai is asked to make lunch on Tirsdag`, () => {
-    const testEmployee = employees[3]
-    const result = isValid(testEmployee.rules, 'Tirsdag', 2)
-    expect(result).toBe(false)
+describe(`getCurrentBatch get the batch of the year and `, () => {
+  it(`should return 1 if week is 3`, () => {
+    var result = getCurrentBatch(3)
+    expect(result).toBe(1)
   })
-  it(`should be true if test Kai is asked to make lunch on Mandag`, () => {
-    const testEmployee = employees[3]
-    const result = isValid(testEmployee.rules, 'Mandag', 2)
+  it(`should return 1 if week is within 1-4`, () => {
+    var result = true
+    var i = 1
+    while (result && i < 5) {
+      result = getCurrentBatch(i) == 1
+      i++
+    }
     expect(result).toBe(true)
   })
-  it(`should be false if test Rune is asked to make lunch on even weeks`, () => {
-    const testEmployee = employees[4]
-    const result = isValid(testEmployee.rules, 'Mandag', 4)
-    expect(result).toBe(false)
-  })
-  it(`should be true if test Rune is asked to make lunch on odd weeks`, () => {
-    const testEmployee = employees[4]
-    const result = isValid(testEmployee.rules, 'Mandag', 7)
+  it(`should return 2 if week is within 5-8`, () => {
+    var result = true
+    var i = 5
+    while (result && i < 9) {
+      result = getCurrentBatch(i) == 2
+      i++
+    }
     expect(result).toBe(true)
   })
-  it(`should be true if test Line is asked to make lunch on even weeks`, () => {
-    const testEmployee = employees[5]
-    const result = isValid(testEmployee.rules, 'Mandag', 4)
-    expect(result).toBe(true)
-  })
-  it(`should be false if test Line is asked to make lunch on odd weeks`, () => {
-    const testEmployee = employees[5]
-    const result = isValid(testEmployee.rules, 'Mandag', 7)
+  it(`should not return 2 if week is within 1-4`, () => {
+    var result = true
+    var i = 1
+    while (result && i < 5) {
+      result = getCurrentBatch(i) == 2
+    }
     expect(result).toBe(false)
+    i++
   })
-  it(`should be true if test Kari is asked to make lunch on week 9`, () => {
-    const testEmployee = employees[6]
-    const result = isValid(testEmployee.rules, 'Mandag', 9)
+})
+
+describe(`Employees not occuring to often`, () => {
+  it(`should not be added twice in a week`, () => {
+    const weeks = generateYear()
+    var addedEmployees: string[] = []
+    const occurence: [Employee[]] = [[]]
+    weeks[0].days?.forEach((day) => {
+      addEmployeeToLunchList(employees, day, weeks[0], occurence)
+      addedEmployees.push(day.employee?.name ?? '')
+    })
+    var result = false
+    if (new Set(addedEmployees).size === addedEmployees.length) {
+      result = true
+    }
     expect(result).toBe(true)
-  })
-  it(`should be true if test Kari is asked to make lunch on week 12`, () => {
-    const testEmployee = employees[6]
-    const result = isValid(testEmployee.rules, 'Mandag', 12)
-    expect(result).toBe(true)
-  })
-  it(`should be false if test Kari is asked to make lunch on week 13`, () => {
-    const testEmployee = employees[6]
-    const result = isValid(testEmployee.rules, 'Mandag', 13)
-    expect(result).toBe(false)
-  })
-  it(`should be true if test Ole is asked to do lunch any day`, () => {
-    const testEmployee = employees[1]
-    const result = isValid(testEmployee.rules, 'Onsdag', 1)
-    expect(result).toBe(true)
-  })
-  it(`should return false if DAY is OK, but WEEK is NOT OK`, () => {
-    const testEmployee = employees[2]
-    const result = isValid(testEmployee.rules, 'Tirsdag', 3)
-    expect(result).toBe(false)
-  })
-  it(`should return false if WEEK is OK, but DAY is NOT OK`, () => {
-    const testEmployee = employees[2]
-    const result = isValid(testEmployee.rules, 'Torsdag', 2)
-    expect(result).toBe(false)
   })
 })
