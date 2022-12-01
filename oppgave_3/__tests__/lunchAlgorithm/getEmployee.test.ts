@@ -14,6 +14,7 @@ const employees: Employee[] = [
   { id: 'testOle', name: 'Test Ole', rules: 'days:*' },
   { id: 'testErik', name: 'Test Erik', rules: 'days:23|week:even' },
   { id: 'testTor', name: 'Test Tor', rules: 'days:23|week:odd' },
+  { id: 'testTore', name: 'Test Tore', rules: 'days:1235|week:odd' },
   { id: 'testKai', name: 'Test Kai', rules: 'days:135' },
   { id: 'testRune', name: 'Test Rune', rules: 'days:*|week:odd' },
   { id: 'testLine', name: 'Test Line', rules: 'days:*|week:even' },
@@ -22,7 +23,9 @@ const employees: Employee[] = [
   { id: 'testPelle', name: 'Test Pelle', rules: '*' },
   { id: 'testTruls', name: 'Test Truls', rules: '*' },
   { id: 'testErna', name: 'Test Erna', rules: 'days:145|odd' },
-  { id: 'testJens', name: 'Test Erna', rules: 'days:145|even' },
+  { id: 'testJens', name: 'Test Jens', rules: 'days:145|even' },
+  { id: 'testTrine', name: 'Test Trine', rules: 'week:4' },
+  { id: 'testTrond', name: 'Test Trond', rules: 'days:145|even' },
 ]
 const workWeek: Week = { id: 'workWeek', number: 4 }
 const vacationWeek: Week = { id: 'vactionWeek', number: 32 }
@@ -126,6 +129,13 @@ describe(`Employees not occuring to often`, () => {
     if (new Set(addedEmployees).size === addedEmployees.length) {
       result = true
     }
+    expect(result).toBe(true)
+  })
+
+  it(`should not be added twice in a batch`, () => {
+    const testPerson = { id: '1', name: 'TestNavn', rules: '*' }
+    const occurence: [Employee[]] = [[testPerson, employees[0], employees[1]]]
+    const result = hasOccured(testPerson, 2, occurence)
     expect(result).toBe(true)
   })
 })

@@ -14,7 +14,7 @@ const yearSize = 52
 const weekSize = 5
 const vacation = [8, 28, 29, 30, 31, 32, 40, 52]
 const batchSize = 4
-const maxOccurence = 2
+const maxOccurence = 1
 
 export function getCurrentBatch(week: number): number {
   if (week % batchSize == 0) return week / batchSize
@@ -22,7 +22,10 @@ export function getCurrentBatch(week: number): number {
 }
 
 // TODO: Ta port weekamount. Trengs bare til testing enn så lenge
-export function populateLunchList(employees: Employee[], weekAmount: number) {
+export function populateLunchList(
+  employees: Employee[],
+  weekAmount: number
+): Week[] {
   const weeks = generateYear()
   const occurences: [Employee[]] = [[]]
 
@@ -31,6 +34,8 @@ export function populateLunchList(employees: Employee[], weekAmount: number) {
       addEmployeeToLunchList(employees, day, weeks[i])
     })
   }
+
+  return weeks
 }
 
 // Oppretter et år.
