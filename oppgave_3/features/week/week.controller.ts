@@ -3,28 +3,37 @@ import sleep from '../../lib/sleep'
 import { Week } from '../../types/model'
 import { Result } from '../../types/result'
 import * as service from './week.service'
+import { read as readEmployees } from '../employee/employee.service'
+import { downloadExcel } from '../../lib/excel'
 
 export const read = async (
   req: NextApiRequest,
-  res: NextApiResponse<Result<Week[]>>
+  res: NextApiResponse<Result<Week[]> | unknown>
 ) => {
   await sleep(1000)
 
   let { start, end, format } = req.query
 
-  // TODO: Handle excel format parsing!
-  // (👉 /api/weeks?format=excel)
-  // * HINT: "if (format == 'excel')".
-  if (format == 'excel') {
-    const result = await service.read()
-    return res.status(result.status).json(result)
-  }
-  const result = await service.read(
+  const weeksResult = await service.read(
     start ? parseInt(start as string) : undefined,
     end ? parseInt(end as string) : undefined
   )
 
-  return res.status(result.status).json(result)
+  if (format == 'excel') {
+    const employeeResult = await readEmployees()
+
+    if (weeksResult.error || employeeResult.error) {
+      return res
+        .status(weeksResult.error ? weeksResult.status : employeeResult.status)
+        .json(weeksResult.error ? weeksResult : employeeResult)
+    }
+
+    if (weeksResult.data && employeeResult.data) {
+      return await downloadExcel(weeksResult.data, employeeResult.data, res)
+    }
+  }
+
+  return res.status(weeksResult.status).json(weeksResult)
 }
 
 export const find = async (

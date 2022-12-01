@@ -1,21 +1,17 @@
 import ExcelJS from 'exceljs'
+import { NextApiResponse } from 'next'
 import { Employee, Week } from '../types/model'
 
-export const filetype = 'xlsx'
-export const fileName = 'lunch_list'
+const NAME = 'lunch_list'
 
-type SpreadSheetProps = {
-  weeks: Week[]
+function createWorkbook(
+  weeks: Week[],
   employees: Employee[]
-}
-
-export async function createSpreadsheetBuffer({
-  weeks,
-  employees,
-}: SpreadSheetProps): Promise<ExcelJS.Buffer> {
+): ExcelJS.Workbook {
   const workbook = new ExcelJS.Workbook()
-  const spreadSheet = workbook.addWorksheet(fileName)
-  spreadSheet.columns = [
+  const spreadsheet = workbook.addWorksheet(NAME)
+
+  spreadsheet.columns = [
     { header: 'Uke', key: 'uke', width: 10, style: { font: { bold: true } } },
     {
       header: 'Mandag',
@@ -33,31 +29,35 @@ export async function createSpreadsheetBuffer({
       style: { font: { bold: true } },
     },
   ]
-  spreadSheet.getColumn('forklaring').values = ['', 'Planlagt →', 'Ekstra →']
+
+  spreadsheet.getColumn('forklaring').values = ['', 'Planlagt →', 'Ekstra →']
+
   employees.forEach(({ id, name, days, overrides }) => {
     const scheduled = days?.length ?? 0
     const extra = overrides?.length ?? 0
-    spreadSheet.columns = [
-      ...spreadSheet.columns,
+
+    spreadsheet.columns = [
+      ...spreadsheet.columns,
       {
         header: name,
         key: id,
         width: 16,
       },
     ]
-    spreadSheet.getColumn(id).values = [name, scheduled, extra]
+    spreadsheet.getColumn(id).values = [name, scheduled, extra]
   })
 
   weeks.forEach(({ number, days }) => {
-    spreadSheet.getColumn('uke').values = [
-      ...spreadSheet
+    spreadsheet.getColumn('uke').values = [
+      ...spreadsheet
         .getColumn('uke')
         .values.filter((CellValue) => CellValue?.toString() != ''),
       number,
     ]
+
     days?.forEach(({ override, employee, name }) => {
-      spreadSheet.getColumn(name.toLowerCase()).values = [
-        ...spreadSheet
+      spreadsheet.getColumn(name.toLowerCase()).values = [
+        ...spreadsheet
           .getColumn(name.toLowerCase())
           .values.filter((CellValue) => CellValue?.toString() != ''),
         override?.name ?? employee?.name ?? 'Ferie',
@@ -65,9 +65,30 @@ export async function createSpreadsheetBuffer({
     })
   })
 
-  const buffer = await workbook.xlsx.writeBuffer()
+  return workbook
+}
 
-  workbook.removeWorksheet(fileName)
+export async function downloadExcel(
+  weeks: Week[],
+  employees: Employee[],
+  response: NextApiResponse<unknown>
+) {
+  const workbook = createWorkbook(weeks, employees)
 
-  return buffer
+  response.setHeader(
+    'Content-Type',
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+  )
+  response.setHeader(
+    'Content-Disposition',
+    'attachment; filename=' + NAME + '.xlsx'
+  )
+
+  response.status(200)
+
+  await workbook.xlsx.write(response)
+
+  response.end()
+
+  workbook.removeWorksheet(NAME)
 }
