@@ -1,2 +1,0 @@
-# Webapp
-[https://digitalgnist.notion.site/Eksamen-Webapplikasjoner-2022-0cc2e9a2234249fcb8491faf0b4ce833](https://digitalgnist.notion.site/Eksamen-Webapplikasjoner-2022-0cc2e9a2234249fcb8491faf0b4ce833)
