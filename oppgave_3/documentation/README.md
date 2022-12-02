@@ -7,8 +7,8 @@ type Employee = {
   id: string
   name: string
   rules: string
-  days: Day[]
-  alterations: Alteration[]
+  days?: Day[]
+  overrides?: Day[]
 }
 ```
 
@@ -18,11 +18,12 @@ type Employee = {
 type Day = {
   id: string
   name: string
-  employee: Employee
-  employeeId: string
-  week: Week
+  employee?: Employee | null
+  employeeId: string | null
+  week?: Week
   weekId: string
-  alteration?: Alteration
+  override?: Employee | null
+  overrideId: string | null
 }
 ```
 
@@ -32,32 +33,7 @@ type Day = {
 type Week = {
   id: string
   number: number
-  days: Day[]
-}
-```
-
-## Alteration
-
-```ts
-type Alteration = {
-  id: string
-  day: Day
-  dayId: string
-  employee: Employee
-  employeeId: string
-}
-```
-
-## Options
-
-```ts
-type Options = {
-  vacations: number[] // Array of week numbers.
-  yearSize: number // Number of weeks in a year.
-  workDays: number // Number of work days per week.
-  batchSize: number // ...
-  maxOccurrences: number // ...
-  days: string[] // Array of names of days.
+  days?: Day[]
 }
 ```
 
@@ -68,11 +44,12 @@ type Options = {
 ```ts
 // The standard response returned from all endpoints.
 // Will always be data or an error.
-// Generic "T" is the type of data expected.
-type Result<T> = Data<T> | Error
-
-type Data<T> = { status: number; data: T }
-type Error = { status: number; error: string }
+// Generic "Data" is the type of data expected.
+type Result<Data> = {
+  status: number
+  data?: Data
+  error?: string
+}
 ```
 
 ## Employee
@@ -85,12 +62,12 @@ GET:
   500: Error
 
   PARAMS:
-    ?search={phrase} Employees with names containing phrase.
+    ?name={phrase} Employees with names containing phrase.
 
 POST:
-  201: Data<Employee>
-  400: Error
-  500: Error
+  201: Result<Employee>
+  400: Result<undefined> with error
+  500: Result<Employee>
 
   BODY: Employee
 ```
