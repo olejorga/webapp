@@ -1,3 +1,4 @@
+import { randomUUID } from 'crypto'
 import { Week, Employee, Day } from '../types/model'
 
 const weekDays = [
@@ -54,7 +55,7 @@ export function generateYear(): Week[] {
 // Lager en random id
 // Id er ikke nullable så måtte sette noe.
 const generateId = (): string => {
-  return (Math.random() + 1).toString(36).substring(7)
+  return randomUUID()
 }
 
 type GetEmployeeResult = {
@@ -76,7 +77,7 @@ export function addEmployeeToLunchList(
   )
   if (error && error != 'Ferie') throw new Error(error)
   if (employee) {
-    if (hasOccured(employee, week.number, occurence)) {
+    if (hasOccured(employee, week.number, day.name, occurence)) {
       addEmployeeToLunchList(employees, day, week, occurence)
     } else {
       setOccured(employee, week.number, occurence)
@@ -165,14 +166,56 @@ export function getCurrentBatch(week: number): number {
 export function hasOccured(
   employee: Employee,
   week: number,
+  day: string,
   occurences: [Employee[]]
 ): boolean {
-  const index = getCurrentBatch(week) - 1
-  if (occurences[index] == undefined) occurences[index] = []
-  return (
-    occurences[index].filter(({ id }) => id == employee.id).length >=
-    maxOccurence
-  )
+  var result = hasOccuredThisBatch(employee, week, occurences)
+  if (result == true) {
+    return result
+  }
+  var result = hasOccuredThisDay(employee, week, day, occurences)
+  return result
+}
+
+export function hasOccuredThisDay(
+  employee: Employee,
+  week: number,
+  day: string,
+  occurences: [Employee[]]
+): boolean {
+  const currentWeek = week - 1
+  const lastWeek = week - 2
+  const dayNumber = getDayAsNumber(day)
+  if (occurences[currentWeek] == undefined) {
+    occurences[currentWeek] = []
+  }
+  if (occurences[lastWeek] == undefined) {
+    occurences[lastWeek] = []
+  }
+  if (currentWeek > 0) {
+    return occurences[lastWeek][dayNumber - 1]?.id == employee.id
+  }
+  return false
+}
+
+export function hasOccuredThisBatch(
+  employee: Employee,
+  week: number,
+  occurences: [Employee[]]
+): boolean {
+  const weeksInBatch = getWeeksInBatch(week)
+
+  var result = false
+  weeksInBatch.forEach((w) => {
+    if (occurences[w - 1] == undefined) {
+      occurences[w - 1] = []
+    }
+    result =
+      occurences[w - 1].filter(({ id }) => {
+        id == employee.id
+      }).length >= maxOccurence
+  })
+  return result
 }
 
 const setOccured = (
@@ -180,7 +223,7 @@ const setOccured = (
   week: number,
   occurences: [Employee[]]
 ) => {
-  const index = getCurrentBatch(week) - 1
+  const index = week - 1
   if (occurences[index] === undefined) {
     occurences[index] = []
   }
@@ -192,4 +235,8 @@ const priority = (
   occurrence: Employee[]
 ): Employee[] => {
   return employees.filter((e) => !occurrence.includes(e))
+}
+
+export function getWeeksInBatch(batch: number): number[] {
+  return Array.from([1, 2, 3, 4], (x) => x + (batch - 1) * 4)
 }

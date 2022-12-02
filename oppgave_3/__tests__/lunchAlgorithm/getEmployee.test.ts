@@ -6,7 +6,9 @@ import {
   getCurrentBatch,
   getDayAsNumber,
   getEmployeeWithValidRules,
+  getWeeksInBatch,
   hasOccured,
+  hasOccuredThisDay,
   populateLunchList,
 } from '../../lib/lunchAlgorithm'
 import { employees, vacation } from './testEmployees'
@@ -101,43 +103,11 @@ describe(`getCurrentBatch get the batch of the year and `, () => {
 })
 
 describe(`Employees not occuring to often`, () => {
-  it(`should not be added twice in a batch`, () => {
-    const weeks = populateLunchList(employees)
-    var addedEmployees: string[] = []
-    for (var i = 0; i < 4; i++) {
-      if (!vacation.includes(weeks[i].number)) {
-        weeks[i].days?.forEach(({ employeeId }) => {
-          if (employeeId) addedEmployees.push(employeeId)
-        })
-      }
-    }
-
-    var result = false
-    if (new Set(addedEmployees).size === addedEmployees.length) {
-      result = true
-    }
-    expect(result).toBe(true)
-  })
-  it(`should not be added twice in a week 11`, () => {
-    const weeks = populateLunchList(employees)
-    var addedEmployees: string[] = []
-    if (!vacation.includes(weeks[10].number)) {
-      weeks[10].days?.forEach(({ employeeId }) => {
-        if (employeeId) addedEmployees.push(employeeId)
-      })
-    }
-
-    var result = false
-    if (new Set(addedEmployees).size === addedEmployees.length) {
-      result = true
-    }
-    expect(result).toBe(true)
-  })
-
-  it(`should not be added twice in a batch`, () => {
+  it(`should not be added on same day two weeks in a row`, () => {
     const testPerson = { id: '1', name: 'TestNavn', rules: '*' }
+    const day = 'Mandag'
     const occurence: [Employee[]] = [[testPerson, employees[0], employees[1]]]
-    const result = hasOccured(testPerson, 2, occurence)
+    const result = hasOccuredThisDay(testPerson, 2, day, occurence)
     expect(result).toBe(true)
   })
 })
@@ -180,5 +150,16 @@ describe(`Vacation check`, () => {
     ).length
 
     expect(lunchCountWeek33).toBe(0)
+  })
+})
+
+describe(`Get weeks from batch number`, () => {
+  it(`should return array 1-4 when batch 1`, () => {
+    const result = getWeeksInBatch(1)
+    expect(result).toStrictEqual([1, 2, 3, 4])
+  })
+  it(`should return array 5-8 when batch 2`, () => {
+    const result = getWeeksInBatch(2)
+    expect(result).toStrictEqual([5, 6, 7, 8])
   })
 })
