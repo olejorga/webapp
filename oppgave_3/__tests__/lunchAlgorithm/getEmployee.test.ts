@@ -7,26 +7,10 @@ import {
   getDayAsNumber,
   getEmployeeWithValidRules,
   hasOccured,
+  populateLunchList,
 } from '../../lib/lunchAlgorithm'
+import { employees, vacation } from './testEmployees'
 
-const employees: Employee[] = [
-  { id: 'testSimen', name: 'Test Simen', rules: 'days:145' },
-  { id: 'testOle', name: 'Test Ole', rules: 'days:*' },
-  { id: 'testErik', name: 'Test Erik', rules: 'days:23|week:even' },
-  { id: 'testTor', name: 'Test Tor', rules: 'days:23|week:odd' },
-  { id: 'testTore', name: 'Test Tore', rules: 'days:1235|week:odd' },
-  { id: 'testKai', name: 'Test Kai', rules: 'days:135' },
-  { id: 'testRune', name: 'Test Rune', rules: 'days:*|week:odd' },
-  { id: 'testLine', name: 'Test Line', rules: 'days:*|week:even' },
-  { id: 'testKari', name: 'Test Kari', rules: 'week:3' },
-  { id: 'testLinn', name: 'Test Linn', rules: '*' },
-  { id: 'testPelle', name: 'Test Pelle', rules: '*' },
-  { id: 'testTruls', name: 'Test Truls', rules: '*' },
-  { id: 'testErna', name: 'Test Erna', rules: 'days:145|odd' },
-  { id: 'testJens', name: 'Test Jens', rules: 'days:145|even' },
-  { id: 'testTrine', name: 'Test Trine', rules: 'week:4' },
-  { id: 'testTrond', name: 'Test Trond', rules: 'days:145|even' },
-]
 const workWeek: Week = { id: 'workWeek', number: 4 }
 const vacationWeek: Week = { id: 'vactionWeek', number: 32 }
 const testMonday: Day = {
@@ -117,14 +101,32 @@ describe(`getCurrentBatch get the batch of the year and `, () => {
 })
 
 describe(`Employees not occuring to often`, () => {
-  it(`should not be added twice in a week`, () => {
-    const weeks = generateYear()
+  it(`should not be added twice in a batch`, () => {
+    const weeks = populateLunchList(employees)
     var addedEmployees: string[] = []
-    const occurence: [Employee[]] = [[]]
-    weeks[0].days?.forEach((day) => {
-      addEmployeeToLunchList(employees, day, weeks[0], occurence)
-      addedEmployees.push(day.employee?.name ?? '')
-    })
+    for (var i = 0; i < 4; i++) {
+      if (!vacation.includes(weeks[i].number)) {
+        weeks[i].days?.forEach(({ employeeId }) => {
+          if (employeeId) addedEmployees.push(employeeId)
+        })
+      }
+    }
+
+    var result = false
+    if (new Set(addedEmployees).size === addedEmployees.length) {
+      result = true
+    }
+    expect(result).toBe(true)
+  })
+  it(`should not be added twice in a week 11`, () => {
+    const weeks = populateLunchList(employees)
+    var addedEmployees: string[] = []
+    if (!vacation.includes(weeks[10].number)) {
+      weeks[10].days?.forEach(({ employeeId }) => {
+        if (employeeId) addedEmployees.push(employeeId)
+      })
+    }
+
     var result = false
     if (new Set(addedEmployees).size === addedEmployees.length) {
       result = true
@@ -137,5 +139,46 @@ describe(`Employees not occuring to often`, () => {
     const occurence: [Employee[]] = [[testPerson, employees[0], employees[1]]]
     const result = hasOccured(testPerson, 2, occurence)
     expect(result).toBe(true)
+  })
+})
+
+describe(`Generate an entire year and add employees`, () => {
+  it(`should be 5 employees each week`, () => {
+    var result = false
+    const lunchList = populateLunchList(employees)
+    lunchList.forEach(({ days, number }) => {
+      days?.forEach(({ employeeId }) => {
+        if (employeeId == null && !vacation.includes(number)) result = false
+        else result = true
+      })
+    })
+    expect(result).toBe(true)
+  })
+})
+
+describe(`Vacation check`, () => {
+  it(`should be no employees in week 8`, () => {
+    const lunchList = populateLunchList(employees)
+    const lunchCountWeek8 = lunchList[7].days?.filter(
+      ({ employeeId }) => employeeId == null
+    ).length
+
+    expect(lunchCountWeek8).toBe(5)
+  })
+  it(`should be no employees in week 31`, () => {
+    const lunchList = populateLunchList(employees)
+    const lunchCountWeek31 = lunchList[30].days?.filter(
+      ({ employeeId }) => employeeId == null
+    ).length
+
+    expect(lunchCountWeek31).toBe(5)
+  })
+  it(`should be employees in week 33`, () => {
+    const lunchList = populateLunchList(employees)
+    const lunchCountWeek33 = lunchList[32].days?.filter(
+      ({ employeeId }) => employeeId == null
+    ).length
+
+    expect(lunchCountWeek33).toBe(0)
   })
 })

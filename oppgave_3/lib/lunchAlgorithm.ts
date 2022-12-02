@@ -10,28 +10,19 @@ const weekDays = [
   'Søndag',
 ]
 
-const yearSize = 52
-const weekSize = 5
+const yearSize = 52 // Weeks in a year
+const weekSize = 5 // Days in a week (max 7)
 const vacation = [8, 28, 29, 30, 31, 32, 40, 52]
-const batchSize = 4
-const maxOccurence = 1
+const batchSize = 4 // how many weeks there are in one batch
+const maxOccurence = 1 // how many times an employee can make lunch in one (Tests will fail if this is changed)
 
-export function getCurrentBatch(week: number): number {
-  if (week % batchSize == 0) return week / batchSize
-  return Math.floor(week / batchSize) + 1
-}
-
-// TODO: Ta port weekamount. Trengs bare til testing enn så lenge
-export function populateLunchList(
-  employees: Employee[],
-  weekAmount: number
-): Week[] {
+export function populateLunchList(employees: Employee[]): Week[] {
   const weeks = generateYear()
   const occurences: [Employee[]] = [[]]
 
-  for (var i = 0; i < weekAmount; i++) {
+  for (var i = 0; i < yearSize; i++) {
     weeks[i].days?.forEach((day) => {
-      addEmployeeToLunchList(employees, day, weeks[i])
+      addEmployeeToLunchList(employees, day, weeks[i], occurences)
     })
   }
 
@@ -60,6 +51,12 @@ export function generateYear(): Week[] {
   return weeks
 }
 
+// Lager en random id
+// Id er ikke nullable så måtte sette noe.
+const generateId = (): string => {
+  return (Math.random() + 1).toString(36).substring(7)
+}
+
 type GetEmployeeResult = {
   employee: Employee | null
   error: string | null
@@ -71,12 +68,13 @@ export function addEmployeeToLunchList(
   week: Week,
   occurence: [Employee[]] = [[]]
 ) {
+  // const priorityEmployees = priority(employees, occurence[week.number - 1])
   const { employee, error } = getEmployeeWithValidRules(
     employees,
     day.name,
     week.number
   )
-  if (error) throw new Error(error)
+  if (error && error != 'Ferie') throw new Error(error)
   if (employee) {
     if (hasOccured(employee, week.number, occurence)) {
       addEmployeeToLunchList(employees, day, week, occurence)
@@ -84,6 +82,10 @@ export function addEmployeeToLunchList(
       setOccured(employee, week.number, occurence)
       day.employeeId = employee.id
       day.employee = employee
+      if (employee.days == undefined) {
+        employee.days = []
+      }
+      employee.days?.push(day)
     }
   }
 }
@@ -155,10 +157,9 @@ export function isValid(rules: string, day: string, week: number): boolean {
   return result
 }
 
-// Lager en random id
-// Id er ikke nullable så måtte sette noe.
-const generateId = (): string => {
-  return (Math.random() + 1).toString(36).substring(7)
+export function getCurrentBatch(week: number): number {
+  if (week % batchSize == 0) return week / batchSize
+  return Math.floor(week / batchSize) + 1
 }
 
 export function hasOccured(
@@ -167,8 +168,11 @@ export function hasOccured(
   occurences: [Employee[]]
 ): boolean {
   const index = getCurrentBatch(week) - 1
-
-  return occurences[index].includes(employee)
+  if (occurences[index] == undefined) occurences[index] = []
+  return (
+    occurences[index].filter(({ id }) => id == employee.id).length >=
+    maxOccurence
+  )
 }
 
 const setOccured = (
@@ -181,4 +185,11 @@ const setOccured = (
     occurences[index] = []
   }
   occurences[index].push(employee)
+}
+
+const priority = (
+  employees: Employee[],
+  occurrence: Employee[]
+): Employee[] => {
+  return employees.filter((e) => !occurrence.includes(e))
 }
