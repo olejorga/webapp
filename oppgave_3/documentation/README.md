@@ -1,3 +1,10 @@
+# Overview
+
+
+[Diagram](https://www.figma.com/file/Y1dyZOYBwH37mUZetOqcJZ/Webapp-flow?node-id=0%3A1&t=CnjHxb64vofmWnW8-1)
+
+![alt text](./flow.png)
+
 # Model
 
 ## Employee
@@ -58,18 +65,18 @@ type Result<Data> = {
 👉 /api/employees
 
 GET:
-  200: Data<Employee[]>
-  500: Error
+  200: Result<Employee[]>
+  500: Result with error
 
   PARAMS:
     ?name={phrase} Employees with names containing phrase.
 
 POST:
   201: Result<Employee>
-  400: Result<undefined> with error
-  500: Result<Employee>
+  400: Result with error
+  500: Result with error
 
-  BODY: Employee
+  BODY: NewEmployee
 ```
 
 Includes each day a employee is responsible for.
@@ -78,17 +85,33 @@ Includes each day a employee is responsible for.
 👉 /api/employees/{id}
 
 GET:
-  200: Data<Employee>
-  404: Error
-  500: Error
+  200: Result<Employee>
+  404: Result with error
+  500: Result with error
 
 PUT:
-  200: Data<Employee>
-  400: Error
-  404: Error
-  500: Error
+  200: Result<Employee>
+  400: Result with error
+  404: Result with error
+  500: Result with error
 
-  BODY: Employee
+  BODY: EditEmployee
+```
+
+## Day
+
+Add a override to a lunch day.
+
+```
+👉 /api/days/{id}
+
+PUT:
+  200: Result<Day>
+  400: Result with error
+  404: Result with error
+  500: Result with error
+
+  BODY: EditDay
 ```
 
 ## Week
@@ -99,8 +122,8 @@ Includes days and the employee assigned to each day.
 👉 /api/weeks
 
 GET:
-  200: Data<Week[]>
-  500: Error
+  200: Result<Week[]>
+  500: Result with error
 
   PARAMS:
     ?start={number} All weeks from week nr (incl).
@@ -112,22 +135,9 @@ GET:
 👉 /api/weeks/{number}
 
 GET:
-  200: Data<Week>
-  404: Error
-  500: Error
-```
-
-## Alteration
-
-```
-👉 /api/alterations
-
-POST:
-  201: Data<Alteration>
-  400: Error
-  500: Error
-
-  BODY: Alteration
+  200: Result<Week>
+  404: Result with error
+  500: Result with error
 ```
 
 ## Demo
@@ -138,53 +148,46 @@ Populates the database with example data.
 👉 /api/demo
 
 GET:
-  200: Data<null>
-  500: Error
+  200: Result<null>
+  500: Result with error
 ```
 
-## Custom
+## Generate
 
 Generates a lunch list based on a configuration.
 
 ```
-👉 /api/custom
+👉 /api/generate
 
-POST:
-  201: Data<null>
-  400: Error
-  500: Error
-
-  BODY: Options
+GET:
+  201: Result<null>
+  400: Result with error
+  500: Result with error
 ```
 
 # Pages
 
-## Home
+## Week 
+
+This is the home page.
 
 ```
 👉 /
 
-This page is the entry point.
+This page is the entry point and an overview of all weeks.
 
+- Can navigate to an individual week (👉 /weeks/{number}).
 - Can navigate to weeks overview (👉 /weeks).
 - Can navigate to employee overview (👉 /employees).
 
-- Can generate a lunch plan based on demo data. (3.2)
-- Can download lunch plan as an excel file. (3.5)
-- Can generate a new lunch plan. (3.6)
-```
-
-## Week
-
-```
-👉 /weeks
-
-This page is an overview of all weeks.
-
 - Each week can be expanded to see individual days.
   - Shows who is responsible for lunch each day.
-- Filter weeks (↪️ /weeks?start={number}&end={number}).
-- Can go to an individual week (👉 /weeks/{number}).
+  - Can navigate to individual employee (👉 /employees/{id}).
+  - Can edit an individual day (👉 /days/{id}/edit).
+- Can filter weeks in interval.
+- Can generate a lunch plan based on demo data.
+- Can download lunch plan as an excel file.
+- Can generate a new lunch plan based on algorithm.
 ```
 
 ```
@@ -194,7 +197,6 @@ This page is an overview of a individual week.
 
 - Shows an overview of all days within that week.
 - Shows who is responsible for lunch each day.
-
 ```
 
 ## Employee
@@ -204,8 +206,11 @@ This page is an overview of a individual week.
 
 This page is an overview of all employees.
 
-- Can go to an individual employee (👉 /employee/{id}).
-- Can search for employee (↪️ /employees?search={phrase}).
+- Can search for employee.
+- Each employee can be expanded to see days responsible.
+  - Can navigate to an individual week (👉 /weeks/{number}).
+- Can choose to edit an employee (👉 /employees/{id}/edit).
+- Can choose to create an employee (👉 /employees/new).
 ```
 
 ```
@@ -213,30 +218,27 @@ This page is an overview of all employees.
 
 This page is an overview of an individual employee.
 
-- Shows an overview of days the employee is responsible for.
-- Can choose to edit employee (👉 /employee/{id}/update).
+- Can choose to edit employee (👉 /employees/{id}/edit).
 ```
 
 ```
-👉 /employees/{id}/update
+👉 /employees/{id}/edit
 
 This page is for editing an employee.
-
-- When done, the user is redirected (↪️ /employee/{id}).
 ```
 
 ```
-👉 /employees/create
+👉 /employees/new
 
 This page is for creating a new employee.
 
-- When done, the user is redirected (↪️ /employee/{id}).
+- When done, the user is redirected (↪️ /employees/{id}).
 ```
 
-## Alteration
+## Day
 
 ```
-👉 /alterations/create
+👉 /days/{id}/edit
 
-This page is for creating a new alteration.
+This page is for adding a new override.
 ```
