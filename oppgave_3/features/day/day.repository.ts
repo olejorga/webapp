@@ -65,3 +65,16 @@ export const find = async (id: string): Promise<Result<Day>> => {
     }
   }
 }
+
+export const clear = async (): Promise<Result> => {
+  try {
+    await prisma.day.deleteMany()
+    return { status: 200 }
+  } catch (error) {
+    console.error(error)
+    return {
+      status: 500,
+      error: 'Could not clear day database.',
+    }
+  }
+}

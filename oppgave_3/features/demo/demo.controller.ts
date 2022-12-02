@@ -7,8 +7,12 @@ import * as employees from '../employee/employee.service'
 
 export const seed = async (
   req: NextApiRequest,
-  res: NextApiResponse<Result<null>>
+  res: NextApiResponse<Result>
 ) => {
+  await days.clear()
+  await employees.clear()
+  await weeks.clear()
+
   for (const [weekNumber, value] of Object.entries<any>(data.year)) {
     const {
       status,
@@ -57,5 +61,5 @@ export const seed = async (
     }
   }
 
-  res.status(200).json({ status: 200, data: null })
+  res.status(200).json({ status: 200 })
 }

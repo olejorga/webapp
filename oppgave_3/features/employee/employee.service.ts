@@ -44,3 +44,7 @@ export const update = async (
 export const find = async (id: string): Promise<Result<Employee>> => {
   return await repo.find(id)
 }
+
+export const clear = async (): Promise<Result> => {
+  return await repo.clear()
+}

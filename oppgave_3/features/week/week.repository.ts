@@ -71,3 +71,16 @@ export const find = async (number: number): Promise<Result<Week>> => {
     }
   }
 }
+
+export const clear = async (): Promise<Result> => {
+  try {
+    await prisma.week.deleteMany()
+    return { status: 200 }
+  } catch (error) {
+    console.error(error)
+    return {
+      status: 500,
+      error: 'Could not clear week database.',
+    }
+  }
+}

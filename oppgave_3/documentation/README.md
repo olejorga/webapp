@@ -50,7 +50,6 @@ type Week = {
 
 ```ts
 // The standard response returned from all endpoints.
-// Will always be data or an error.
 // Generic "Data" is the type of data expected.
 type Result<Data> = {
   status: number

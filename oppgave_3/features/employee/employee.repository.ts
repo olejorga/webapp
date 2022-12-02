@@ -105,3 +105,16 @@ export const find = async (id: string): Promise<Result<Employee>> => {
     }
   }
 }
+
+export const clear = async (): Promise<Result> => {
+  try {
+    await prisma.employee.deleteMany()
+    return { status: 200 }
+  } catch (error) {
+    console.error(error)
+    return {
+      status: 500,
+      error: 'Could not clear employee database.',
+    }
+  }
+}

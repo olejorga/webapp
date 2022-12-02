@@ -7,15 +7,24 @@ import { WeeksProvider } from '../context/weeksContext'
 export default function HomePage() {
   return (
     <WeeksProvider>
+      <nav className="flex items-center justify-between pb-8">
+        <Link href="/api/demo">
+          <a className="underline" title="Last ned som excel ark.">
+            Demo
+          </a>
+        </Link>
+        <Link href="/api/generate">
+          <a className="underline" title="Last ned som excel ark.">
+            Generer
+          </a>
+        </Link>
+        <Link href="/api/weeks?format=excel">
+          <a className="underline" title="Last ned som excel ark.">
+            Last ned
+          </a>
+        </Link>
+      </nav>
       <h1 className="mb-4 text-2xl font-bold">Lunsjkalender</h1>
-      <Link href="/api/weeks?format=excel">
-        <a
-          className="relative -top-11 float-right underline"
-          title="Last ned som excel ark."
-        >
-          Last ned
-        </a>
-      </Link>
       <YearOverview />
       <WeekFilter />
       <hr className="mb-8 mt-2" />

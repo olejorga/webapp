@@ -17,3 +17,7 @@ export const read = async (
 export const find = async (number: number): Promise<Result<Week>> => {
   return await repo.find(number)
 }
+
+export const clear = async (): Promise<Result> => {
+  return await repo.clear()
+}
