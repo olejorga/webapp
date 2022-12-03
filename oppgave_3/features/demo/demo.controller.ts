@@ -31,17 +31,13 @@ export const seed = async (
     if (week) {
       for (const [dayName, employee] of Object.entries<any>(value['week'])) {
         if (employee) {
-          var { status, error } = await employeeService.create(
+          await employeeService.create(
             {
               name: employee.name,
               rules: employee.rules,
             },
             employee.id.toString()
           )
-
-          if (error) {
-            return res.status(status).json({ status, error })
-          }
 
           var { status, error } = await dayService.create({
             name: dayName,

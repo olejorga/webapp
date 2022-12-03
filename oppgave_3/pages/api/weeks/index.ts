@@ -5,7 +5,7 @@ import * as controller from '../../../features/week/week.controller'
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Result<Week[]>>
+  res: NextApiResponse<Result<Week[] | any>>
 ) {
   const { method } = req
 

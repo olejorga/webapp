@@ -8,7 +8,7 @@ import { downloadExcel } from '../../lib/excel'
 
 export const read = async (
   req: NextApiRequest,
-  res: NextApiResponse<Result<Week[]> | unknown>
+  res: NextApiResponse<Result<Week[]> | any>
 ) => {
   await sleep(1000)
 

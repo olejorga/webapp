@@ -38,14 +38,10 @@ export const generate = async (
     if (week.days) {
       for (const day of week.days) {
         if (day.employee) {
-          var { status, error } = await employeeService.create(
+          await employeeService.create(
             { name: day.employee.name, rules: day.employee.rules },
             day.employee.id
           )
-
-          if (error) {
-            return res.status(status).json({ status, error })
-          }
         }
 
         var { status, error } = await dayService.create({

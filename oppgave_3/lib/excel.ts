@@ -71,7 +71,7 @@ function createWorkbook(
 export async function downloadExcel(
   weeks: Week[],
   employees: Employee[],
-  response: NextApiResponse<unknown>
+  response: NextApiResponse<any>
 ) {
   const workbook = createWorkbook(weeks, employees)
 
