@@ -4,7 +4,7 @@ import * as controller from '../../features/demo/demo.controller'
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Result<null>>
+  res: NextApiResponse<Result>
 ) {
   const { method } = req
 

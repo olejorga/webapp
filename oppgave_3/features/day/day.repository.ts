@@ -3,12 +3,15 @@ import { Day } from '../../types/model'
 import { Result } from '../../types/result'
 import prisma from '../../lib/db'
 
-export const create = async (day: NewDay): Promise<Result<Day>> => {
+export const create = async (
+  day: NewDay,
+  id?: string
+): Promise<Result<Day>> => {
   try {
     return {
       status: 201,
       data: await prisma.day.create({
-        data: day,
+        data: id ? { ...day, id } : day,
         include: { employee: true, override: true, week: true },
       }),
     }

@@ -2,12 +2,18 @@ import prisma from '../../lib/db'
 import { Result } from '../../types/result'
 import { Week } from '../../types/model'
 import { NewWeek } from '../../types/dtos'
+import { sortDays } from '../../lib/sort'
 
-export const create = async (week: NewWeek): Promise<Result<Week>> => {
+export const create = async (
+  week: NewWeek,
+  id?: string
+): Promise<Result<Week>> => {
   try {
     return {
       status: 201,
-      data: await prisma.week.create({ data: week }),
+      data: await prisma.week.create({
+        data: id ? { ...week, id } : week,
+      }),
     }
   } catch (error) {
     console.error(error)
@@ -23,20 +29,25 @@ export const read = async (
   end?: number
 ): Promise<Result<Week[]>> => {
   try {
-    return {
-      status: 200,
-      data: await prisma.week.findMany({
-        where: {
-          AND: [{ number: { gte: start } }, { number: { lte: end } }],
-        },
-        include: {
-          days: {
-            include: {
-              employee: true,
-              override: true,
-            },
+    const weeks = await prisma.week.findMany({
+      where: {
+        AND: [{ number: { gte: start } }, { number: { lte: end } }],
+      },
+      include: {
+        days: {
+          include: {
+            employee: true,
+            override: true,
           },
         },
+      },
+      orderBy: { number: 'asc' },
+    })
+
+    return {
+      status: 200,
+      data: weeks.map((week) => {
+        return { ...week, days: sortDays(week.days) as any }
       }),
     }
   } catch (error) {

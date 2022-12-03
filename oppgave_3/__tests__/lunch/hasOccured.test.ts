@@ -4,7 +4,7 @@ import {
   hasOccuredThisDay,
   hasOccuredThisWeek,
   priority,
-} from '../../lib/lunchAlgorithm'
+} from '../../lib/lunch'
 import { Employee } from '../../types/model'
 import { employees } from './testEmployees'
 

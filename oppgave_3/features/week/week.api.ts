@@ -18,7 +18,3 @@ export const read = (start?: number, end?: number) => {
 export const find = (id: string) => {
   return api<Week>('/weeks/' + id).get()
 }
-
-export const exportExcel = () => {
-  return api<Week[]>('/weeks/?format=excel').get()
-}

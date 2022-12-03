@@ -3,8 +3,11 @@ import { Week } from '../../types/model'
 import { Result } from '../../types/result'
 import * as repo from './week.repository'
 
-export const create = async (week: NewWeek): Promise<Result<Week>> => {
-  return await repo.create(week)
+export const create = async (
+  week: NewWeek,
+  id?: string
+): Promise<Result<Week>> => {
+  return await repo.create(week, id)
 }
 
 export const read = async (

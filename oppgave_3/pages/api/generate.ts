@@ -1,10 +1,11 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { Result } from '../../types/result'
 import * as controller from '../../features/generate/generate.controller'
+import { Week } from '../../types/model'
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Result<null>>
+  res: NextApiResponse<Result>
 ) {
   const { method } = req
 

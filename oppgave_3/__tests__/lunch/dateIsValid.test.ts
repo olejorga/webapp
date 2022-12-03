@@ -1,5 +1,5 @@
 import { describe, expect } from 'vitest'
-import { isValid } from '../../lib/lunchAlgorithm'
+import { isValid } from '../../lib/lunch'
 
 describe(`check if rules of employee isValid with day and week`, () => {
   it(`should be false if 'days:15' is asked to make lunch on Tirsdag`, () => {

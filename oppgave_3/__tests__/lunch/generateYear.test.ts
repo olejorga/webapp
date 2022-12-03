@@ -1,6 +1,6 @@
 import { employees } from './testEmployees'
 import { describe, expect, it } from 'vitest'
-import { generateYear, populateLunchList } from '../../lib/lunchAlgorithm'
+import { generateYear, populateLunchList } from '../../lib/lunch'
 
 describe('yearGenerator', () => {
   it(`should have 52 weeks`, () => {

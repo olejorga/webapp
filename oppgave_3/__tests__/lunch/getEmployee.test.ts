@@ -6,7 +6,7 @@ import {
   getEmployeeWithValidRules,
   getWeeksInBatch,
   populateLunchList,
-} from '../../lib/lunchAlgorithm'
+} from '../../lib/lunch'
 import { employees, vacation } from './testEmployees'
 
 const workWeek: Week = { id: 'workWeek', number: 4 }
