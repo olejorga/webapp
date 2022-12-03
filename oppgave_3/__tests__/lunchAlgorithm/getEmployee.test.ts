@@ -1,4 +1,4 @@
-import { Day, Employee, Week } from './../../types/model'
+import { Day, Week } from './../../types/model'
 import { describe, expect, it } from 'vitest'
 import {
   getCurrentBatch,
@@ -154,8 +154,8 @@ describe(`Get weeks in a batch from week number`, () => {
   })
 })
 
-describe(`Error if not enough employees`, () => {
-  it(`should throw error if no employee found after 10 attempts`, () => {
+describe(`Error if no valid employees`, () => {
+  it(`should return error message if no valid employees available`, () => {
     const { error } = getEmployeeWithValidRules(
       [employees[2], employees[3], employees[4]],
       'Torsdag',

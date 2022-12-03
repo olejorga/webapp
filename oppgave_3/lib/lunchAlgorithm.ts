@@ -1,6 +1,4 @@
 import { randomUUID } from 'crypto'
-import { truncate } from 'fs/promises'
-import EmployeeList from '../components/EmployeeList'
 import { Week, Employee, Day } from '../types/model'
 
 const weekDays = [
