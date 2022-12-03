@@ -1,5 +1,6 @@
+import { employees } from './testEmployees'
 import { describe, expect, it } from 'vitest'
-import { generateYear } from '../../lib/lunchAlgorithm'
+import { generateYear, populateLunchList } from '../../lib/lunchAlgorithm'
 
 describe('yearGenerator', () => {
   it(`should have 52 weeks`, () => {
@@ -50,11 +51,43 @@ describe('each day in a week generated from yearGenerator', () => {
     var isNameCorrect = true
     weeks.forEach(({ days }) => {
       if (days && days[index].name != 'Fredag') {
-        console.log(days)
         isNameCorrect = false
         return
       }
     })
     expect(isNameCorrect).toBe(true)
+  })
+})
+
+describe(`Each week has employees`, () => {
+  it(`should have 5 employees each week if not vacation`, () => {
+    const weeks = populateLunchList(employees)
+    var result = true
+    weeks.forEach(({ days, number }) => {
+      if (days) {
+        // Check for vacation weeks
+        if (![8, 28, 29, 30, 31, 32, 40, 52].includes(number)) {
+          days.forEach(({ employeeId }) => {
+            if (employeeId == null) result = false
+          })
+        }
+      }
+    })
+    expect(result).toBe(true)
+  })
+  it(`should have 0 employees if vacation`, () => {
+    const weeks = populateLunchList(employees)
+    var result = false
+    weeks.forEach(({ days, number }) => {
+      if (days) {
+        // Check for vacation weeks
+        if ([8, 28, 29, 30, 31, 32, 40, 52].includes(number)) {
+          days.forEach(({ employeeId }) => {
+            if (employeeId == null) result = true
+          })
+        }
+      }
+    })
+    expect(result).toBe(true)
   })
 })
