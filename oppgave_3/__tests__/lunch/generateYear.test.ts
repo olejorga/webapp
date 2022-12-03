@@ -1,6 +1,6 @@
 import { employees } from './testEmployees'
 import { describe, expect, it } from 'vitest'
-import { generateYear, populateLunchList } from '../../lib/lunch'
+import { generateYear, generateLunchList } from '../../lib/lunch'
 
 describe('yearGenerator', () => {
   it(`should have 52 weeks`, () => {
@@ -61,7 +61,7 @@ describe('each day in a week generated from yearGenerator', () => {
 
 describe(`Each week has employees`, () => {
   it(`should have 5 employees each week if not vacation`, () => {
-    const weeks = populateLunchList(employees)
+    const weeks = generateLunchList(employees)
     var result = true
     weeks.forEach(({ days, number }) => {
       if (days) {
@@ -76,7 +76,7 @@ describe(`Each week has employees`, () => {
     expect(result).toBe(true)
   })
   it(`should have 0 employees if vacation`, () => {
-    const weeks = populateLunchList(employees)
+    const weeks = generateLunchList(employees)
     var result = false
     weeks.forEach(({ days, number }) => {
       if (days) {

@@ -5,7 +5,7 @@ import {
   getDayAsNumber,
   getEmployeeWithValidRules,
   getWeeksInBatch,
-  populateLunchList,
+  generateLunchList,
 } from '../../lib/lunch'
 import { employees, vacation } from './testEmployees'
 
@@ -101,7 +101,7 @@ describe(`getCurrentBatch get the batch of the year and `, () => {
 describe(`Generate an entire year and add employees`, () => {
   it(`should be 5 employees each week`, () => {
     var result = false
-    const lunchList = populateLunchList(employees)
+    const lunchList = generateLunchList(employees)
     lunchList.forEach(({ days, number }) => {
       days?.forEach(({ employeeId }) => {
         if (employeeId == null && !vacation.includes(number)) result = false
@@ -114,7 +114,7 @@ describe(`Generate an entire year and add employees`, () => {
 
 describe(`Vacation check`, () => {
   it(`should be no employees in week 8`, () => {
-    const lunchList = populateLunchList(employees)
+    const lunchList = generateLunchList(employees)
     const lunchCountWeek8 = lunchList[7].days?.filter(
       ({ employeeId }) => employeeId == null
     ).length
@@ -122,7 +122,7 @@ describe(`Vacation check`, () => {
     expect(lunchCountWeek8).toBe(5)
   })
   it(`should be no employees in week 31`, () => {
-    const lunchList = populateLunchList(employees)
+    const lunchList = generateLunchList(employees)
     const lunchCountWeek31 = lunchList[30].days?.filter(
       ({ employeeId }) => employeeId == null
     ).length
@@ -130,7 +130,7 @@ describe(`Vacation check`, () => {
     expect(lunchCountWeek31).toBe(5)
   })
   it(`should be employees in week 33`, () => {
-    const lunchList = populateLunchList(employees)
+    const lunchList = generateLunchList(employees)
     const lunchCountWeek33 = lunchList[32].days?.filter(
       ({ employeeId }) => employeeId == null
     ).length

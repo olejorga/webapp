@@ -1,27 +1,12 @@
 import { randomUUID } from 'crypto'
 import { Week, Employee, Day } from '../types/model'
+import options from '../lunch.options.json'
 
-const weekDays = [
-  'Mandag',
-  'Tirsdag',
-  'Onsdag',
-  'Torsdag',
-  'Fredag',
-  'Lørdag',
-  'Søndag',
-]
-
-const yearSize = 52 // Weeks in a year
-const weekSize = 5 // Days in a week (max 7)
-const vacation = [8, 28, 29, 30, 31, 32, 40, 52]
-const batchSize = 4 // how many weeks there are in one batch
-const maxOccurence = 1 // how many times an employee can make lunch in one (Tests will fail if this is changed)
-
-export function populateLunchList(employees: Employee[]): Week[] {
+export function generateLunchList(employees: Employee[]): Week[] {
   const weeks = generateYear()
   const occurences: Employee[][] = [[]]
 
-  for (var i = 0; i < yearSize; i++) {
+  for (var i = 0; i < options.yearSize; i++) {
     weeks[i].days?.forEach((day) => {
       addEmployeeToLunchList(employees, day, weeks[i], occurences, 0)
     })
@@ -34,14 +19,14 @@ export function populateLunchList(employees: Employee[]): Week[] {
 export function generateYear(): Week[] {
   var weeks: Week[] = []
 
-  for (var i = 0; i < yearSize; i++) {
+  for (var i = 0; i < options.yearSize; i++) {
     weeks.push({ id: generateId(), number: i + 1, days: [] })
   }
   weeks.forEach(({ days, id }) => {
-    for (var i = 0; i < weekSize; i++) {
+    for (var i = 0; i < options.workDays; i++) {
       days?.push({
         id: generateId(),
-        name: weekDays[i],
+        name: options.days[i],
         employeeId: null,
         weekId: id,
         overrideId: null,
@@ -75,12 +60,15 @@ export function addEmployeeToLunchList(
   if (retry < 2) {
     employees = priority(employees, occurence[week.number - 1])
   }
+
   const { employee, error } = getEmployeeWithValidRules(
     employees,
     day.name,
     week.number
   )
+
   if (error && error == 'Ferie') return
+
   if (employee) {
     if (hasOccured(employee, week.number, day.name, occurence) && retry < 10) {
       addEmployeeToLunchList(allEmployees, day, week, occurence, retry + 1)
@@ -93,8 +81,9 @@ export function addEmployeeToLunchList(
       }
       employee.days?.push(day)
     }
-  } else if (error && error != 'Ferie') throw new Error(error)
-  else {
+  } else if (error && error != 'Ferie') {
+    throw new Error(error)
+  } else {
     throw new Error(`No suitable employee found. Attempts: ${retry}`)
   }
 }
@@ -105,12 +94,18 @@ export function getEmployeeWithValidRules(
   day: string,
   weekNumber: number
 ): GetEmployeeResult {
-  if (vacation.includes(weekNumber)) return { employee: null, error: 'Ferie' }
+  if (options.vacation.includes(weekNumber)) {
+    return { employee: null, error: 'Ferie' }
+  }
+
   const dayAsNumber = getDayAsNumber(day)
-  if (dayAsNumber < 1 || dayAsNumber > weekSize)
+
+  if (dayAsNumber < 1 || dayAsNumber > options.workDays) {
     return { employee: null, error: 'Ugyldig dag' }
+  }
 
   var valid: Employee[] = []
+
   employees.forEach((employee) => {
     if (isValid(employee.rules, day, weekNumber)) {
       valid.push(employee)
@@ -129,7 +124,7 @@ export function getEmployeeWithValidRules(
 }
 
 export function getDayAsNumber(day: string) {
-  return weekDays.indexOf(day) + 1 ?? 0
+  return options.days.indexOf(day) + 1 ?? 0
 }
 
 // Sjekker at dag og uke stemmer overens med reglene.
@@ -137,7 +132,9 @@ export function isValid(rules: string, day: string, week: number): boolean {
   if (rules == '*') {
     return true
   }
+
   var result = false
+
   if (rules.includes('|')) {
     const ruleArray = rules.split('|')
     for (var i = 0; i < ruleArray.length; i++) {
@@ -163,12 +160,13 @@ export function isValid(rules: string, day: string, week: number): boolean {
       } else result = false
     }
   }
+
   return result
 }
 
 export function getCurrentBatch(week: number): number {
-  if (week % batchSize == 0) return week / batchSize
-  return Math.floor(week / batchSize) + 1
+  if (week % options.batchSize == 0) return week / options.batchSize
+  return Math.floor(week / options.batchSize) + 1
 }
 
 export function hasOccured(
@@ -178,14 +176,19 @@ export function hasOccured(
   occurences: Employee[][]
 ): boolean {
   result = hasOccuredThisWeek(employee, week, occurences)
+
   if (result == true) {
     return result
   }
+
   var result = hasOccuredThisBatch(employee, week, occurences)
+
   if (result == true) {
     return result
   }
+
   var result = hasOccuredThisDay(employee, week, day, occurences)
+
   return result
 }
 
@@ -198,15 +201,19 @@ export function hasOccuredThisDay(
   const currentWeek = week - 1
   const lastWeek = week - 2
   const dayNumber = getDayAsNumber(day)
+
   if (!occurences[currentWeek]) {
     occurences[currentWeek] = []
   }
+
   if (!occurences[lastWeek]) {
     occurences[lastWeek] = []
   }
+
   if (currentWeek > 0) {
     return occurences[lastWeek][dayNumber - 1]?.id == employee.id
   }
+
   return false
 }
 
@@ -230,18 +237,21 @@ export function hasOccuredThisBatch(
   occurences: Employee[][]
 ): boolean {
   const w = getWeeksInBatch(week)
-
   var result = false
   var timesOccured = 0
+
   for (var i = 0; i < w.length; i++) {
     if (!occurences[i]) {
       occurences[i] = []
     }
+
     timesOccured += occurences[i].includes(employee) ? 1 : 0
-    if (timesOccured >= maxOccurence) {
+
+    if (timesOccured >= options.maxOccurence) {
       result = true
     }
   }
+
   return result
 }
 
@@ -251,9 +261,11 @@ const setOccured = (
   occurences: Employee[][]
 ) => {
   const index = week - 1
+
   if (!occurences[index]) {
     occurences[index] = []
   }
+
   occurences[index].push(employee)
 }
 
