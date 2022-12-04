@@ -1,5 +1,6 @@
 import { Week } from '@prisma/client'
 import { GetServerSidePropsContext } from 'next'
+import Head from 'next/head'
 import { useEffect, useState } from 'react'
 import Error from '../../components/Error'
 import Loader from '../../components/Loader'
@@ -21,13 +22,16 @@ export default function WeekPage({ id }: WeekPageProps) {
     })
   }, [id])
 
-  if (error) {
-    return <Error message={error} />
-  } else if (!week && !error) {
-    return <Loader />
-  }
-
-  return week && <WeekDetail week={week} expanded={true} />
+  return (
+    <>
+      <Head>
+        <title>Uke detaljvisning</title>
+      </Head>
+      {error && <Error message={error} />}
+      {!week && !error && <Loader />}
+      {week && <WeekDetail week={week} expanded={true} />}
+    </>
+  )
 }
 
 export function getServerSideProps(ctx: GetServerSidePropsContext) {

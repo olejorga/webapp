@@ -1,5 +1,6 @@
 import { Employee } from '@prisma/client'
 import { GetServerSidePropsContext } from 'next'
+import Head from 'next/head'
 import { useEffect, useState } from 'react'
 import EmployeeDetail from '../../../components/EmployeeDetail'
 import Error from '../../../components/Error'
@@ -21,13 +22,16 @@ export default function EmployeePage({ id }: EmployeePageProps) {
     })
   }, [id])
 
-  if (error) {
-    return <Error message={error} />
-  } else if (!error && !employee) {
-    return <Loader />
-  }
-
-  return employee && <EmployeeDetail employee={employee} expanded={true} />
+  return (
+    <>
+      <Head>
+        <title>Ansatt detaljvisning</title>
+      </Head>
+      {error && <Error message={error} />}
+      {!employee && !error && <Loader />}
+      {employee && <EmployeeDetail employee={employee} expanded={true} />}
+    </>
+  )
 }
 
 export function getServerSideProps(ctx: GetServerSidePropsContext) {

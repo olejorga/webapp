@@ -1,4 +1,5 @@
 import { GetServerSidePropsContext } from 'next'
+import Head from 'next/head'
 import React, { FormEvent, useEffect, useState } from 'react'
 import Button from '../../../components/Button'
 import Error from '../../../components/Error'
@@ -48,25 +49,30 @@ export default function EditEmployeePage({ id }: EditEmployeePageProps) {
     })
   }
 
-  if (error && !employee) {
-    return <Error message={error} />
-  } else if (!error && !employee) {
-    return <Loader />
-  }
-
   return (
     <section>
+      <Head>
+        <title>Rediger ansatt</title>
+      </Head>
       {error && <Error message={error} />}
-      <h1 className="mb-8 text-2xl font-bold">Rediger ansatt</h1>
-      <form className="flex flex-col items-start gap-4" onSubmit={handleSubmit}>
-        <Input
-          name="name"
-          label="Navn"
-          placeholder={employee?.name}
-          required={true}
-        />
-        <Button>{buttonText}</Button>
-      </form>
+      {!employee && !error && <Loader />}
+      {employee && (
+        <>
+          <h1 className="mb-8 text-2xl font-bold">Rediger ansatt</h1>
+          <form
+            className="flex flex-col items-start gap-4"
+            onSubmit={handleSubmit}
+          >
+            <Input
+              name="name"
+              label="Navn"
+              placeholder={employee?.name}
+              required={true}
+            />
+            <Button>{buttonText}</Button>
+          </form>
+        </>
+      )}
     </section>
   )
 }

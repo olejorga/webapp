@@ -1,12 +1,10 @@
-import { GetServerSidePropsContext } from 'next'
+import Head from 'next/head'
 import { useRouter } from 'next/router'
 import React, { FormEvent, useEffect, useState } from 'react'
 import Button from '../../components/Button'
 import Error from '../../components/Error'
 import Input from '../../components/Input'
-import Loader from '../../components/Loader'
 import { create } from '../../features/employee/employee.api'
-import { Employee } from '../../types/model'
 
 export default function NewEmployeePage() {
   const router = useRouter()
@@ -39,6 +37,9 @@ export default function NewEmployeePage() {
 
   return (
     <section>
+      <Head>
+        <title>Legg til ansatt</title>
+      </Head>
       {error && <Error message={error} />}
       <h1 className="mb-8 text-2xl font-bold">Ny ansatt</h1>
       <form className="flex flex-col items-start gap-4" onSubmit={handleSubmit}>

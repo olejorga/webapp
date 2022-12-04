@@ -1,4 +1,5 @@
 import { GetServerSidePropsContext } from 'next'
+import Head from 'next/head'
 import Link from 'next/link'
 import React, { ChangeEventHandler, useEffect, useState } from 'react'
 import Error from '../../../components/Error'
@@ -59,66 +60,68 @@ export default function EditDayPage({ id }: EditDayPageProps) {
     })
   }
 
-  if (error && (!day || !employees)) {
-    return <Error message={error} />
-  } else if (!error && (!day || !employees)) {
-    return <Loader />
-  }
-
   return (
     <section>
+      <Head>
+        <title>Rediger dag</title>
+      </Head>
       {error && <Error message={error} />}
-      <h1 className="mb-8 text-2xl font-bold">Rediger dag</h1>
-      <Table>
-        <Row>
-          <Column>
-            <span className="font-semibold">Dag</span>
-          </Column>
-          <Column>
-            <span className="font-semibold">Ansvarlig</span>
-          </Column>
-          <Column>
-            <span className="font-semibold">Overskrivelse</span>
-          </Column>
-        </Row>
-        <Row>
-          <Column>{`${day?.name} (Uke ${day?.week?.number})`}</Column>
-          <Column>
-            {day?.employee ? (
-              <Link href={'/employees/' + day.employee?.id}>
-                <a className={day.override ? 'line-through' : 'underline'}>
-                  {day.employee?.name}
-                </a>
-              </Link>
-            ) : (
-              <span className={day?.override ? 'line-through' : ''}>
-                Ferie! 🥳
-              </span>
-            )}
-          </Column>
-          <Column>
-            <div className="flex items-center gap-2">
-              <Select
-                placeholder="Ingen"
-                onChange={handleOverrideSelect}
-                value={overrideId as string}
-              >
-                <option value="">Ingen</option>
-                {employees?.map(({ id, name }) => (
-                  <option
-                    key={id}
-                    value={id}
-                    disabled={id == day?.employee?.id}
+      {!error && (!day || !employees) && <Loader />}
+      {day && employees && (
+        <>
+          <h1 className="mb-8 text-2xl font-bold">Rediger dag</h1>
+          <Table>
+            <Row>
+              <Column>
+                <span className="font-semibold">Dag</span>
+              </Column>
+              <Column>
+                <span className="font-semibold">Ansvarlig</span>
+              </Column>
+              <Column>
+                <span className="font-semibold">Overskrivelse</span>
+              </Column>
+            </Row>
+            <Row>
+              <Column>{`${day?.name} (Uke ${day?.week?.number})`}</Column>
+              <Column>
+                {day?.employee ? (
+                  <Link href={'/employees/' + day.employee?.id}>
+                    <a className={day.override ? 'line-through' : 'underline'}>
+                      {day.employee?.name}
+                    </a>
+                  </Link>
+                ) : (
+                  <span className={day?.override ? 'line-through' : ''}>
+                    Ferie! 🥳
+                  </span>
+                )}
+              </Column>
+              <Column>
+                <div className="flex items-center gap-2">
+                  <Select
+                    placeholder="Ingen"
+                    onChange={handleOverrideSelect}
+                    value={overrideId as string}
                   >
-                    {name}
-                  </option>
-                ))}
-              </Select>
-              <span>{status}</span>
-            </div>
-          </Column>
-        </Row>
-      </Table>
+                    <option value="">Ingen</option>
+                    {employees?.map(({ id, name }) => (
+                      <option
+                        key={id}
+                        value={id}
+                        disabled={id == day?.employee?.id}
+                      >
+                        {name}
+                      </option>
+                    ))}
+                  </Select>
+                  <span>{status}</span>
+                </div>
+              </Column>
+            </Row>
+          </Table>
+        </>
+      )}
     </section>
   )
 }

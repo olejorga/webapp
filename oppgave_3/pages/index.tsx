@@ -1,3 +1,4 @@
+import Head from 'next/head'
 import Link from 'next/link'
 import WeekFilter from '../components/WeekFilter'
 import WeekList from '../components/WeekList'
@@ -7,6 +8,9 @@ import { WeeksProvider } from '../context/weeksContext'
 export default function HomePage() {
   return (
     <WeeksProvider>
+      <Head>
+        <title>Hjem</title>
+      </Head>
       <nav className="flex items-center justify-between pb-8">
         <Link href="/api/demo">
           <a className="underline" title="Last ned som excel ark.">
