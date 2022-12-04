@@ -15,7 +15,6 @@ export function generateLunchList(employees: Employee[]): Week[] {
   return weeks
 }
 
-// Oppretter et år.
 export function generateYear(): Week[] {
   var weeks: Week[] = []
 
@@ -37,8 +36,7 @@ export function generateYear(): Week[] {
   return weeks
 }
 
-// Lager en random id
-// Id er ikke nullable så måtte sette noe.
+// Lager en random id.
 const generateId = (): string => {
   return randomUUID()
 }
@@ -55,7 +53,7 @@ export function addEmployeeToLunchList(
   occurence: Employee[][] = [[]],
   retry: number
 ) {
-  // const priorityEmployees = priority(employees, occurence[week.number - 1])
+  // TODO: const priorityEmployees = priority(employees, occurence[week.number - 1])
   const allEmployees = employees
   if (retry < 2) {
     employees = priority(employees, occurence[week.number - 1])
@@ -88,7 +86,6 @@ export function addEmployeeToLunchList(
   }
 }
 
-// Henter ut en employee til en gitt dag
 export function getEmployeeWithValidRules(
   employees: Employee[],
   day: string,
@@ -127,7 +124,6 @@ export function getDayAsNumber(day: string) {
   return options.days.indexOf(day) + 1 ?? 0
 }
 
-// Sjekker at dag og uke stemmer overens med reglene.
 export function isValid(rules: string, day: string, week: number): boolean {
   if (rules == '*') {
     return true

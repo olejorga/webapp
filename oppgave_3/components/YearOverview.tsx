@@ -12,7 +12,7 @@ export default function YearOverview() {
   return (
     <section>
       <h2 className="mb-4 text-xl font-bold">Uker</h2>
-      <nav className="grid grid-cols-12 gap-2">
+      <nav className="grid grid-cols-8 gap-2 sm:grid-cols-12">
         {weeks?.map(({ number }) => (
           <Link href={'/weeks/' + number} key={number}>
             <a className="flex aspect-square items-center justify-center bg-black text-white">
