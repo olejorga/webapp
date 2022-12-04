@@ -1,4 +1,4 @@
-import { employees } from './testEmployees'
+import { employees, vacation } from './testEmployees'
 import { describe, expect, it } from 'vitest'
 import { generateYear, generateLunchList } from '../../lib/lunch'
 
@@ -66,7 +66,7 @@ describe(`Each week has employees`, () => {
     weeks.forEach(({ days, number }) => {
       if (days) {
         // Check for vacation weeks
-        if (![8, 28, 29, 30, 31, 32, 40, 52].includes(number)) {
+        if (!vacation.includes(number)) {
           days.forEach(({ employeeId }) => {
             if (employeeId == null) result = false
           })
@@ -81,10 +81,33 @@ describe(`Each week has employees`, () => {
     weeks.forEach(({ days, number }) => {
       if (days) {
         // Check for vacation weeks
-        if ([8, 28, 29, 30, 31, 32, 40, 52].includes(number)) {
+        if (vacation.includes(number)) {
           days.forEach(({ employeeId }) => {
             if (employeeId == null) result = true
           })
+        }
+      }
+    })
+    expect(result).toBe(true)
+  })
+  it(`should have 5 different employees in a week (not 1 employee several times)`, () => {
+    const weeks = generateLunchList(employees)
+    var result = true
+    weeks.forEach(({ days, number }) => {
+      if (result && days) {
+        // Check for vacation weeks
+        var empoloyeesForThisWeek: string[] = []
+        if (!vacation.includes(number)) {
+          for (var i = 0; i < days.length; i++) {
+            empoloyeesForThisWeek.push(days[i].employeeId ?? '')
+          }
+          const constrolSet = new Set(empoloyeesForThisWeek)
+          if (constrolSet.size == 5) {
+            result = true
+          } else {
+            result = false
+            return result
+          }
         }
       }
     })

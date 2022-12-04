@@ -53,22 +53,22 @@ export function addEmployeeToLunchList(
   occurence: Employee[][] = [[]],
   retry: number
 ) {
-  // TODO: const priorityEmployees = priority(employees, occurence[week.number - 1])
   const allEmployees = employees
-  if (retry < 2) {
+  if (retry < 5) {
     employees = priority(employees, occurence[week.number - 1])
   }
 
   const { employee, error } = getEmployeeWithValidRules(
     employees,
     day.name,
-    week.number
+    week.number,
+    occurence
   )
 
   if (error && error == 'Ferie') return
 
-  if (employee) {
-    if (hasOccured(employee, week.number, day.name, occurence) && retry < 10) {
+  if (employee && retry < 30) {
+    if (hasOccured(employee, week.number, day.name, occurence, retry)) {
       addEmployeeToLunchList(allEmployees, day, week, occurence, retry + 1)
     } else {
       setOccured(employee, week.number, occurence)
@@ -89,7 +89,8 @@ export function addEmployeeToLunchList(
 export function getEmployeeWithValidRules(
   employees: Employee[],
   day: string,
-  weekNumber: number
+  weekNumber: number,
+  occurence: Employee[][]
 ): GetEmployeeResult {
   if (options.vacation.includes(weekNumber)) {
     return { employee: null, error: 'Ferie' }
@@ -103,14 +104,33 @@ export function getEmployeeWithValidRules(
 
   var valid: Employee[] = []
 
+  // Sjekker første de som kan bare lage lunsj denne dagen
   employees.forEach((employee) => {
-    if (isValid(employee.rules, day, weekNumber)) {
-      valid.push(employee)
+    if (isTodayValid(employee.rules, dayAsNumber)) {
+      if (!hasOccured(employee, weekNumber, day, occurence, 0))
+        valid.push(employee)
     }
   })
 
+  // Om ingen bare kunne lage lunsj denne dagen, hentes alle som har gyldige regler
+  if (valid.length == 0) {
+    employees.forEach((employee) => {
+      if (isValid(employee.rules, day, weekNumber)) {
+        valid.push(employee)
+      }
+    })
+  }
+
   if (valid.length > 0) {
-    var i = Math.floor(Math.random() * valid.length)
+    var i = random(valid.length)
+    while (
+      hasOccured(valid[i], weekNumber, day, occurence, 0) &&
+      valid.length > 1
+    ) {
+      const emp = valid[i]
+      valid = valid.filter(({ id }) => id == emp.id)
+      i = random(valid.length)
+    }
     return { employee: valid[i], error: null }
   } else {
     return {
@@ -160,6 +180,10 @@ export function isValid(rules: string, day: string, week: number): boolean {
   return result
 }
 
+export function isTodayValid(rules: string, day: number): boolean {
+  return rules == `day:${day}`
+}
+
 export function getCurrentBatch(week: number): number {
   if (week % options.batchSize == 0) return week / options.batchSize
   return Math.floor(week / options.batchSize) + 1
@@ -169,23 +193,29 @@ export function hasOccured(
   employee: Employee,
   week: number,
   day: string,
-  occurences: Employee[][]
+  occurences: Employee[][],
+  retry: number
 ): boolean {
-  result = hasOccuredThisWeek(employee, week, occurences)
+  // Prioriterer reglene etter vurdert viktighet.
+  // 1. Sjekker om den ansatte allerede blitt satt opp for gjeldende uke.
+  if (hasOccuredThisWeek(employee, week, occurences)) return true
 
-  if (result == true) {
-    return result
+  // 2. Sjekker om den ansatte har laget lunsj over gjennomsittelig ofte
+  if (retry < 17) {
+    if (hasOccuredAboveMax(employee, week)) return true
   }
 
-  var result = hasOccuredThisBatch(employee, week, occurences)
-
-  if (result == true) {
-    return result
+  // 3. Sjekker om den ansatte laget lunsj samme dag forrige uke
+  if (retry < 15) {
+    if (hasOccuredThisDay(employee, week, day, occurences)) return true
   }
 
-  var result = hasOccuredThisDay(employee, week, day, occurences)
+  // 4. Sjekker om den ansatte har oversteget maxOccurence for gjeldende batch
+  if (retry < 10) {
+    return hasOccuredThisBatch(employee, week, occurences)
+  }
 
-  return result
+  return false
 }
 
 export function hasOccuredThisDay(
@@ -265,6 +295,16 @@ const setOccured = (
   occurences[index].push(employee)
 }
 
+export function hasOccuredAboveMax(employee: Employee, week: number): boolean {
+  // Max is 50% of weeks so far
+  const { days } = employee
+  if (days) {
+    const dayCount = days.length
+    if (dayCount > week / 2) return true
+  }
+  return false
+}
+
 export function priority(
   employees: Employee[],
   occurrence: Employee[]
@@ -275,4 +315,9 @@ export function priority(
 export function getWeeksInBatch(week: number): number[] {
   const batch = getCurrentBatch(week)
   return Array.from([1, 2, 3, 4], (x) => x + (batch - 1) * 4)
+}
+
+const random = (range: number): number => {
+  // Ganger med 35527 fordi det er et relativt høyt primtall. Gir bedre 'random'-effekt
+  return Math.floor(Math.random() * 35527) % range
 }

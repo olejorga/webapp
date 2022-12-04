@@ -1,5 +1,5 @@
 import { describe, expect } from 'vitest'
-import { isValid } from '../../lib/lunch'
+import { isTodayValid, isValid } from '../../lib/lunch'
 
 describe(`check if rules of employee isValid with day and week`, () => {
   it(`should be false if 'days:1' is asked to make lunch on Fredag`, () => {
@@ -76,5 +76,18 @@ describe(`check if rules of employee isValid with day and week`, () => {
     const testRules = 'days:23|week:even'
     const result = isValid(testRules, 'Torsdag', 2)
     expect(result).toBe(false)
+  })
+})
+
+describe(`isTodayValid function as intended`, () => {
+  it(`should return false if day is 1(Mandag)`, () => {
+    const rule = 'day:2'
+    const result = isTodayValid(rule, 1)
+    expect(result).toBe(false)
+  })
+  it(`should return true if day is 2(Tirsdag)`, () => {
+    const rule = 'day:2'
+    const result = isTodayValid(rule, 2)
+    expect(result).toBe(true)
   })
 })

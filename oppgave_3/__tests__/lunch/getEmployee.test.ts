@@ -1,4 +1,4 @@
-import { Day, Week } from './../../types/model'
+import { Day, Employee, Week } from './../../types/model'
 import { describe, expect, it } from 'vitest'
 import {
   getCurrentBatch,
@@ -21,18 +21,22 @@ const testMonday: Day = {
 
 describe(`No employee returned if vacation`, () => {
   it(`should return error with message 'ferie' if vacation`, () => {
+    const occurence: Employee[][] = [[]]
     var { error } = getEmployeeWithValidRules(
       employees,
       testMonday.name,
-      vacationWeek.number
+      vacationWeek.number,
+      occurence
     )
     expect(error).toBe('Ferie')
   })
   it(`should return employee == null`, () => {
+    const occurence: Employee[][] = [[]]
     var { employee } = getEmployeeWithValidRules(
       employees,
       testMonday.name,
-      vacationWeek.number
+      vacationWeek.number,
+      occurence
     )
     expect(employee).toBe(null)
   })
@@ -40,7 +44,13 @@ describe(`No employee returned if vacation`, () => {
 
 describe(`employees don't work in the weekends`, () => {
   it(`should return no employee and correct error message if Lørdag`, () => {
-    const { error } = getEmployeeWithValidRules(employees, 'Lørdag', 5)
+    const occurence: Employee[][] = [[]]
+    const { error } = getEmployeeWithValidRules(
+      employees,
+      'Lørdag',
+      5,
+      occurence
+    )
     expect(error).toBe('Ugyldig dag')
   })
 })
@@ -64,7 +74,7 @@ describe(`dayNumber`, () => {
   })
 })
 
-describe(`getCurrentBatch get the batch of the year and `, () => {
+describe(`getCurrentBatch calculates the batch of the year and `, () => {
   it(`should return 1 if week is 3`, () => {
     var result = getCurrentBatch(3)
     expect(result).toBe(1)
@@ -156,10 +166,12 @@ describe(`Get weeks in a batch from week number`, () => {
 
 describe(`Error if no valid employees`, () => {
   it(`should return error message if no valid employees available`, () => {
+    const occurence: Employee[][] = [[]]
     const { error } = getEmployeeWithValidRules(
       [employees[2], employees[3], employees[4]],
       'Torsdag',
-      49
+      49,
+      occurence
     )
     expect(error).toBe('No employee added on Torsdag in week 49')
   })
