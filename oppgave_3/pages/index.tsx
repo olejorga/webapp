@@ -13,12 +13,12 @@ export default function HomePage() {
       </Head>
       <nav className="flex items-center justify-between pb-8">
         <Link href="/api/demo">
-          <a className="underline" title="Last ned som excel ark.">
+          <a className="underline" title="Importer demo-data.">
             Demo
           </a>
         </Link>
         <Link href="/api/generate">
-          <a className="underline" title="Last ned som excel ark.">
+          <a className="underline" title="Generer en ny lunch-liste.">
             Generer
           </a>
         </Link>

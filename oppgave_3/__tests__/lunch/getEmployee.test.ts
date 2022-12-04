@@ -3,9 +3,10 @@ import { describe, expect, it } from 'vitest'
 import {
   getCurrentBatch,
   getDayAsNumber,
-  getEmployeeWithValidRules,
+  getEmployeesWithValidRules,
   getWeeksInBatch,
   generateLunchList,
+  getEmployee,
 } from '../../lib/lunch'
 import { employees, vacation } from './testEmployees'
 
@@ -22,21 +23,23 @@ const testMonday: Day = {
 describe(`No employee returned if vacation`, () => {
   it(`should return error with message 'ferie' if vacation`, () => {
     const occurence: Employee[][] = [[]]
-    var { error } = getEmployeeWithValidRules(
+    var { error } = getEmployee(
       employees,
       testMonday.name,
       vacationWeek.number,
-      occurence
+      occurence,
+      0
     )
     expect(error).toBe('Ferie')
   })
   it(`should return employee == null`, () => {
     const occurence: Employee[][] = [[]]
-    var { employee } = getEmployeeWithValidRules(
+    var { employee } = getEmployee(
       employees,
       testMonday.name,
       vacationWeek.number,
-      occurence
+      occurence,
+      0
     )
     expect(employee).toBe(null)
   })
@@ -45,12 +48,7 @@ describe(`No employee returned if vacation`, () => {
 describe(`employees don't work in the weekends`, () => {
   it(`should return no employee and correct error message if Lørdag`, () => {
     const occurence: Employee[][] = [[]]
-    const { error } = getEmployeeWithValidRules(
-      employees,
-      'Lørdag',
-      5,
-      occurence
-    )
+    const { error } = getEmployee(employees, 'Lørdag', 5, occurence, 0)
     expect(error).toBe('Ugyldig dag')
   })
 })
@@ -167,12 +165,50 @@ describe(`Get weeks in a batch from week number`, () => {
 describe(`Error if no valid employees`, () => {
   it(`should return error message if no valid employees available`, () => {
     const occurence: Employee[][] = [[]]
-    const { error } = getEmployeeWithValidRules(
+    const { error } = getEmployee(
       [employees[2], employees[3], employees[4]],
       'Torsdag',
       49,
-      occurence
+      occurence,
+      0
     )
     expect(error).toBe('No employee added on Torsdag in week 49')
+  })
+})
+
+describe(`GetEmployeeWithValidRules test`, () => {
+  it(`should only return 1 employee if 1 has only the current day in rules`, () => {
+    const testEmployee: Employee = {
+      id: '1',
+      name: 'BareMandag',
+      rules: 'day:1',
+    }
+    const employeeList = [
+      testEmployee,
+      employees[0], //  'days:145'
+      employees[1], // 'days:*'
+      employees[14], // 'days:135'
+    ]
+    // All employees in the test are vaid for monday, but only testEmployee will be returned.
+    const result = getEmployeesWithValidRules(employeeList, 'Mandag', 1, [[]])
+    expect(result.length).toBe(1)
+  })
+  it(`should return 3 employees, bypassing the one that hasOccured`, () => {
+    const testEmployee: Employee = {
+      id: '1',
+      name: 'BareMandag',
+      rules: 'day:1',
+    }
+    const employeeList = [
+      testEmployee,
+      employees[0], //  'days:145'
+      employees[1], // 'days:*'
+      employees[14], // 'days:135'
+    ]
+    // All employees in the test are valid for monday. TestEmployee will trigger hasOccured and will therefore not be returned
+    const result = getEmployeesWithValidRules(employeeList, 'Mandag', 1, [
+      [testEmployee],
+    ])
+    expect(result.length).toBe(3)
   })
 })
