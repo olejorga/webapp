@@ -2,6 +2,11 @@ import { describe, expect } from 'vitest'
 import { isValid } from '../../lib/lunch'
 
 describe(`check if rules of employee isValid with day and week`, () => {
+  it(`should be false if 'days:1' is asked to make lunch on Fredag`, () => {
+    const testRules = 'days:1'
+    const result = isValid(testRules, 'Fredag', 41)
+    expect(result).toBe(false)
+  })
   it(`should be false if 'days:15' is asked to make lunch on Tirsdag`, () => {
     const testRules = 'days:15'
     const result = isValid(testRules, 'Tirsdag', 2)
@@ -10,6 +15,16 @@ describe(`check if rules of employee isValid with day and week`, () => {
   it(`should be true if 'days:15' is asked to make lunch on Mandag`, () => {
     const testRules = 'days:15'
     const result = isValid(testRules, 'Mandag', 2)
+    expect(result).toBe(true)
+  })
+  it(`should be false 'days:24' is asked to make lunch on Onsdag`, () => {
+    const testRules = 'days:24'
+    const result = isValid(testRules, 'Onsdag', 2)
+    expect(result).toBe(false)
+  })
+  it(`should be true 'days:24' is asked to make lunch on Torsdag`, () => {
+    const testRules = 'days:24'
+    const result = isValid(testRules, 'Torsdag', 2)
     expect(result).toBe(true)
   })
   it(`should be false if 'days:*|week:odd' is asked to make lunch on even weeks`, () => {

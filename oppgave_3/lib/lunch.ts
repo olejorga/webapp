@@ -111,7 +111,7 @@ export function getEmployeeWithValidRules(
 
   if (valid.length > 0) {
     var i = Math.floor(Math.random() * valid.length)
-    return { employee: employees[i], error: null }
+    return { employee: valid[i], error: null }
   } else {
     return {
       employee: null,
