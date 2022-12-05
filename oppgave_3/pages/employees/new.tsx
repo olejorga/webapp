@@ -44,18 +44,22 @@ export default function NewEmployeePage() {
       <h1 className="mb-8 text-2xl font-bold">Ny ansatt</h1>
       <form className="flex flex-col items-start gap-4" onSubmit={handleSubmit}>
         <Input
+          data-testid="name-input"
           name="name"
           label="Navn"
           placeholder="F.eks. Marius"
           required={true}
         />
         <Input
+          data-testid="rules-input"
           name="rules"
           label="Regler"
           placeholder="days:123"
           required={true}
         />
-        <Button>{buttonText}</Button>
+        <Button data-testid="create-button" name="test">
+          {buttonText}
+        </Button>
       </form>
     </section>
   )
