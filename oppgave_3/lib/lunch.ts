@@ -56,7 +56,7 @@ export function addEmployeeToLunchList(
   retry: number
 ) {
   const allEmployees = employees
-  if (retry < 5) {
+  if (retry < 3) {
     employees = priority(employees, occurence[week.number - 1])
   }
 
@@ -222,17 +222,17 @@ export function hasOccured(
   if (hasOccuredThisWeek(employee, week, occurences)) return true
 
   // 2. Check if the employee has made lunch too many times
-  if (retry < 6) {
+  if (retry < 12) {
     if (hasOccuredAboveMax(employee, week)) return true
   }
 
   // 3. Check if the employee made lunch same day last week
-  if (retry < 4) {
+  if (retry < 8) {
     if (hasOccuredThisDay(employee, week, day, occurences)) return true
   }
 
   // 4. Check if the employee is at maxOccurence for the current batch
-  if (retry < 2) {
+  if (retry < 4) {
     return hasOccuredThisBatch(employee, week, occurences)
   }
 
@@ -341,8 +341,12 @@ export function priority(
 
 // Input weekNumber. Returns all weeks in batch
 export function getWeeksInBatch(week: number): number[] {
+  const size = options.batchSize
   const batch = getCurrentBatch(week)
-  return Array.from([1, 2, 3, 4], (x) => x + (batch - 1) * 4)
+  return Array.from(
+    Array.from({ length: size }, (_, i) => i + 1),
+    (x) => x + (batch - 1) * size
+  )
 }
 
 // A method to generate a random index
