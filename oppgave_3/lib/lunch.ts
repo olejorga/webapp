@@ -343,10 +343,7 @@ export function priority(
 export function getWeeksInBatch(week: number): number[] {
   const size = options.batchSize
   const batch = getCurrentBatch(week)
-  return Array.from(
-    Array.from({ length: size }, (_, i) => i + 1),
-    (x) => x + (batch - 1) * size
-  )
+  return Array.from({ length: size }, (_, i) => i + 1 + (batch - 1) * size)
 }
 
 // A method to generate a random index
