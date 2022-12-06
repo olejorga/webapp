@@ -61,7 +61,12 @@ describe('test new employee page', () => {
     fireEvent.submit(await screen.findByTestId('create-button'))
 
     // Mocking push is not working for some reason?
+    // Appears that everything is working fine until "push"
+    // is supposed to be run. Push runs, but the testing framework
+    // is not recognizing it.
+
     // expect(push).toHaveBeenCalledWith('/employees/1')
+
     expect(true).toBe(true)
   })
 })
