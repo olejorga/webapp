@@ -4,6 +4,7 @@ import NewEmployeePage from '../pages/employees/new'
 import '@testing-library/jest-dom/extend-expect'
 
 const push = vi.fn()
+const error = 'Oh shit!'
 
 describe('test new employee page', () => {
   beforeEach(vi.clearAllMocks)
@@ -33,13 +34,13 @@ describe('test new employee page', () => {
 
     vi.mock('../features/employee/employee.api.ts', () => ({
       create: vi.fn(async () => ({
-        error: 'Oh shit!',
+        error,
       })),
     }))
 
     fireEvent.submit(await screen.findByTestId('create-button'))
 
-    expect(await screen.findByTestId('error')).toHaveTextContent('Oh shit!')
+    expect(await screen.findByTestId('error')).toHaveTextContent(error)
   })
 
   it('should redirect if successful', async () => {
