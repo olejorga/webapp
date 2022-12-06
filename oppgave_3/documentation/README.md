@@ -94,7 +94,7 @@ PUT:
   404: Result with error
   500: Result with error
 
-  BODY: EditEmployee
+  BODY: EditedEmployee
 ```
 
 ## Day
@@ -110,7 +110,7 @@ PUT:
   404: Result with error
   500: Result with error
 
-  BODY: EditDay
+  BODY: EditedDay
 ```
 
 ## Week
@@ -147,7 +147,7 @@ Populates the database with example data.
 👉 /api/demo
 
 GET:
-  200: Result<null>
+  200: Result
   500: Result with error
 ```
 
@@ -159,7 +159,7 @@ Generates a lunch list based on a configuration.
 👉 /api/generate
 
 GET:
-  201: Result<null>
+  201: Result
   400: Result with error
   500: Result with error
 ```

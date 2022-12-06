@@ -4,6 +4,11 @@
 
 REPO: https://github.com/olejorga/webapp_exam
 
+MEDLEMMER:
+    Erik Teien Jarem (studentnummer: 204081)
+    Ole-Jørgen Andersen (studentnummer: 202154)
+    Simen Jacobsen Øygard  (studentnummer: 202903)
+
 OPPGAVE 1:
 
     INSTALLASJON:
