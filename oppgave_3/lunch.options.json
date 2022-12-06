@@ -3,7 +3,7 @@
   "yearSize":  52,
   "workDays":  5,
   "batchSize":  4,
-  "maxOccurence":  1,
+  "maxOccurence":  2,
   "days":  [
     "Mandag",
     "Tirsdag",
